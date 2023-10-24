@@ -6,7 +6,7 @@ namespace tetris {
 
     class Blocks {
     public:
-        int GetBlock();
+        int GetTetronimo(int type, int rotation, int xy);
     };
 
 }// namespace tetris
