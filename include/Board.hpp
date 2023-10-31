@@ -1,30 +1,28 @@
 
 #ifndef TETRIS_BOARD_HPP
 #define TETRIS_BOARD_HPP
+#include "Blocks.hpp"
 
 namespace tetris {
 
     class Board {
+
     public:
-        void keyboardInput();
-        void saveCurrentBoard();
-        void gameLogic();
+        Board();
+        bool grid[20][10]{};
+        void initGrid();
+        void printGrid();
 
-        void start();
-        void reset();
+        bool block[4][4]{};
+        void insertNewBlock(int type, int rotation);
 
-        void drawBackDrop();
-        void drawBoard();
 
-        int randomBlockGenerator();
-        void newBlock();
-        void rotateBlock();
-        void moveBlock(int x, int y);
-        void clearLine();
-        bool collisionCheck(int x, int y);
-        bool gameOverCheck();
+        //std::shared_ptr<threepp::Mesh> drawGrid();
+
+    private:
+        int amountOfRows;
+        int amountOfColumns;
     };
-
 }// namespace tetris
 
 #endif//TETRIS_BOARD_HPP

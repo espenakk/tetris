@@ -1,10 +1,11 @@
 
 #include "Blocks.hpp"
 #include <iostream>
+
 namespace tetris {
     // Blocks
-    bool tetronimos[7][4][16]{  // The seven types of Tetronimos, 4 rotations per Tetronimo, 16 block grid
-                              {{// The T Tetromino
+    bool tetronimos[7][4][4][4] = {// The seven types of Tetronimos, 4 rotations per Tetronimo, 16 block grid
+            {{// The T Tetromino
                                 0, 0, 0, 0,
                                 1, 1, 1, 0,
                                 0, 1, 0, 0,
@@ -151,12 +152,7 @@ namespace tetris {
                                 0, 1, 1, 0,
                                 0, 0, 0, 0}}};
 
-    void Blocks::getTetronimo(int type, int rotation) {
-        for (int i = 0; i < 16; i++) {
-            std::cout << tetronimos[type][rotation][i] << " ";
-            if ((i + 1) % 4 == 0) {
-                std::cout << std::endl;
-            }
-        }
+    bool Blocks::GetTetronimo(int type, int rotation, int x, int y) {
+        return tetronimos[type][rotation][x][y];
     }
 }// namespace tetris

@@ -11,9 +11,9 @@
 int main() {
     tetris::Blocks b;
     tetris::Render r;
+    tetris::Board g;
 
     r.initializeScene();
-    b.getTetronimo(0, 1);
     r.renderScene();
     return 0;
 }
