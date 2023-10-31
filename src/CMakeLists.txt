@@ -1,5 +1,5 @@
 add_executable(tetris main.cpp)
-add_library(tetris_lib Board.cpp Blocks.cpp)
+add_library(tetris_lib Board.cpp Blocks.cpp Input.cpp)
 
 target_link_libraries(tetris PRIVATE threepp::threepp imgui::imgui tetris_lib)
 target_link_libraries(tetris_lib PRIVATE threepp::threepp imgui::imgui)
