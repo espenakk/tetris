@@ -6,7 +6,7 @@ namespace tetris {
 
     class Blocks {
     public:
-        bool getTetronimo(int type, int rotation, int xy);
+        void getTetronimo(int type, int rotation);
     };
 
 }// namespace tetris
