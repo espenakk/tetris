@@ -4,7 +4,7 @@
 
 namespace tetris {
     // Blocks
-    bool tetronimos[7][4][4][4] = {// The seven types of Tetronimos, 4 rotations per Tetronimo, 16 block grid
+    int tetronimos[7][4][4][4] = {// The seven types of Tetronimos, 4 rotations per Tetronimo, 16 block grid
             {{// The T Tetromino
                                 0, 0, 0, 0,
                                 1, 1, 1, 0,
@@ -152,7 +152,7 @@ namespace tetris {
                                 0, 1, 1, 0,
                                 0, 0, 0, 0}}};
 
-    bool Blocks::GetTetronimo(int type, int rotation, int x, int y) {
+    int Blocks::getTetronimo(int type, int rotation, int x, int y) {
         return tetronimos[type][rotation][x][y];
     }
 }// namespace tetris

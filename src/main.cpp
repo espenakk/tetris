@@ -13,6 +13,15 @@ int main() {
     tetris::Render r;
     tetris::Board g;
 
+    g.initGrid();
+    g.saveBlock(2, 4, 4, 4);
+
+    g.testwhatisgrid(0, 5);
+
+    g.drawGrid();
+    //g.printGrid();
+
+
     r.initializeScene();
     r.renderScene();
     return 0;
