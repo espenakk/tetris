@@ -6,7 +6,13 @@ namespace tetris {
 
     class Blocks {
     public:
-        bool GetTetronimo(int type, int rotation, int x, int y);
+        Blocks() = default;
+
+        void drawBlock(int type, int rotation, int x, int y);
+        void moveBlock(int type, int rotation, int x, int y);
+        void rotateBlock(int type, int rotation, int x, int y);
+
+        bool getTetronimo(int type, int rotation, int x, int y);
     };
 }// namespace tetris
 #endif//TETRIS_BLOCKS_HPP

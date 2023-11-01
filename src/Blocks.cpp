@@ -152,7 +152,7 @@ namespace tetris {
                                 0, 1, 1, 0,
                                 0, 0, 0, 0}}};
 
-    bool Blocks::GetTetronimo(int type, int rotation, int x, int y) {
+    bool Blocks::getTetronimo(int type, int rotation, int x, int y) {
         return tetronimos[type][rotation][x][y];
     }
 }// namespace tetris
