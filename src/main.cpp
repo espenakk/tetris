@@ -12,7 +12,7 @@ int main() {
     tetris::Blocks b;
     tetris::Render r;
     tetris::Board g;
-
+    
     g.initGrid();
     g.saveBlock(2, 4, 4, 4);
 
@@ -20,7 +20,6 @@ int main() {
 
     g.drawGrid();
     //g.printGrid();
-
 
     r.initializeScene();
     r.renderScene();

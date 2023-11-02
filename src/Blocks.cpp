@@ -1,9 +1,7 @@
 
 #include "Blocks.hpp"
-#include <iostream>
 
 namespace tetris {
-    // Blocks
     int tetronimos[7][4][4][4] = {// The seven types of Tetronimos, 4 rotations per Tetronimo, 16 block grid
             {{// The T Tetromino
                                 0, 0, 0, 0,
