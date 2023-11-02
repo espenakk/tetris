@@ -2,6 +2,9 @@
 #ifndef TETRIS_RENDER_HPP
 #define TETRIS_RENDER_HPP
 
+
+#include "Blocks.hpp"
+#include "Board.hpp"
 #include "Input.hpp"
 #include <threepp/threepp.hpp>
 

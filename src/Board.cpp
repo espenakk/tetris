@@ -31,7 +31,7 @@ namespace tetris {
 
         for (int row = 0; row < 4; row++) {
             for (int column = 0; column < 4; column++) {
-                block[row][column] = test.GetTetronimo(type, rotation, row, column);
+                block[row][column] = test.getTetronimo(type, rotation, row, column);
             }
         }
         for (int row = 0; row < 4; row++) {

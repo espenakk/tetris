@@ -21,7 +21,7 @@ namespace tetris {
         explicit Input(float& t): t(t) {}
 
         int newMovement = NONE;
-
+        int previousMovement = NONE;
         void onKeyPressed(threepp::KeyEvent evt) override;
 
         void onKeyRepeat(threepp::KeyEvent evt) override;
