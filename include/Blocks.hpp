@@ -24,7 +24,6 @@ namespace tetris {
         void moveBlock(int direction);
         void rotateBlock();
         void dropBlock();
-        bool getTetronimo(int type, int rotation, int x, int y);
     };
 }// namespace tetris
 #endif//TETRIS_BLOCKS_HPP
