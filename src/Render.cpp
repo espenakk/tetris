@@ -28,17 +28,19 @@ namespace tetris {
 
         threepp::Canvas canvas("Tetris", {{"aa", 4}});
         threepp::GLRenderer renderer(canvas.size());
-        renderer.setClearColor(threepp::Color::aliceblue);
-        std::shared_ptr<threepp::PerspectiveCamera> camera = threepp::PerspectiveCamera::create();
+        renderer.setClearColor(threepp::Color::goldenrod);
+        std::shared_ptr<threepp::OrthographicCamera> camera = threepp::OrthographicCamera::create();
         camera->position.z = 20;
+        camera->position.x = 5.5;
+        camera->position.y = 11;
+        camera->rotateZ(3.14);
         std::shared_ptr<threepp::Scene> scene = threepp::Scene::create();
 
-        std::shared_ptr<threepp::Group> boardObjectsGroup = threepp::Group::create();
+        /*std::shared_ptr<threepp::Group> boardObjectsGroup = threepp::Group::create();
         boardObjectsGroup->add(createPlane({0.5, 0, 0}, threepp::Color::darkgrey, 17, 22));
         boardObjectsGroup->add(createPlane({-2, 0, 0}, threepp::Color::black, 10, 20));
         boardObjectsGroup->add(createPlane({6, 0, 0}, threepp::Color::darkslateblue, 4, 20));
         scene->add(boardObjectsGroup);
-
 
         std::shared_ptr<threepp::Group> group = threepp::Group::create();
         for (int i = 0; i < 4; i++) {
@@ -51,6 +53,9 @@ namespace tetris {
 
         scene->add(group);
 
+        Board t;
+        std::shared_ptr<threepp::Group> grid = t.drawGrid();
+        scene->add(grid);
 
         threepp::Clock clock;
         tetris::Input kl{clock.elapsedTime};
@@ -58,7 +63,8 @@ namespace tetris {
         canvas.addKeyListener(&kl);
 
         canvas.onWindowResize([&](threepp::WindowSize size) {
-            camera->aspect = size.aspect();
+            //camera->aspect = size.aspect();
+            camera->zoom = 0.05;
             camera->updateProjectionMatrix();
             renderer.setSize(size);
         });
