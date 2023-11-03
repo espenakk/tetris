@@ -1,23 +1,28 @@
 #include <threepp/threepp.hpp>
 
-#include "Blocks.hpp"
-#include "Board.hpp"
-#include "Render.hpp"
+using namespace threepp;
 
 int main() {
-    tetris::Blocks b;
-    tetris::Render r;
-    tetris::Board g;
-    
-    g.initGrid();
-    g.saveBlock(2, 4, 4, 4);
+    Canvas canvas("Tetris");
+    GLRenderer glr(canvas.size());
 
-    g.testwhatisgrid(0, 5);
+    auto scene = Scene::create();
+    auto camera = PerspectiveCamera::create();
+    camera->position.z = 20;
 
-    g.drawGrid();
-    //g.printGrid();
+    glr.setClearColor(Color::salmon);
 
-    r.initializeScene();
-    r.renderScene();
+    //    canvas.onWindowResize([&](WindowSize size) {
+    //        camera->aspect = size.aspect();
+    //        camera->updateProjectionMatrix();
+    //        glr.setSize(size);
+    //    });
+
+    Clock clock;
+    canvas.animate([&] {
+        float dt = clock.getDelta();
+        glr.render(*scene, *camera);
+    });
+
     return 0;
 }
