@@ -14,13 +14,16 @@ namespace tetris {
         std::map<int, std::vector<Position>> cells;
         std::shared_ptr<threepp::Group> draw();
         void move(int row, int column);
+        std::vector<Position> peak(int row, int column, bool rotate);
         void rotate();
         std::vector<Position> blockPositions();
 
-    private:
-        int rotationState;
         int rowOffset;
         int columnOffset;
+
+    private:
+        int rotationState;
+        std::vector<Position> blockPositions(int x, int y, int rot);
     };
 
 }// namespace tetris

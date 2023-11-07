@@ -1,5 +1,6 @@
 
 #include "Board.hpp"
+#include "Render.hpp"
 #include "threepp/threepp.hpp"
 #include <iostream>
 
@@ -21,6 +22,7 @@ namespace tetris {
                 }
             }
         }
+        gridIsChanged = 1;
     }
     void Board::printGrid() {
         for (int i = 0; i < amountOfRows; i++) {
@@ -30,31 +32,12 @@ namespace tetris {
             std::cout << std::endl;
         }
     }
-    /*void Board::saveBlock(int type, int rotation, int x, int y) {
-
-        Blocks test;
-
-        for (int i1 = 0, i2 = 0; i1 < x+blockSize; i1++, i2++) {
-            for (int j1 = 0, j2 = 0; j1 < y+blockSize; j1++, j2++) {
-                if(test.getTetronimo(type, rotation, j2, i2) != 0)
-                    grid[i1][j1] = 1;
-            }
+    void Board::saveBlock(std::vector<Position> tiles) {
+        for (auto tile : tiles) {
+            grid[tile.row][tile.column] = 1;
         }
+        gridIsChanged = 1;
     }
-     */
-    //    void Board::saveBlock(int type, int rotation, int x, int y) {
-    //        Blocks test;
-    //        for (int i = 0; i < blockSize; i++) {
-    //            for (int j = 0; j < blockSize; j++) {
-    //                block[i][j] = test.getTetronimo(type, rotation, i, j);
-    //            }
-    //        }
-    //        for (int i = 0; i < blockSize; i++) {
-    //            for (int j = 0; j < blockSize; j++) {
-    //                grid[i][j + 4] = grid[i][j + 4] + block[i][j];
-    //            }
-    //        }
-    //    }
     int Board::whatIsGridValue(int x, int y) {
         int gridvalue = 0;
         if (grid[x][y] == 0)
@@ -65,33 +48,54 @@ namespace tetris {
             gridvalue = 2;
         return gridvalue;
     }
-
     void Board::testwhatisgrid(int x, int y) {
         int test = whatIsGridValue(x, y);
         std::cout << test << " ";
     }
 
-    std::shared_ptr<threepp::Mesh> Board::create3dGrid(const threepp::Vector3& pos, const threepp::Color& color, float boxWidth, float boxHeight) {
-        auto geometry = threepp::BoxGeometry::create(boxWidth, boxHeight);
-        auto material = threepp::MeshBasicMaterial::create();
-        material->color.copy(color);
-        auto mesh = threepp::Mesh::create(geometry, material);
-        mesh->position.copy(pos);
-        return mesh;
-    }
     std::shared_ptr<threepp::Group> Board::drawGrid() {
         std::shared_ptr<threepp::Group> gridGroup = threepp::Group::create();
-        for (float i = 0; i < amountOfRows; i++) {
-            for (float j = 0; j < amountOfColumns; j++) {
-                if (whatIsGridValue(i, j) == 0) {
-                    gridGroup->add(Board::create3dGrid({j, i, 0}, threepp::Color::gray, 0.9, 0.9));
-                } else if (whatIsGridValue(i, j) == 1) {
-                    gridGroup->add(Board::create3dGrid({j, i, 0}, threepp::Color::crimson, 0.9, 0.9));
-                } else if (whatIsGridValue(i, j == 2)) {
-                    gridGroup->add(Board::create3dGrid({j, i, 0}, threepp::Color::black, 0.9, 0.9));
+        Render renderGrid(0.9, 0.9);
+        if (gridIsChanged == 1) {
+            for (float i = 0; i < amountOfRows; i++) {
+                for (float j = 0; j < amountOfColumns; j++) {
+                    if (whatIsGridValue(i, j) == 0) {
+                        gridGroup->add(renderGrid.createBox({j, i, 0}, threepp::Color::gray));
+                    } else if (whatIsGridValue(i, j) == 1) {
+                        gridGroup->add(renderGrid.createBox({j, i, 0}, threepp::Color::green));
+                    } else if (whatIsGridValue(i, j == 2)) {
+                        gridGroup->add(renderGrid.createBox({j, i, 0}, threepp::Color::black));
+                    }
                 }
             }
         }
+        gridIsChanged = 0;
         return gridGroup;
     }
+    bool Board::checkOutOfGrid(int x, int y) {
+        if (x > amountOfRows - 2)
+            return true;
+        if (y < 1)
+            return true;
+        if (y > amountOfColumns - 2)
+            return true;
+
+        return false;
+    }
+    /* bool Board::checkCollision(int x, int y) {
+        if(){}
+    }
+*/
+    bool Board::checkBlockOutOfGrid(std::vector<Position> tiles) {
+        for (Position item : tiles) {
+            //if(checkOutOfGrid(item.row, item.column)){
+            //    return true;
+            //}
+            if (grid[item.row][item.column] != 0) {
+                return true;
+            }
+        }
+        return false;
+    }
+
 }// namespace tetris

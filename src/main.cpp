@@ -8,6 +8,18 @@
 using namespace threepp;
 using namespace tetris;
 
+/* Funksjoner tilhørende collision, som skal i GAME
+bool checkBlockOutOfGrid(){
+    std::vector<Position> tiles = block.blockPositions();
+    for(Position item : tiles){
+        if(brd.checkOutOfGrid(item.row, item.column)){
+            return true;
+        }
+    }
+    return false;
+}
+*/
+
 int main() {
     Canvas canvas("Tetris");
     WindowSize tetrisSize{500, 800};
@@ -25,26 +37,29 @@ int main() {
     camera->updateProjectionMatrix();
 
 
-    Board board = Board();
-    Block block = Block();
-    Random random = Random();
-    std::vector<Block> blocks = {T_Tetronimo(), S_Tetronimo(), Z_Tetronimo(), L_Tetronimo(), J_Tetronimo(), I_Tetronimo(), O_Tetronimo()};
-    Block currentBlock = blocks[random.getType()];
-    Block nextBlock = blocks[random.getType()];
+//    Board board = Board();
+//    Block block = Block();
+//    Random random = Random();
+//    std::vector<Block> blocks = {T_Tetronimo(), S_Tetronimo(), Z_Tetronimo(), L_Tetronimo(), J_Tetronimo(), I_Tetronimo(), O_Tetronimo()};
+//    Block currentBlock = blocks[random.getType()];
+//    Block nextBlock = blocks[random.getType()];
 
 
     Board brd = Board();
     std::shared_ptr<threepp::Group> grid = brd.drawGrid();
     scene->add(grid);
 
-    //    T_Tetronimo block = T_Tetronimo();
-    std::shared_ptr<threepp::Group> blockGroup = currentBlock.draw();
+    T_Tetronimo block = T_Tetronimo();
+    std::shared_ptr<threepp::Group> blockGroup = block.draw();
     scene->add(blockGroup);
-
 
     Clock clock;
     Input input{clock.elapsedTime};
     canvas.addKeyListener(&input);
+
+    bool drop = false;
+    bool down = false;
+    float timeLastDown = clock.getElapsedTime();
 
     canvas.animate([&] {
         glr.render(*scene, *camera);
@@ -54,37 +69,53 @@ int main() {
         input.previousMovement = input.newMovement;
         input.newMovement = NONE;
 
-        switch (input.previousMovement) {
-            case LEFT:
-                blockGroup->clear();
-                block.move(0, 1);
-                blockGroup = currentBlock.draw();
-                scene->add(blockGroup);
-                break;
-            case RIGHT:
-                blockGroup->clear();
-                block.move(0, -1);
-                blockGroup = currentBlock.draw();
-                scene->add(blockGroup);
-                break;
-            case DOWN:
-                blockGroup->clear();
-                block.move(1, 0);
-                blockGroup = currentBlock.draw();
-                scene->add(blockGroup);
-                break;
-            case ROTATE:
-                blockGroup->clear();
+        int row = 0;
+        int column = 0;
+        bool rotate = false;
+        if (drop || (clock.getElapsedTime() - timeLastDown) > 0.3) {
+            row = 1;
+            timeLastDown = clock.getElapsedTime();
+        } else {
+            switch (input.previousMovement) {
+                case LEFT:
+                    column = 1;
+                    break;
+                case RIGHT:
+                    column = -1;
+                    break;
+                case DOWN:
+                    row = 1;
+                    break;
+                case ROTATE:
+                    rotate = true;
+                    break;
+                case DROP:
+                    drop = true;
+                    break;
+            }
+        }
+
+        if (!brd.checkBlockOutOfGrid(block.peak(row, column, rotate))) {
+            blockGroup->clear();
+            if (rotate) {
                 block.rotate();
-                blockGroup = currentBlock.draw();
-                scene->add(blockGroup);
-                break;
-            case DROP:
+            }
+            block.move(row, column);
+            blockGroup = block.draw();
+            scene->add(blockGroup);
+        } else {
+            if (row != 0) {
+                brd.saveBlock(block.blockPositions());
+                drop = false;
+                block.rowOffset = -1;
+                block.columnOffset = 4;
                 blockGroup->clear();
-                block.move(5, 0);
-                blockGroup = currentBlock.draw();
+                blockGroup = block.draw();
                 scene->add(blockGroup);
-                break;
+                grid->clear();
+                grid = brd.drawGrid();
+                scene->add(grid);
+            }
         }
     });
     return 0;
