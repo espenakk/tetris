@@ -8,7 +8,7 @@
 #include <threepp/threepp.hpp>
 #include <iostream>
 
-#include "Blocks.hpp"
+#include "Block.hpp"
 
 namespace tetris {
 
@@ -22,8 +22,16 @@ namespace tetris {
 
 
         int block[4][4];
-        void saveBlock(int type, int rotation, int x, int y);
+        void saveBlock(std::vector<Position> tiles);
+
         int whatIsGridValue(int x, int y);
+        bool checkOutOfGrid(int x, int y);
+
+        bool checkBlockOutOfGrid(std::vector<Position> tiles);
+
+        void checkFullLines();
+
+
         void testwhatisgrid(int x, int y);
 
         std::shared_ptr<threepp::Group> drawGrid();

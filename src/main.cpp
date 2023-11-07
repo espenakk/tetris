@@ -1,13 +1,27 @@
 #include "Block.hpp"
 #include "Board.hpp"
+#include "Input.hpp"
 #include "Tetrominos.cpp"
 #include <threepp/threepp.hpp>
 using namespace threepp;
 using namespace tetris;
 
+/* Funksjoner tilhørende collision, som skal i GAME
+bool checkBlockOutOfGrid(){
+    std::vector<Position> tiles = block.blockPositions();
+    for(Position item : tiles){
+        if(brd.checkOutOfGrid(item.row, item.column)){
+            return true;
+        }
+    }
+    return false;
+}
+*/
+
 int main() {
     Canvas canvas("Tetris");
-    WindowSize tetrisSize{1200, 1200};
+    WindowSize tetrisSize{760, 1200};
+    WindowSize glrSize{1200, 1200};
     canvas.setSize(tetrisSize);
     GLRenderer glr(glrSize);
     glr.setClearColor(Color::blueviolet);
@@ -32,6 +46,10 @@ int main() {
     Input input{clock.elapsedTime};
     canvas.addKeyListener(&input);
 
+    bool drop = false;
+    bool down = false;
+    float timeLastDown = clock.getElapsedTime();
+
     canvas.animate([&] {
         glr.render(*scene, *camera);
         glr.resetState();
@@ -40,37 +58,53 @@ int main() {
         input.previousMovement = input.newMovement;
         input.newMovement = NONE;
 
-        switch (input.previousMovement) {
-            case LEFT:
-                blockGroup->clear();
-                block.move(0, 1);
-                blockGroup = block.draw();
-                scene->add(blockGroup);
-                break;
-            case RIGHT:
-                blockGroup->clear();
-                block.move(0, -1);
-                blockGroup = block.draw();
-                scene->add(blockGroup);
-                break;
-            case DOWN:
-                blockGroup->clear();
-                block.move(1, 0);
-                blockGroup = block.draw();
-                scene->add(blockGroup);
-                break;
-            case ROTATE:
-                blockGroup->clear();
+        int row = 0;
+        int column = 0;
+        bool rotate = false;
+        if (drop || (clock.getElapsedTime() - timeLastDown) > 0.3) {
+            row = 1;
+            timeLastDown = clock.getElapsedTime();
+        } else {
+            switch (input.previousMovement) {
+                case LEFT:
+                    column = 1;
+                    break;
+                case RIGHT:
+                    column = -1;
+                    break;
+                case DOWN:
+                    row = 1;
+                    break;
+                case ROTATE:
+                    rotate = true;
+                    break;
+                case DROP:
+                    drop = true;
+                    break;
+            }
+        }
+
+        if (!brd.checkBlockOutOfGrid(block.peak(row, column, rotate))) {
+            blockGroup->clear();
+            if (rotate) {
                 block.rotate();
-                blockGroup = block.draw();
-                scene->add(blockGroup);
-                break;
-            case DROP:
+            }
+            block.move(row, column);
+            blockGroup = block.draw();
+            scene->add(blockGroup);
+        } else {
+            if (row != 0) {
+                brd.saveBlock(block.blockPositions());
+                drop = false;
+                block.rowOffset = -1;
+                block.columnOffset = 4;
                 blockGroup->clear();
-                block.move(5, 0);
                 blockGroup = block.draw();
                 scene->add(blockGroup);
-                break;
+                grid->clear();
+                grid = brd.drawGrid();
+                scene->add(grid);
+            }
         }
     });
     return 0;

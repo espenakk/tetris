@@ -32,29 +32,9 @@ namespace tetris {
             std::cout << std::endl;
         }
     }
-    /*void Board::saveBlock(int type, int rotation, int x, int y) {
-
-        Blocks test;
-
-        for (int i1 = 0, i2 = 0; i1 < x+blockSize; i1++, i2++) {
-            for (int j1 = 0, j2 = 0; j1 < y+blockSize; j1++, j2++) {
-                if(test.getTetronimo(type, rotation, j2, i2) != 0)
-                    grid[i1][j1] = 1;
-            }
-        }
-    }
-     */
-    void Board::saveBlock(int type, int rotation, int x, int y) {
-        Blocks test;
-        for (int i = 0; i < blockSize; i++) {
-            for (int j = 0; j < blockSize; j++) {
-                block[i][j] = test.getTetronimo(type, rotation, i, j);
-            }
-        }
-        for (int i = 0; i < blockSize; i++) {
-            for (int j = 0; j < blockSize; j++) {
-                grid[i + y][j + x] = grid[i + y][j + x] + block[i][j];
-            }
+    void Board::saveBlock(std::vector<Position> tiles) {
+        for (auto tile : tiles) {
+            grid[tile.row][tile.column] = 1;
         }
         gridIsChanged = 1;
     }
@@ -82,7 +62,7 @@ namespace tetris {
                     if (whatIsGridValue(i, j) == 0) {
                         gridGroup->add(renderGrid.createBox({j, i, 0}, threepp::Color::gray));
                     } else if (whatIsGridValue(i, j) == 1) {
-                        gridGroup->add(renderGrid.createBox({j, i, 0}, threepp::Color::crimson));
+                        gridGroup->add(renderGrid.createBox({j, i, 0}, threepp::Color::green));
                     } else if (whatIsGridValue(i, j == 2)) {
                         gridGroup->add(renderGrid.createBox({j, i, 0}, threepp::Color::black));
                     }
@@ -92,4 +72,30 @@ namespace tetris {
         gridIsChanged = 0;
         return gridGroup;
     }
+    bool Board::checkOutOfGrid(int x, int y) {
+        if (x > amountOfRows - 2)
+            return true;
+        if (y < 1)
+            return true;
+        if (y > amountOfColumns - 2)
+            return true;
+
+        return false;
+    }
+    /* bool Board::checkCollision(int x, int y) {
+        if(){}
+    }
+*/
+    bool Board::checkBlockOutOfGrid(std::vector<Position> tiles) {
+        for (Position item : tiles) {
+            //if(checkOutOfGrid(item.row, item.column)){
+            //    return true;
+            //}
+            if (grid[item.row][item.column] != 0) {
+                return true;
+            }
+        }
+        return false;
+    }
+
 }// namespace tetris
