@@ -1,7 +1,9 @@
 #include "Block.hpp"
 #include "Board.hpp"
+#include "Game.hpp"
 #include "Input.hpp"
-#include "Tetrominos.cpp"
+#include "Random.hpp"
+#include "Tetronimos.cpp"
 #include <threepp/threepp.hpp>
 using namespace threepp;
 using namespace tetris;
@@ -22,13 +24,23 @@ int main() {
     camera->zoom = 0.09;
     camera->updateProjectionMatrix();
 
+
+    Board board = Board();
+    Block block = Block();
+    Random random = Random();
+    std::vector<Block> blocks = {T_Tetronimo(), S_Tetronimo(), Z_Tetronimo(), L_Tetronimo(), J_Tetronimo(), I_Tetronimo(), O_Tetronimo()};
+    Block currentBlock = blocks[random.getType()];
+    Block nextBlock = blocks[random.getType()];
+
+
     Board brd = Board();
     std::shared_ptr<threepp::Group> grid = brd.drawGrid();
     scene->add(grid);
 
-    T_Tetronimo block = T_Tetronimo();
-    std::shared_ptr<threepp::Group> blockGroup = block.draw();
+    //    T_Tetronimo block = T_Tetronimo();
+    std::shared_ptr<threepp::Group> blockGroup = currentBlock.draw();
     scene->add(blockGroup);
+
 
     Clock clock;
     Input input{clock.elapsedTime};
@@ -46,31 +58,31 @@ int main() {
             case LEFT:
                 blockGroup->clear();
                 block.move(0, 1);
-                blockGroup = block.draw();
+                blockGroup = currentBlock.draw();
                 scene->add(blockGroup);
                 break;
             case RIGHT:
                 blockGroup->clear();
                 block.move(0, -1);
-                blockGroup = block.draw();
+                blockGroup = currentBlock.draw();
                 scene->add(blockGroup);
                 break;
             case DOWN:
                 blockGroup->clear();
                 block.move(1, 0);
-                blockGroup = block.draw();
+                blockGroup = currentBlock.draw();
                 scene->add(blockGroup);
                 break;
             case ROTATE:
                 blockGroup->clear();
                 block.rotate();
-                blockGroup = block.draw();
+                blockGroup = currentBlock.draw();
                 scene->add(blockGroup);
                 break;
             case DROP:
                 blockGroup->clear();
                 block.move(5, 0);
-                blockGroup = block.draw();
+                blockGroup = currentBlock.draw();
                 scene->add(blockGroup);
                 break;
         }

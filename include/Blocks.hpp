@@ -8,8 +8,8 @@ namespace tetris {
 
     class Blocks {
     public:
-        int getTetronimo(int type, int rotation, int x, int y);
-        Blocks() = default;
+        //        int getTetronimo(int type, int rotation, int x, int y);
+        //        Blocks() = default;
 
         //        void drawBlock(int type, int rotation, char group) {
         //            std::shared_ptr<threepp::Group> group = threepp::Group::create();

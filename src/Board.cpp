@@ -42,19 +42,19 @@ namespace tetris {
         }
     }
      */
-    void Board::saveBlock(int type, int rotation, int x, int y) {
-        Blocks test;
-        for (int i = 0; i < blockSize; i++) {
-            for (int j = 0; j < blockSize; j++) {
-                block[i][j] = test.getTetronimo(type, rotation, i, j);
-            }
-        }
-        for (int i = 0; i < blockSize; i++) {
-            for (int j = 0; j < blockSize; j++) {
-                grid[i][j + 4] = grid[i][j + 4] + block[i][j];
-            }
-        }
-    }
+    //    void Board::saveBlock(int type, int rotation, int x, int y) {
+    //        Blocks test;
+    //        for (int i = 0; i < blockSize; i++) {
+    //            for (int j = 0; j < blockSize; j++) {
+    //                block[i][j] = test.getTetronimo(type, rotation, i, j);
+    //            }
+    //        }
+    //        for (int i = 0; i < blockSize; i++) {
+    //            for (int j = 0; j < blockSize; j++) {
+    //                grid[i][j + 4] = grid[i][j + 4] + block[i][j];
+    //            }
+    //        }
+    //    }
     int Board::whatIsGridValue(int x, int y) {
         int gridvalue = 0;
         if (grid[x][y] == 0)
