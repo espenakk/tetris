@@ -1,18 +1,14 @@
-#include <iostream>
-#include <threepp/extras/imgui/ImguiContext.hpp>
 #include <threepp/threepp.hpp>
 
 #include "Blocks.hpp"
 #include "Board.hpp"
-#include "Game.hpp"
-#include "Input.hpp"
 #include "Render.hpp"
 
 int main() {
     tetris::Blocks b;
     tetris::Render r;
     tetris::Board g;
-
+    
     g.initGrid();
     g.saveBlock(2, 4, 4, 4);
 
@@ -20,7 +16,6 @@ int main() {
 
     g.drawGrid();
     //g.printGrid();
-
 
     r.initializeScene();
     r.renderScene();

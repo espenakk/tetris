@@ -5,6 +5,11 @@
 #include "threepp/threepp.hpp"
 #include <iostream>
 
+#include <threepp/threepp.hpp>
+#include <iostream>
+
+#include "Blocks.hpp"
+
 namespace tetris {
 
     class Board {
