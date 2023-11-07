@@ -1,8 +1,6 @@
 
 #ifndef TETRIS_RENDER_HPP
 #define TETRIS_RENDER_HPP
-
-
 #include "Blocks.hpp"
 #include "Board.hpp"
 #include "Input.hpp"
@@ -10,12 +8,16 @@
 
 namespace tetris {
 
-    class Render {
+    class Render {// Inspiration taken from example in threepp
     public:
-        std::shared_ptr<threepp::Mesh> createPlane(const threepp::Vector3& pos, const threepp::Color& color, float width, float height);
+        Render(float width, float height);
+        std::shared_ptr<threepp::Mesh> createPlane(const threepp::Vector3& pos, const threepp::Color& color);
         std::shared_ptr<threepp::Mesh> createBox(const threepp::Vector3& pos, const threepp::Color& color);
         void initializeScene();
-        void renderScene();
+
+    private:
+        float width_;
+        float height_;
     };
 
 }// namespace tetris
