@@ -7,7 +7,7 @@
 #include <threepp/threepp.hpp>
 
 namespace tetris {
-    enum move {
+    enum moveInDirection {
         LEFT,
         RIGHT,
         ROTATE,
