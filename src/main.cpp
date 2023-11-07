@@ -7,7 +7,7 @@ using namespace tetris;
 
 int main() {
     Canvas canvas("Tetris");
-    WindowSize tetrisSize{800, 800};
+    WindowSize tetrisSize{1200, 1200};
     canvas.setSize(tetrisSize);
     GLRenderer glr(canvas.size());
     glr.setClearColor(Color::blueviolet);
@@ -18,10 +18,18 @@ int main() {
     camera->position.y = 10;
     camera->rotateZ(3.1415);
     camera->zoom = 0.09;
+    camera->updateProjectionMatrix();
 
     Board brd = Board();
+    brd.saveBlock(4, 0, 1, 8);
+    brd.saveBlock(6, 0, -4, 13);
 
-    T_tetronimo T = T_tetronimo();
+
+    brd.printGrid();
+    //std::shared_ptr<threepp::Group> grid = brd.drawGrid();
+    //scene->add(grid);
+
+    //T_tetronimo T = T_tetronimo();
 
     canvas.onWindowResize([&](WindowSize size) {
         //        camera->aspect = size.aspect();
@@ -37,8 +45,9 @@ int main() {
 
         std::shared_ptr<threepp::Group> grid = brd.drawGrid();
         scene->add(grid);
-        std::shared_ptr<threepp::Group> block = T.draw();
-        scene->add(block);
+
+        //    std::shared_ptr<threepp::Group> block = T.draw();
+        //    scene->add(block);
     });
     return 0;
 }

@@ -27,12 +27,11 @@ namespace tetris {
         void testwhatisgrid(int x, int y);
 
         std::shared_ptr<threepp::Group> drawGrid();
-        std::shared_ptr<threepp::Mesh> create3dGrid(const threepp::Vector3& pos, const threepp::Color& color, float boxWidth, float boxHeight);
-
     private:
         int amountOfRows;
         int amountOfColumns;
         int blockSize;
+        bool gridIsChanged;
     };
 }// namespace tetris
 

@@ -1,5 +1,6 @@
 
 #include "Board.hpp"
+#include "Render.hpp"
 #include "threepp/threepp.hpp"
 #include <iostream>
 
@@ -21,6 +22,7 @@ namespace tetris {
                 }
             }
         }
+        gridIsChanged = 1;
     }
     void Board::printGrid() {
         for (int i = 0; i < amountOfRows; i++) {
@@ -51,9 +53,10 @@ namespace tetris {
         }
         for (int i = 0; i < blockSize; i++) {
             for (int j = 0; j < blockSize; j++) {
-                grid[i][j + 4] = grid[i][j + 4] + block[i][j];
+                grid[i + y][j + x] = grid[i + y][j + x] + block[i][j];
             }
         }
+        gridIsChanged = 1;
     }
     int Board::whatIsGridValue(int x, int y) {
         int gridvalue = 0;
@@ -65,33 +68,28 @@ namespace tetris {
             gridvalue = 2;
         return gridvalue;
     }
-
     void Board::testwhatisgrid(int x, int y) {
         int test = whatIsGridValue(x, y);
         std::cout << test << " ";
     }
 
-    std::shared_ptr<threepp::Mesh> Board::create3dGrid(const threepp::Vector3& pos, const threepp::Color& color, float boxWidth, float boxHeight) {
-        auto geometry = threepp::BoxGeometry::create(boxWidth, boxHeight);
-        auto material = threepp::MeshBasicMaterial::create();
-        material->color.copy(color);
-        auto mesh = threepp::Mesh::create(geometry, material);
-        mesh->position.copy(pos);
-        return mesh;
-    }
     std::shared_ptr<threepp::Group> Board::drawGrid() {
         std::shared_ptr<threepp::Group> gridGroup = threepp::Group::create();
-        for (float i = 0; i < amountOfRows; i++) {
-            for (float j = 0; j < amountOfColumns; j++) {
-                if (whatIsGridValue(i, j) == 0) {
-                    gridGroup->add(Board::create3dGrid({j, i, 0}, threepp::Color::gray, 0.9, 0.9));
-                } else if (whatIsGridValue(i, j) == 1) {
-                    gridGroup->add(Board::create3dGrid({j, i, 0}, threepp::Color::crimson, 0.9, 0.9));
-                } else if (whatIsGridValue(i, j == 2)) {
-                    gridGroup->add(Board::create3dGrid({j, i, 0}, threepp::Color::black, 0.9, 0.9));
+        Render renderGrid(0.9, 0.9);
+        if (gridIsChanged == 1) {
+            for (float i = 0; i < amountOfRows; i++) {
+                for (float j = 0; j < amountOfColumns; j++) {
+                    if (whatIsGridValue(i, j) == 0) {
+                        gridGroup->add(renderGrid.createBox({j, i, 0}, threepp::Color::gray));
+                    } else if (whatIsGridValue(i, j) == 1) {
+                        gridGroup->add(renderGrid.createBox({j, i, 0}, threepp::Color::crimson));
+                    } else if (whatIsGridValue(i, j == 2)) {
+                        gridGroup->add(renderGrid.createBox({j, i, 0}, threepp::Color::black));
+                    }
                 }
             }
         }
+        gridIsChanged = 0;
         return gridGroup;
     }
 }// namespace tetris
