@@ -12,7 +12,6 @@ namespace tetris {
         Render(float width, float height);
         std::shared_ptr<threepp::Mesh> createPlane(const threepp::Vector3& pos, const threepp::Color& color);
         std::shared_ptr<threepp::Mesh> createBox(const threepp::Vector3& pos, const threepp::Color& color);
-        void initializeScene();
 
     private:
         float width_;

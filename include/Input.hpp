@@ -1,10 +1,7 @@
 
 #ifndef TETRIS_INPUT_HPP
 #define TETRIS_INPUT_HPP
-
-#include <iostream>
-#include <threepp/extras/imgui/ImguiContext.hpp>
-#include <threepp/threepp.hpp>
+#include <threepp/input/KeyListener.hpp>
 
 namespace tetris {
     enum moveInDirection {
@@ -18,12 +15,12 @@ namespace tetris {
     class Input: public threepp::KeyListener {
     public:
         float& t;
-        explicit Input(float& t): t(t) {}
+        explicit Input(float& t);
 
         int newMovement = NONE;
         int previousMovement = NONE;
+        void inputHandling(threepp::KeyEvent evt);
         void onKeyPressed(threepp::KeyEvent evt) override;
-
         void onKeyRepeat(threepp::KeyEvent evt) override;
     };
 }// namespace tetris
