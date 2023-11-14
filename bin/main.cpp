@@ -26,7 +26,7 @@ int main() {
     WindowSize glrSize{800, 800};
     canvas.setSize(tetrisSize);
     GLRenderer glr(glrSize);
-    glr.setClearColor(Color::blueviolet);
+    glr.setClearColor(Color::pink);
     auto scene = Scene::create();
     auto camera = OrthographicCamera::create();
     camera->position.z = 5;
@@ -109,6 +109,8 @@ int main() {
                 nextBlock = blocks[random.getType()];
                 blockGroup = currentBlock.draw();
                 scene->add(blockGroup);
+
+                board.rowCleanUp();
                 gridGroup->clear();
                 gridGroup = board.drawGrid();
                 scene->add(gridGroup);
