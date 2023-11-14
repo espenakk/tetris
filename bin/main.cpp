@@ -37,21 +37,16 @@ int main() {
     camera->updateProjectionMatrix();
 
 
-//    Board board = Board();
-//    Block block = Block();
-//    Random random = Random();
-    //    std::vector<Block> blocks = {T_Tetronimo(), S_Tetromino(), Z_Tetronimo(), L_Tetronimo(), J_Tetronimo(), I_Tetronimo(), O_Tetronimo()};
-    //    Block currentBlock = blocks[random.getType()];
-//    Block nextBlock = blocks[random.getType()];
-
-
-    Board brd = Board();
-    std::shared_ptr<threepp::Group> grid = brd.drawGrid();
-    scene->add(grid);
-
-    Z_Tetromino block = Z_Tetromino();
-    std::shared_ptr<threepp::Group> blockGroup = block.draw();
+    Board board = Board();
+    Random random = Random();
+    std::vector<Block> blocks = {T_Tetromino(), S_Tetromino(), Z_Tetromino(), L_Tetromino(), J_Tetromino(), I_Tetromino(), O_Tetromino()};
+    Block currentBlock = blocks[random.getType()];
+    Block nextBlock = blocks[random.getType()];
+    std::shared_ptr<threepp::Group> gridGroup = board.drawGrid();
+    scene->add(gridGroup);
+    std::shared_ptr<threepp::Group> blockGroup = currentBlock.draw();
     scene->add(blockGroup);
+
 
     Clock clock;
     Input input{clock.elapsedTime};
@@ -95,26 +90,28 @@ int main() {
             }
         }
 
-        if (!brd.checkBlockOutOfGrid(block.peak(row, column, rotate))) {
+        if (!board.checkBlockOutOfGrid(currentBlock.peak(row, column, rotate))) {
             blockGroup->clear();
             if (rotate) {
-                block.rotate();
+                currentBlock.rotate();
             }
-            block.move(row, column);
-            blockGroup = block.draw();
+            currentBlock.move(row, column);
+            blockGroup = currentBlock.draw();
             scene->add(blockGroup);
         } else {
             if (row != 0) {
-                brd.saveBlock(block.blockPositions());
+                board.saveBlock(currentBlock.blockPositions());
                 drop = false;
-                block.rowOffset = -1;
-                block.columnOffset = 4;
+                currentBlock.rowOffset = -1;
+                currentBlock.columnOffset = 4;
                 blockGroup->clear();
-                blockGroup = block.draw();
+                currentBlock = nextBlock;
+                nextBlock = blocks[random.getType()];
+                blockGroup = currentBlock.draw();
                 scene->add(blockGroup);
-                grid->clear();
-                grid = brd.drawGrid();
-                scene->add(grid);
+                gridGroup->clear();
+                gridGroup = board.drawGrid();
+                scene->add(gridGroup);
             }
         }
     });

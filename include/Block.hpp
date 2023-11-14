@@ -24,6 +24,7 @@ namespace tetris {
     private:
         int rotationState;
         std::vector<Position> blockPositions(int x, int y, int rot);
+        std::vector<threepp::Color> colours;
     };
 
 }// namespace tetris

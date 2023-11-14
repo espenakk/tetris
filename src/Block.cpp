@@ -7,6 +7,7 @@ namespace tetris {
         rotationState = 0;
         rowOffset = 0;
         columnOffset = 0;
+        colours = {threepp::Color::blueviolet, threepp::Color::limegreen, threepp::Color::red, threepp::Color::darkorange, threepp::Color::deepskyblue, threepp::Color::cyan, threepp::Color::yellow};
     }
     std::shared_ptr<threepp::Group> Block::draw() {
         Render render(0.9, 0.9);
@@ -14,7 +15,7 @@ namespace tetris {
         blockGroup->clear();
         std::vector<Position> tiles = blockPositions();
         for (Position item : tiles) {
-            blockGroup->add(render.createBox({(float) (item.column), (float) (item.row), 0}, threepp::Color::crimson));
+            blockGroup->add(render.createBox({(float) (item.column), (float) (item.row), 0}, colours[type]));
         }
         return blockGroup;
     }
