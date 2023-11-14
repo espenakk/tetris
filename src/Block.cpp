@@ -44,5 +44,5 @@ namespace tetris {
     std::vector<Position> Block::peak(int row, int column, bool rotate) {
         int rotation = (rotationState + rotate) % 4;
         return blockPositions(rowOffset + row, columnOffset + column, rotation);
-    };
+    }
 }// namespace tetris

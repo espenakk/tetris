@@ -24,7 +24,7 @@ int main() {
     WindowSize glrSize{1200, 1200};
     canvas.setSize(tetrisSize);
     GLRenderer glr(glrSize);
-    glr.setClearColor(Color::blueviolet);
+    glr.setClearColor(Color::limegreen);
     auto scene = Scene::create();
     auto camera = OrthographicCamera::create();
     camera->position.z = 5;
@@ -61,7 +61,7 @@ int main() {
         int row = 0;
         int column = 0;
         bool rotate = false;
-        if (drop || (clock.getElapsedTime() - timeLastDown) > 0.3) {
+        if (drop || (clock.getElapsedTime() - timeLastDown) > 0.5) {
             row = 1;
             timeLastDown = clock.getElapsedTime();
         } else {
@@ -96,11 +96,14 @@ int main() {
             if (row != 0) {
                 brd.saveBlock(block.blockPositions());
                 drop = false;
+
                 block.rowOffset = -1;
                 block.columnOffset = 4;
                 blockGroup->clear();
                 blockGroup = block.draw();
                 scene->add(blockGroup);
+
+                brd.rowCleanUp();
                 grid->clear();
                 grid = brd.drawGrid();
                 scene->add(grid);

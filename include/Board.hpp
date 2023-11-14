@@ -20,26 +20,21 @@ namespace tetris {
         void initGrid();
         void printGrid();
 
-
-        int block[4][4];
         void saveBlock(std::vector<Position> tiles);
-
         int whatIsGridValue(int x, int y);
-        bool checkOutOfGrid(int x, int y);
-
         bool checkBlockOutOfGrid(std::vector<Position> tiles);
-
-        void checkFullLines();
-
-
-        void testwhatisgrid(int x, int y);
-
         std::shared_ptr<threepp::Group> drawGrid();
+
+        int rowCleanUp();
+
     private:
         int amountOfRows;
         int amountOfColumns;
-        int blockSize;
         bool gridIsChanged;
+
+        bool checkFullRow(int row);
+        void deleteFullRow(int row);
+        void moveRowDown(int row, int movement);
     };
 }// namespace tetris
 
