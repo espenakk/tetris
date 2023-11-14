@@ -3,8 +3,8 @@
 #include "Game.hpp"
 #include "Input.hpp"
 #include "Random.hpp"
-#include "Tetronimos.cpp"
-#include <threepp/threepp.hpp>
+#include "Tetrominos.hpp"
+#include "threepp/threepp.hpp"
 using namespace threepp;
 using namespace tetris;
 
@@ -40,8 +40,8 @@ int main() {
 //    Board board = Board();
 //    Block block = Block();
 //    Random random = Random();
-//    std::vector<Block> blocks = {T_Tetronimo(), S_Tetronimo(), Z_Tetronimo(), L_Tetronimo(), J_Tetronimo(), I_Tetronimo(), O_Tetronimo()};
-//    Block currentBlock = blocks[random.getType()];
+    //    std::vector<Block> blocks = {T_Tetronimo(), S_Tetromino(), Z_Tetronimo(), L_Tetronimo(), J_Tetronimo(), I_Tetronimo(), O_Tetronimo()};
+    //    Block currentBlock = blocks[random.getType()];
 //    Block nextBlock = blocks[random.getType()];
 
 
@@ -49,7 +49,7 @@ int main() {
     std::shared_ptr<threepp::Group> grid = brd.drawGrid();
     scene->add(grid);
 
-    T_Tetronimo block = T_Tetronimo();
+    T_Tetromino block = T_Tetromino();
     std::shared_ptr<threepp::Group> blockGroup = block.draw();
     scene->add(blockGroup);
 

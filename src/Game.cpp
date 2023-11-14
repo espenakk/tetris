@@ -1,13 +1,13 @@
 #include "Game.hpp"
 #include "Random.hpp"
-#include "Tetronimos.cpp"
+#include "Tetrominos.cpp"
 
 namespace tetris {
     Game::Game() {
         board = Board();
         block = Block();
         random = Random();
-        blocks = {T_Tetronimo(), S_Tetronimo(), Z_Tetronimo(), L_Tetronimo(), J_Tetronimo(), I_Tetronimo(), O_Tetronimo()};
+        blocks = {T_Tetromino(), S_Tetromino(), Z_Tetromino(), L_Tetromino(), J_Tetromino(), I_Tetromino(), O_Tetromino()};
         currentBlock = blocks[random.getType()];
         nextBlock = blocks[random.getType()];
     }
