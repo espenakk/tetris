@@ -49,7 +49,7 @@ int main() {
     std::shared_ptr<threepp::Group> grid = brd.drawGrid();
     scene->add(grid);
 
-    T_Tetromino block = T_Tetromino();
+    Z_Tetromino block = Z_Tetromino();
     std::shared_ptr<threepp::Group> blockGroup = block.draw();
     scene->add(blockGroup);
 
