@@ -4,7 +4,7 @@
 #include "Block.hpp"
 #include "Board.hpp"
 #include "Random.hpp"
-namespace tetris {
+/*namespace tetris {
 
     class Game {
     public:
@@ -20,6 +20,6 @@ namespace tetris {
         Block nextBlock;
     };
 
-}// namespace tetris
+}// namespace tetris */
 
 #endif//TETRIS_GAME_HPP

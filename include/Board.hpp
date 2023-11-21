@@ -19,7 +19,7 @@ namespace tetris {
         void initGrid();
         void printGrid();
 
-        void saveBlock(std::vector<Position> tiles);
+        void saveBlock(std::vector<Position> tiles, int type);
         int whatIsGridValue(int x, int y);
         bool checkBlockOutOfGrid(std::vector<Position> tiles);
         std::shared_ptr<threepp::Group> drawGrid();

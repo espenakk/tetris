@@ -31,9 +31,9 @@ namespace tetris {
             std::cout << std::endl;
         }
     }
-    void Board::saveBlock(std::vector<Position> tiles) {
+    void Board::saveBlock(std::vector<Position> tiles, int type) {
         for (auto tile : tiles) {
-            grid[tile.row][tile.column] = 1;
+            grid[tile.row][tile.column] = type + 1;
         }
         gridIsChanged = 1;
     }
@@ -69,15 +69,15 @@ namespace tetris {
                     } else if (whatIsGridValue(i, j) == 8) {
                         gridGroup->add(renderGrid.createBox({j, i, 0}, threepp::Color::black));
                     } else if (whatIsGridValue(i, j) == 1) {
-                        gridGroup->add(renderGrid.createBox({j, i, 0}, threepp::Color::purple));
+                        gridGroup->add(renderGrid.createBox({j, i, 0}, threepp::Color::blueviolet));
                     } else if (whatIsGridValue(i, j) == 2) {
-                        gridGroup->add(renderGrid.createBox({j, i, 0}, threepp::Color::green));
+                        gridGroup->add(renderGrid.createBox({j, i, 0}, threepp::Color::limegreen));
                     } else if (whatIsGridValue(i, j) == 3) {
                         gridGroup->add(renderGrid.createBox({j, i, 0}, threepp::Color::red));
                     } else if (whatIsGridValue(i, j) == 4) {
-                        gridGroup->add(renderGrid.createBox({j, i, 0}, threepp::Color::orange));
+                        gridGroup->add(renderGrid.createBox({j, i, 0}, threepp::Color::darkorange));
                     } else if (whatIsGridValue(i, j) == 5) {
-                        gridGroup->add(renderGrid.createBox({j, i, 0}, threepp::Color::blue));
+                        gridGroup->add(renderGrid.createBox({j, i, 0}, threepp::Color::deepskyblue));
                     } else if (whatIsGridValue(i, j) == 6) {
                         gridGroup->add(renderGrid.createBox({j, i, 0}, threepp::Color::cyan));
                     } else if (whatIsGridValue(i, j) == 7) {

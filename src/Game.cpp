@@ -2,7 +2,7 @@
 #include "Random.hpp"
 #include "Tetrominos.cpp"
 
-namespace tetris {
+/*namespace tetris {
     Game::Game() {
         board = Board();
         block = Block();
@@ -15,4 +15,4 @@ namespace tetris {
         std::shared_ptr<threepp::Group> grid = board.drawGrid();
         std::shared_ptr<threepp::Group> blockGroup = currentBlock.draw();
     }
-}// namespace tetris
+}// namespace tetris */

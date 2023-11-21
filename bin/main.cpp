@@ -1,24 +1,12 @@
 #include "Block.hpp"
 #include "Board.hpp"
-#include "Game.hpp"
+//#include "Game.hpp"
 #include "Input.hpp"
 #include "Random.hpp"
 #include "Tetrominos.hpp"
 #include "threepp/threepp.hpp"
 using namespace threepp;
 using namespace tetris;
-
-/* Funksjoner tilhørende collision, som skal i GAME
-bool checkBlockOutOfGrid(){
-    std::vector<Position> tiles = block.blockPositions();
-    for(Position item : tiles){
-        if(brd.checkOutOfGrid(item.row, item.column)){
-            return true;
-        }
-    }
-    return false;
-}
-*/
 
 int main() {
     Canvas canvas("Tetris");
@@ -100,7 +88,7 @@ int main() {
             scene->add(blockGroup);
         } else {
             if (row != 0) {
-                board.saveBlock(currentBlock.blockPositions());
+                board.saveBlock(currentBlock.blockPositions(), currentBlock.type);
                 drop = false;
                 currentBlock.rowOffset = -1;
                 currentBlock.columnOffset = 4;
