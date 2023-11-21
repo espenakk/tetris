@@ -13,16 +13,12 @@ namespace tetris {
         type = 1;
         cells[0] = {Position(0, 1), Position(0, 2), Position(1, 0), Position(1, 1)};
         cells[1] = {Position(0, 0), Position(1, 0), Position(1, 1), Position(2, 1)};
-        cells[2] = {Position(0, 1), Position(0, 2), Position(1, 0), Position(1, 1)};
-        cells[3] = {Position(0, 0), Position(1, 0), Position(1, 1), Position(2, 1)};
         move(-1, 4);
     }
     Z_Tetromino::Z_Tetromino() {
         type = 2;
         cells[0] = {Position(0, 0), Position(0, 1), Position(1, 1), Position(1, 2)};
         cells[1] = {Position(0, 2), Position(1, 1), Position(1, 2), Position(2, 1)};
-        cells[2] = {Position(0, 0), Position(0, 1), Position(1, 1), Position(1, 2)};
-        cells[3] = {Position(0, 2), Position(1, 1), Position(1, 2), Position(2, 1)};
         move(-1, 4);
     }
     L_Tetromino::L_Tetromino() {
@@ -45,8 +41,6 @@ namespace tetris {
         type = 5;
         cells[0] = {Position(0, 1), Position(1, 1), Position(2, 1), Position(3, 1)};
         cells[1] = {Position(1, 0), Position(1, 1), Position(1, 2), Position(1, 3)};
-        cells[2] = {Position(0, 1), Position(1, 1), Position(2, 1), Position(3, 1)};
-        cells[3] = {Position(1, 0), Position(1, 1), Position(1, 2), Position(1, 3)};
         move(-1, 4);
     }
     O_Tetromino::O_Tetromino() {

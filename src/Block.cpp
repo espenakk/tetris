@@ -25,7 +25,7 @@ namespace tetris {
     }
     void Block::rotate() {
         rotationState += 1;
-        if (rotationState == 4) {
+        if (cells[rotationState].empty()) {
             rotationState = 0;
         }
     }
