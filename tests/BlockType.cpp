@@ -2,7 +2,7 @@
 #include "Tetrominos.hpp"
 #include <catch2/catch_test_macros.hpp>
 
-TEST_CASE("test Person") {
+TEST_CASE("test tetromino types") {
     tetris::T_Tetromino t;
     tetris::S_Tetromino s;
     tetris::Z_Tetromino z;
