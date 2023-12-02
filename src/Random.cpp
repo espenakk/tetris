@@ -2,6 +2,7 @@
 #include "Random.hpp"
 #include <cstdlib>
 #include <ctime>
+#include <xmemory>
 
 namespace tetris {
     Random::Random() {

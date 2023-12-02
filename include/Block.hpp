@@ -1,7 +1,7 @@
 
 #ifndef TETRIS_BLOCK_HPP
 #define TETRIS_BLOCK_HPP
-#include "position.hpp"
+#include "Position.hpp"
 #include <map>
 #include <threepp/threepp.hpp>
 #include <vector>

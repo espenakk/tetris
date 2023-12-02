@@ -9,10 +9,6 @@ namespace tetris {
         Position(int row, int column);
         int row;
         int column;
-
-    private:
-        int row_;
-        int column_;
     };
 
 }// namespace tetris
