@@ -1,6 +1,5 @@
 #include "Block.hpp"
 #include "Board.hpp"
-//#include "Game.hpp"
 #include "Input.hpp"
 #include "Random.hpp"
 #include "Tetrominos.hpp"
@@ -53,7 +52,6 @@ int main() {
     canvas.animate([&] {
         glr.render(*scene, *camera);
         glr.resetState();
-        float dt = clock.getDelta();
 
         input.previousMovement = input.newMovement;
         input.newMovement = NONE;

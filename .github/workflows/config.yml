@@ -1,0 +1,101 @@
+#This is a basic workflow that I have borrowed from the threepp library.
+#It will build the project on all three platforms and run the tests.
+
+
+name: Build
+
+on: [ push, workflow_dispatch ]
+
+jobs:
+  vcpkg-on-linux:
+
+    runs-on: ${{ matrix.os }}
+    env:
+      CC: gcc-${{ matrix.compiler_version }}
+      CXX: g++-${{ matrix.compiler_version }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ ubuntu-latest ]
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Install prerequisites
+        run: |
+          sudo apt-get update && sudo apt-get install -y \
+          libxinerama-dev \
+          libxcursor-dev \
+          xorg-dev \
+          libglu1-mesa-dev \
+          pkg-config
+
+      - name: run-vcpkg
+        uses: lukka/run-vcpkg@v11
+        with:
+          vcpkgGitCommitId: '12c2a93b4007612b5ffa980c9d2235eb0bcac10f'
+
+      - name: Configure and build
+        run: |
+          cmake . -B build -DCMAKE_TOOLCHAIN_FILE="${{ github.workspace }}/vcpkg/scripts/buildsystems/vcpkg.cmake" -DCMAKE_BUILD_TYPE="Release"
+          cmake --build build
+
+      - name: Test
+        run: |
+          cd build/tests
+          ctest --output-on-failure
+
+  vcpkg-on-windows:
+
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ windows-latest ]
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: run-vcpkg
+        uses: lukka/run-vcpkg@v11
+        with:
+          vcpkgGitCommitId: '12c2a93b4007612b5ffa980c9d2235eb0bcac10f'
+
+      - name: Configure and build
+        run: |
+          cmake . -B build -DCMAKE_TOOLCHAIN_FILE="${{ github.workspace }}/vcpkg/scripts/buildsystems/vcpkg.cmake" -DCMAKE_BUILD_TYPE="Release"
+          cmake --build build --config Release
+
+      - name: Test
+        run: |
+          cd build/tests
+          ctest -C Release --output-on-failure
+
+  vcpkg-on-macos:
+
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ macos-latest ]
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: run-vcpkg
+        uses: lukka/run-vcpkg@v11
+        with:
+          vcpkgGitCommitId: '12c2a93b4007612b5ffa980c9d2235eb0bcac10f'
+
+      - name: Install prerequisites
+        run: |
+          brew install pkg-config
+      - name: Configure and build
+        run: |
+          cmake . -B build -DCMAKE_TOOLCHAIN_FILE="${{ github.workspace }}/vcpkg/scripts/buildsystems/vcpkg.cmake" -DCMAKE_BUILD_TYPE="Release"
+          cmake --build build --config Release
+
+      - name: Test
+        run: |
+          cd build/tests
+          ctest -C Release --output-on-failure
