@@ -1,14 +1,43 @@
-name: Build
+name: Build and test on Windows, Linux and macOS
 
 on:
   push:
-    branches: [ "master", "dev", "runedev", "toredev" ]
+    branches: [ "master", "dev", "runedev" ]
   pull_request:
     branches: [ "master", "dev" ]
 
 jobs:
-  vcpkg-on-linux:
+  onWindows:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ windows-latest ]
 
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Run vcpkg
+        uses: lukka/run-vcpkg@v10
+        id: runvcpkg
+        with:
+          vcpkgDirectory: '${{ github.workspace }}/vcpkg'
+          vcpkgGitCommitId: '12c2a93b4007612b5ffa980c9d2235eb0bcac10f'
+          vcpkgJsonGlob: 'vcpkg.json'
+          appendedCacheKey: vcpkginstall
+
+      - name: Configure CMake and build project
+        run: |
+          cmake . -A x64 -B build -DCMAKE_TOOLCHAIN_FILE="${{ github.workspace }}/vcpkg/scripts/buildsystems/vcpkg.cmake" -DCMAKE_BUILD_TYPE="Release"
+          cmake . -A x64 -B build -DTETRIS_BUILD_TESTS=ON -DCMAKE_BUILD_TYPE="Release"
+          cmake --build build --config Release
+
+      - name: Test
+        run: |
+          cd build/tests
+          ctest -C Release --output-on-failure
+
+  vcpkg-on-linux:
     runs-on: ${{ matrix.os }}
     env:
       CC: gcc-${{ matrix.compiler_version }}
@@ -17,10 +46,11 @@ jobs:
       fail-fast: false
       matrix:
         os: [ ubuntu-latest ]
+        compiler_version: [ 11 ]
 
     steps:
-      #      - uses: actions/checkout@v3
-      - uses: lukka/get-cmake@latest
+      - uses: actions/checkout@v3
+
       - name: Install prerequisites
         run: |
           sudo apt-get update && sudo apt-get install -y \
@@ -30,16 +60,19 @@ jobs:
           libglu1-mesa-dev \
           pkg-config
 
-      - name: Restore artifacts, or run vcpkg, build (and cache artifacts as post step)
+      - name: Run vcpkg
         uses: lukka/run-vcpkg@v10
         id: runvcpkg
         with:
           vcpkgDirectory: '${{ github.workspace }}/vcpkg'
           vcpkgGitCommitId: '12c2a93b4007612b5ffa980c9d2235eb0bcac10f'
+          vcpkgJsonGlob: 'vcpkg.json'
+          appendedCacheKey: vcpkginstall
 
-      - name: Configure and build
+      - name: Configure CMake and build project
         run: |
           cmake . -B build -DCMAKE_TOOLCHAIN_FILE="${{ github.workspace }}/vcpkg/scripts/buildsystems/vcpkg.cmake" -DCMAKE_BUILD_TYPE=Release
+          cmake . -B build -DTETRIS_BUILD_TESTS=ON -DCMAKE_BUILD_TYPE=Release
           cmake --build build
 
       - name: Test
@@ -47,64 +80,32 @@ jobs:
           cd build/tests
           ctest --output-on-failure
 
-
-  vcpkg-on-windows:
-
-    runs-on: ${{ matrix.os }}
-    strategy:
-      fail-fast: false
-      matrix:
-        os: [ windows-latest ]
-
-    steps:
-      #      - uses: actions/checkout@v3
-      - uses: lukka/get-cmake@latest
-      - name: Restore artifacts, or run vcpkg, build (and cache artifacts as post step)
-        uses: lukka/run-vcpkg@v10
-        id: runvcpkg
-        with:
-          vcpkgDirectory: '${{ github.workspace }}/vcpkg'
-          vcpkgGitCommitId: '12c2a93b4007612b5ffa980c9d2235eb0bcac10f'
-
-      #      - name: Configure and build
-      #        run: |
-      #          cmake . -B build -DCMAKE_TOOLCHAIN_FILE="${{ github.workspace }}/vcpkg/scripts/buildsystems/vcpkg.cmake" -DCMAKE_BUILD_TYPE="Release"
-      #          cmake --build build --config Release
-      #
-      #      - name: Test
-      #        run: |
-      #          cd build/tests
-      #          ctest -C Release --output-on-failure
-
-      - name: Run CMake consuming CMakePreset.json and run vcpkg to build packages
-        uses: lukka/run-cmake@v10
-        with:
-          configurePreset: 'ninja-multi-vcpkg'
-
-
   vcpkg-on-darwin:
 
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
       matrix:
-        os: [ macos-latest ]
+        os: [ macos-12 ]
 
     steps:
-      #      - uses: actions/checkout@v3
-      - uses: lukka/get-cmake@latest
-      - name: Restore artifacts, or run vcpkg, build (and cache artifacts as post step)
+      - uses: actions/checkout@v3
+
+      - name: Run vcpkg
         uses: lukka/run-vcpkg@v10
         id: runvcpkg
         with:
           vcpkgDirectory: '${{ github.workspace }}/vcpkg'
           vcpkgGitCommitId: '12c2a93b4007612b5ffa980c9d2235eb0bcac10f'
+          vcpkgJsonGlob: 'vcpkg.json'
+          appendedCacheKey: vcpkginstall
 
       - name: Install prerequisites
         run: |
           brew install pkg-config
 
-      - name: Configure and build
+      - name: Configure CMake and build project
         run: |
           cmake . -B build -DCMAKE_TOOLCHAIN_FILE="${{ github.workspace }}/vcpkg/scripts/buildsystems/vcpkg.cmake" -DCMAKE_BUILD_TYPE="Release"
+          cmake . -B build -DTETRIS_BUILD_TESTS=OFF -DCMAKE_BUILD_TYPE="Release"
           cmake --build build

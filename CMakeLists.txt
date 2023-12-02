@@ -7,8 +7,8 @@ find_package(threepp CONFIG REQUIRED)
 add_subdirectory(src)
 add_subdirectory(bin)
 
-option(CI_TEST_BUILD_TESTS "Build tests" ON)
-if (CI_TEST_BUILD_TESTS)
+option(TETRIS_BUILD_TESTS "Build tests" ON)
+if (TETRIS_BUILD_TESTS)
     include(FetchContent)
 
     FetchContent_Declare(
