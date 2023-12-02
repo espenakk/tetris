@@ -21,6 +21,7 @@ jobs:
         uses: lukka/run-vcpkg@v10
         id: runvcpkg
         with:
+          vcpkgArguments: 'threepp'
           vcpkgDirectory: '${{ github.workspace }}/vcpkg'
           vcpkgGitCommitId: '12c2a93b4007612b5ffa980c9d2235eb0bcac10f'
           vcpkgJsonGlob: 'vcpkg.json'
