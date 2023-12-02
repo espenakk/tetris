@@ -2,7 +2,7 @@ name: Build and test on Windows, Linux and macOS
 
 on:
   push:
-    branches: [ "master", "dev", "runedev" ]
+    branches:
   pull_request:
     branches: [ "master", "dev" ]
 
@@ -21,7 +21,6 @@ jobs:
         uses: lukka/run-vcpkg@v10
         id: runvcpkg
         with:
-          vcpkgArguments: 'threepp'
           vcpkgDirectory: '${{ github.workspace }}/vcpkg'
           vcpkgGitCommitId: 'a42af01b72c28a8e1d7b48107b33e4f286a55ef6'
           vcpkgJsonGlob: 'vcpkg.json'
@@ -29,8 +28,8 @@ jobs:
 
       - name: Configure CMake and build project
         run: |
-          cmake . -B build -DCMAKE_TOOLCHAIN_FILE="${{ github.workspace }}\vcpkg\scripts\buildsystems\vcpkg.cmake" -DTETRIS_BUILD_TESTS=OFF -DCMAKE_BUILD_TYPE="Release"
-          cmake --build build
+          cmake . -B build -DCMAKE_TOOLCHAIN_FILE="${{ github.workspace }}\vcpkg\scripts\buildsystems\vcpkg.cmake" -DTETRIS_BUILD_TESTS=ON -DCMAKE_BUILD_TYPE="Release"
+          cmake --build build --config Release
 
       - name: Test
         run: |
@@ -71,7 +70,7 @@ jobs:
 
       - name: Configure CMake and build project
         run: |
-          cmake . -B build -DCMAKE_TOOLCHAIN_FILE="${{ github.workspace }}/vcpkg/scripts/buildsystems/vcpkg.cmake" -DTETRIS_BUILD_TESTS=OFF -DCMAKE_BUILD_TYPE="Release"
+          cmake . -B build -DCMAKE_TOOLCHAIN_FILE="${{ github.workspace }}/vcpkg/scripts/buildsystems/vcpkg.cmake" -DTETRIS_BUILD_TESTS=ON -DCMAKE_BUILD_TYPE="Release"
           cmake --build build
 
       - name: Test
@@ -104,5 +103,10 @@ jobs:
 
       - name: Configure CMake and build project
         run: |
-          cmake . -B build -DCMAKE_TOOLCHAIN_FILE="${{ github.workspace }}/vcpkg/scripts/buildsystems/vcpkg.cmake" -DTETRIS_BUILD_TESTS=OFF -DCMAKE_BUILD_TYPE="Release"
+          cmake . -B build -DCMAKE_TOOLCHAIN_FILE="${{ github.workspace }}/vcpkg/scripts/buildsystems/vcpkg.cmake" -DTETRIS_BUILD_TESTS=ON -DCMAKE_BUILD_TYPE="Release"
           cmake --build build
+
+      - name: Test
+        run: |
+          cd build/tests
+          ctest --output-on-failure
