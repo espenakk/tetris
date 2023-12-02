@@ -28,8 +28,7 @@ jobs:
 
       - name: Configure CMake and build project
         run: |
-          cmake . -A x64 -B build -DCMAKE_TOOLCHAIN_FILE="${{ github.workspace }}/vcpkg/scripts/buildsystems/vcpkg.cmake" -DCMAKE_BUILD_TYPE="Release"
-          cmake . -A x64 -B build -DTETRIS_BUILD_TESTS=ON -DCMAKE_BUILD_TYPE="Release"
+          cmake . -A x64 -B build -DCMAKE_TOOLCHAIN_FILE="${{ github.workspace }}/vcpkg/scripts/buildsystems/vcpkg.cmake" -DTETRIS_BUILD_TESTS=ON -DCMAKE_BUILD_TYPE="Release"
           cmake --build build --config Release
 
       - name: Test
@@ -37,7 +36,7 @@ jobs:
           cd build/tests
           ctest -C Release --output-on-failure
 
-  vcpkg-on-linux:
+  onLinux:
     runs-on: ${{ matrix.os }}
     env:
       CC: gcc-${{ matrix.compiler_version }}
@@ -71,8 +70,7 @@ jobs:
 
       - name: Configure CMake and build project
         run: |
-          cmake . -B build -DCMAKE_TOOLCHAIN_FILE="${{ github.workspace }}/vcpkg/scripts/buildsystems/vcpkg.cmake" -DCMAKE_BUILD_TYPE=Release
-          cmake . -B build -DTETRIS_BUILD_TESTS=ON -DCMAKE_BUILD_TYPE=Release
+          cmake . -B build -DCMAKE_TOOLCHAIN_FILE="${{ github.workspace }}/vcpkg/scripts/buildsystems/vcpkg.cmake" -DTETRIS_BUILD_TESTS=ON -DCMAKE_BUILD_TYPE=Release
           cmake --build build
 
       - name: Test
@@ -80,13 +78,12 @@ jobs:
           cd build/tests
           ctest --output-on-failure
 
-  vcpkg-on-darwin:
-
+  onMacOS:
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
       matrix:
-        os: [ macos-12 ]
+        os: [ macos-latest ]
 
     steps:
       - uses: actions/checkout@v3
@@ -106,6 +103,5 @@ jobs:
 
       - name: Configure CMake and build project
         run: |
-          cmake . -B build -DCMAKE_TOOLCHAIN_FILE="${{ github.workspace }}/vcpkg/scripts/buildsystems/vcpkg.cmake" -DCMAKE_BUILD_TYPE="Release"
-          cmake . -B build -DTETRIS_BUILD_TESTS=OFF -DCMAKE_BUILD_TYPE="Release"
+          cmake . -B build -DCMAKE_TOOLCHAIN_FILE="${{ github.workspace }}/vcpkg/scripts/buildsystems/vcpkg.cmake" -DTETRIS_BUILD_TESTS=OFF -DCMAKE_BUILD_TYPE="Release"
           cmake --build build
