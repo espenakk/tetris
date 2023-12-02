@@ -1,15 +1,17 @@
 
+#include "Block.hpp"
 #include "Tetrominos.hpp"
 #include <catch2/catch_test_macros.hpp>
 
+using namespace tetris;
 TEST_CASE("test tetromino types") {
-    tetris::T_Tetromino t;
-    tetris::S_Tetromino s;
-    tetris::Z_Tetromino z;
-    tetris::L_Tetromino l;
-    tetris::J_Tetromino j;
-    tetris::I_Tetromino i;
-    tetris::O_Tetromino o;
+    T_Tetromino t;
+    S_Tetromino s;
+    Z_Tetromino z;
+    L_Tetromino l;
+    J_Tetromino j;
+    I_Tetromino i;
+    O_Tetromino o;
     CHECK(t.type == 0);
     CHECK(s.type == 1);
     CHECK(z.type == 2);

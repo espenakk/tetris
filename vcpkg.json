@@ -2,5 +2,22 @@
   "$schema": "https://raw.githubusercontent.com/microsoft/vcpkg/master/scripts/vcpkg.schema.json",
   "dependencies": [
     "threepp"
-  ]
+  ],
+  "vcpkg-configuration": {
+    "default-registry": {
+      "kind": "git",
+      "repository": "https://github.com/Microsoft/vcpkg",
+      "baseline": "a42af01b72c28a8e1d7b48107b33e4f286a55ef6"
+    },
+    "registries": [
+      {
+        "kind": "git",
+        "baseline": "cd9e1a7dec257d647a02d42d3fdfdfe72094e703",
+        "repository": "https://github.com/Ecos-platform/vcpkg-registry",
+        "packages": [
+          "threepp"
+        ]
+      }
+    ]
+  }
 }

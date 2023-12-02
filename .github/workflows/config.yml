@@ -2,7 +2,7 @@ name: Build and test on Windows, Linux and macOS
 
 on:
   push:
-    branches: [ "master", "dev", "runedev" ]
+    branches:
   pull_request:
     branches: [ "master", "dev" ]
 
@@ -22,13 +22,13 @@ jobs:
         id: runvcpkg
         with:
           vcpkgDirectory: '${{ github.workspace }}/vcpkg'
-          vcpkgGitCommitId: '12c2a93b4007612b5ffa980c9d2235eb0bcac10f'
+          vcpkgGitCommitId: 'a42af01b72c28a8e1d7b48107b33e4f286a55ef6'
           vcpkgJsonGlob: 'vcpkg.json'
           appendedCacheKey: vcpkginstall
 
       - name: Configure CMake and build project
         run: |
-          cmake . -A x64 -B build -DCMAKE_TOOLCHAIN_FILE="${{ github.workspace }}/vcpkg/scripts/buildsystems/vcpkg.cmake" -DTETRIS_BUILD_TESTS=ON -DCMAKE_BUILD_TYPE="Release"
+          cmake . -B build -DCMAKE_TOOLCHAIN_FILE="${{ github.workspace }}\vcpkg\scripts\buildsystems\vcpkg.cmake" -DTETRIS_BUILD_TESTS=ON -DCMAKE_BUILD_TYPE="Release"
           cmake --build build --config Release
 
       - name: Test
@@ -64,13 +64,13 @@ jobs:
         id: runvcpkg
         with:
           vcpkgDirectory: '${{ github.workspace }}/vcpkg'
-          vcpkgGitCommitId: '12c2a93b4007612b5ffa980c9d2235eb0bcac10f'
+          vcpkgGitCommitId: 'a42af01b72c28a8e1d7b48107b33e4f286a55ef6'
           vcpkgJsonGlob: 'vcpkg.json'
           appendedCacheKey: vcpkginstall
 
       - name: Configure CMake and build project
         run: |
-          cmake . -B build -DCMAKE_TOOLCHAIN_FILE="${{ github.workspace }}/vcpkg/scripts/buildsystems/vcpkg.cmake" -DTETRIS_BUILD_TESTS=ON -DCMAKE_BUILD_TYPE=Release
+          cmake . -B build -DCMAKE_TOOLCHAIN_FILE="${{ github.workspace }}/vcpkg/scripts/buildsystems/vcpkg.cmake" -DTETRIS_BUILD_TESTS=ON -DCMAKE_BUILD_TYPE="Release"
           cmake --build build
 
       - name: Test
@@ -93,7 +93,7 @@ jobs:
         id: runvcpkg
         with:
           vcpkgDirectory: '${{ github.workspace }}/vcpkg'
-          vcpkgGitCommitId: '12c2a93b4007612b5ffa980c9d2235eb0bcac10f'
+          vcpkgGitCommitId: 'a42af01b72c28a8e1d7b48107b33e4f286a55ef6'
           vcpkgJsonGlob: 'vcpkg.json'
           appendedCacheKey: vcpkginstall
 
@@ -103,5 +103,10 @@ jobs:
 
       - name: Configure CMake and build project
         run: |
-          cmake . -B build -DCMAKE_TOOLCHAIN_FILE="${{ github.workspace }}/vcpkg/scripts/buildsystems/vcpkg.cmake" -DTETRIS_BUILD_TESTS=OFF -DCMAKE_BUILD_TYPE="Release"
+          cmake . -B build -DCMAKE_TOOLCHAIN_FILE="${{ github.workspace }}/vcpkg/scripts/buildsystems/vcpkg.cmake" -DTETRIS_BUILD_TESTS=ON -DCMAKE_BUILD_TYPE="Release"
           cmake --build build
+
+      - name: Test
+        run: |
+          cd build/tests
+          ctest --output-on-failure
