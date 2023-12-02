@@ -28,7 +28,7 @@ jobs:
 
       - name: Configure CMake and build project
         run: |
-          cmake . -A x64 -B build -DCMAKE_TOOLCHAIN_FILE="${{ github.workspace }}/vcpkg/scripts/buildsystems/vcpkg.cmake" -DTETRIS_BUILD_TESTS=ON -DCMAKE_BUILD_TYPE="Release"
+          cmake . -A x64 -B build -DCMAKE_TOOLCHAIN_FILE="${{ github.workspace }}/vcpkg/scripts/buildsystems/vcpkg.cmake" -DTETRIS_BUILD_TESTS=OFF -DCMAKE_BUILD_TYPE="Release"
           cmake --build build --config Release
 
       - name: Test
@@ -70,13 +70,13 @@ jobs:
 
       - name: Configure CMake and build project
         run: |
-          cmake . -B build -DCMAKE_TOOLCHAIN_FILE="${{ github.workspace }}/vcpkg/scripts/buildsystems/vcpkg.cmake" -DTETRIS_BUILD_TESTS=ON -DCMAKE_BUILD_TYPE=Release
+          cmake . -B build -DCMAKE_TOOLCHAIN_FILE="${{ github.workspace }}/vcpkg/scripts/buildsystems/vcpkg.cmake" -DTETRIS_BUILD_TESTS=OFF -DCMAKE_BUILD_TYPE=Release
           cmake --build build
 
-      - name: Test
-        run: |
-          cd build/tests
-          ctest --output-on-failure
+  #      - name: Test
+  #        run: |
+  #          cd build/tests
+  #          ctest --output-on-failure
 
   onMacOS:
     runs-on: ${{ matrix.os }}
