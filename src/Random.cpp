@@ -1,8 +1,8 @@
 
 #include "Random.hpp"
+#include <algorithm>
 #include <cstdlib>
 #include <ctime>
-#include <xmemory>
 
 namespace tetris {
     Random::Random() {

@@ -2,7 +2,7 @@ name: Build and test on Windows, Linux and macOS
 
 on:
   push:
-    branches: [ "master", "dev", "runedev" ]
+    branches: [ "master", "dev" ]
   pull_request:
     branches: [ "master", "dev" ]
 
