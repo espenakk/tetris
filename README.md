@@ -20,3 +20,26 @@ This is a project that uses `threepp` as a dependency.
 - Finishing touches.
 
  *README will be expanded later* :wink:
+
+## Vurderingskriterier
+
+#### Besvarelser vil bli vurdert basert på følgende kriterier:
+
+- Om kravspesifikasjonen har blitt fulgt.
+- Om god forståelse for grunnleggende prinsipper i programmering som variabler, datatyper,
+  metoder, betingelser, løkker osv. kan demonstreres.
+- Fornuftig design og bruk av klasser og funksjoner.
+- Fornuftig bruk av datastrukturer.
+- Om prinsippene for god design (abstraction, encapsulation, coupling, cohesion, responsibility
+  driven design osv.) har blitt fulgt.
+- Om det er brukt gode, selvforklarende navn på klasser, metoder og
+  variabler/felt/parametere.
+- Riktig og ellers fornuftig bruk av referanser, pekere og «value types».
+- Bruk av konsekvent og rydding kode design (formatering, konvensjoner etc.)
+- Om koden er selvforklarende og ellers godt dokumentert.
+- Om gode og dekkende enhetstester er implementert.
+- Tilstrekkelig feilhåndtering («defensive programming», håndtering av ugyldig input fra
+  bruker, verifisering av parametere osv.).
+- Evne til å reflektere over løsningen.
+- Jevn progresjon fra prosjektstart.
+- Kreativitet og selvstendighet.
