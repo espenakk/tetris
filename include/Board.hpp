@@ -24,7 +24,8 @@ namespace tetris {
         bool checkBlockOutOfGrid(std::vector<Position> tiles);
         std::shared_ptr<threepp::Group> drawGrid();
 
-        int rowCleanUp();
+        void rowCleanUp();
+        int countRows();
 
     private:
         int amountOfRows;

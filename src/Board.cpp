@@ -120,8 +120,8 @@ namespace tetris {
             grid[row][i] = 0;
         }
     }
-    //Checks, moves and deletes rows when they are full. Returns number of full rows for score purpose.
-    int Board::rowCleanUp() {
+    //Checks, moves and deletes rows when they are full.
+    void Board::rowCleanUp() {
         int amountOfFullRows = 0;
         for (int i = amountOfRows - 2; i > 0; i--) {
             if (checkFullRow(i) == true) {
@@ -131,7 +131,15 @@ namespace tetris {
                 moveRowDown(i, amountOfFullRows);
             }
         }
-        return amountOfFullRows;
     }
-
+    //Checks how many rows are full and returns amount
+    int Board::countRows() {
+        int amount = 0;
+        for (int i = amountOfRows - 2; i > 0; i--) {
+            if (checkFullRow(i) == true) {
+                amount++;
+            }
+        }
+        return amount;
+    }
 }// namespace tetris

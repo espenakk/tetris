@@ -4,22 +4,30 @@
 #include "Block.hpp"
 #include "Board.hpp"
 #include "Random.hpp"
-/*namespace tetris {
+#include <sstream>
+
+namespace tetris {
 
     class Game {
     public:
         Game();
-        Board board;
+        /*Board board;
         Block block;
         Random random;
-        void draw();
+        void draw();*/
+
+        int updateScore(int score, int check);
+
+        std::stringstream makeText(std::string text);
+        std::shared_ptr<threepp::TextHandle> textConfig(std::stringstream text, threepp::TextHandle handle);
+
 
     private:
-        std::vector<Block> blocks;
+        /*std::vector<Block> blocks;
         Block currentBlock;
-        Block nextBlock;
+        Block nextBlock;*/
     };
 
-}// namespace tetris */
+}// namespace tetris
 
 #endif//TETRIS_GAME_HPP

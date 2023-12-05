@@ -1,5 +1,6 @@
 #include "Block.hpp"
 #include "Board.hpp"
+#include "Game.hpp"
 #include "Input.hpp"
 #include "Random.hpp"
 #include "Tetrominos.hpp"
@@ -40,6 +41,23 @@ int main() {
     std::shared_ptr<threepp::Group> nextBlockGroup = nextBlock.draw();
     scene->add(nextBlockGroup);
 
+    //SCORE
+    int tetrisScore = 0;
+
+    TextRenderer textRenderer;
+    auto& handle = textRenderer.createHandle();
+    auto& test = textRenderer.createHandle();
+
+    Game testgame = Game();
+
+    handle.setText(testgame.makeText("Score").str());
+    handle.setPosition(500, 250);
+    handle.scale = 2;
+    test.setText(testgame.makeText(std::to_string(testgame.updateScore(tetrisScore, board.countRows()))).str());
+    test.setPosition(500, 290);
+    test.scale = 2;
+
+    //SCORE
 
     Clock clock;
     Input input{clock.elapsedTime};
@@ -82,6 +100,8 @@ int main() {
             }
         }
 
+        textRenderer.render();
+
         if (!board.checkBlockOutOfGrid(currentBlock.peak(row, column, rotate))) {
             blockGroup->clear();
             if (rotate) {
@@ -103,6 +123,14 @@ int main() {
                 currentBlock = blocks[currentType];
                 blockGroup = currentBlock.draw();
                 scene->add(blockGroup);
+
+                //SCORE
+                tetrisScore = testgame.updateScore(tetrisScore, board.countRows());
+                std::stringstream scoreText = testgame.makeText(std::to_string(tetrisScore));
+                test.setText(scoreText.str());
+                test.setPosition(500, 290);
+                test.scale = 2;
+                //SCORE
 
                 board.rowCleanUp();
                 gridGroup->clear();
