@@ -2,7 +2,6 @@
 #ifndef TETRIS_TETROMINOS_HPP
 #define TETRIS_TETROMINOS_HPP
 #include "Block.hpp"
-#include "Position.hpp"
 
 namespace tetris {
     class T_Tetromino: public Block {
