@@ -4,6 +4,10 @@
 #include "Board.hpp"
 #include "Random.hpp"
 #include "Tetrominos.hpp"
+
+#include "threepp/renderers/TextRenderer.hpp"
+#include <sstream>
+
 namespace tetris {
 
     class Game {
@@ -27,6 +31,12 @@ namespace tetris {
         bool gameOver = false;
         bool rotate = false;
         bool renderGame = true;
+
+
+        int updateScore(int score, int check);
+
+        std::stringstream makeText(std::string text);
+        std::shared_ptr<threepp::TextHandle> textConfig(std::stringstream text, threepp::TextHandle handle);
 
     private:
     };

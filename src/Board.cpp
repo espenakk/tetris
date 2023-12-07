@@ -44,9 +44,9 @@ namespace tetris {
     }
 
     //Checks if row are filled with blocks
-    bool Board::checkFullRow(int column) {
+    bool Board::checkFullRow(int row) {
         for (auto& gridItem : gridSlots) {
-                if (gridItem.first.y == column && gridItem.second == 0) {
+                if (gridItem.first.x == row && gridItem.second == 0) {
                 return false;
                 }
         }
@@ -54,19 +54,19 @@ namespace tetris {
     }
 
     //Deletes row (except boardwalls)
-    void Board::deleteFullRow(int column) {
+    void Board::deleteFullRow(int row) {
         for (auto& gridItem : gridSlots) {
-                if (gridItem.first.y == column) {
+                if (gridItem.first.x == row) {
                 gridItem.second = 0;
                 }
         }
     }
     //Copies all values from a row to row+movement down the gridSlots. Sets original row to 0
-    void Board::moveRowDown(int column, int movement) {
+    void Board::moveRowDown(int row, int movement) {
         for (auto& gridItem : gridSlots) {
-                if (gridItem.first.y == column) {
+                if (gridItem.first.x == row) {
                 auto it = std::find_if(gridSlots.begin(), gridSlots.end(), [&](const std::pair<threepp::Vector2, int>& pair) {
-                    return pair.first.y == column + movement && pair.first.x == gridItem.first.x;
+                    return pair.first.x == row + movement && pair.first.y == gridItem.first.y;
                 });
                 if (it != gridSlots.end()) {
                     it->second = gridItem.second;
@@ -75,18 +75,26 @@ namespace tetris {
                 }
         }
     }
-    //Checks, moves and deletes rows when they are full. Returns number of full rows for score purpose.
-    int Board::rowCleanUp() {
-        int amountOfFullColumns = 0;
-        for (int i = amountOfColumns - 2; i > 0; i--) {
-                if (checkFullRow(i) == true) {
-                amountOfFullColumns++;
+    //Checks, moves and deletes rows when they are full.
+    void Board::rowCleanUp() {
+        int amountOfFullRows = 0;
+        for (int i = amountOfRows - 2; i > 0; i--) {
+            if (checkFullRow(i) == true) {
+                amountOfFullRows++;
                 deleteFullRow(i);
-                } else if (amountOfFullColumns > 0) {
-                moveRowDown(i, amountOfFullColumns);
-                }
+            } else if (amountOfFullRows > 0) {
+                moveRowDown(i, amountOfFullRows);
+            }
         }
-        return amountOfFullColumns;
     }
-
+    //Checks how many rows are full and returns amount
+    int Board::countRows() {
+        int amount = 0;
+        for (int i = amountOfRows - 2; i > 0; i--) {
+            if (checkFullRow(i) == true) {
+                amount++;
+            }
+        }
+        return amount;
+    }
 }// namespace tetris
