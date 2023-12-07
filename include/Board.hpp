@@ -1,13 +1,11 @@
 
 #ifndef TETRIS_BOARD_HPP
 #define TETRIS_BOARD_HPP
-#include "threepp/threepp.hpp"
-#include <iostream>
-
-#include <threepp/threepp.hpp>
-#include <iostream>
 
 #include "Block.hpp"
+#include <threepp/math/Vector2.hpp>
+#include <threepp/math/Vector3.hpp>
+#include <vector>
 
 namespace tetris {
 
@@ -15,22 +13,19 @@ namespace tetris {
 
     public:
         Board();
-        int grid[21][12]{};
-        void initGrid();
-        void printGrid();
+        int type;
+        std::vector<std::pair<threepp::Vector2, int>> gridSlots;
+        void initializeGrid();
 
-        void saveBlock(std::vector<Position> tiles, int type);
-        int whatIsGridValue(int x, int y);
-        bool checkBlockOutOfGrid(std::vector<Position> tiles);
-        std::shared_ptr<threepp::Group> drawGrid();
-
+        void saveBlock(std::vector<threepp::Vector2> tiles, int type);
+        bool isSlotOccupied(std::vector<threepp::Vector2> tiles);
         int rowCleanUp();
 
-    private:
         int amountOfRows;
         int amountOfColumns;
         bool gridIsChanged;
 
+    private:
         bool checkFullRow(int row);
         void deleteFullRow(int row);
         void moveRowDown(int row, int movement);
