@@ -3,8 +3,8 @@
 #define TETRIS_BLOCK_HPP
 #include "Position.hpp"
 #include <map>
-#include <threepp/threepp.hpp>
 #include <vector>
+
 namespace tetris {
 
     class Block {
@@ -12,7 +12,6 @@ namespace tetris {
         Block();
         int type;
         std::map<int, std::vector<Position>> cells;
-        std::shared_ptr<threepp::Group> draw();
         void move(int row, int column);
         std::vector<Position> peak(int row, int column, bool rotate);
         void rotate();
@@ -24,7 +23,6 @@ namespace tetris {
     private:
         int rotationState;
         std::vector<Position> blockPositions(int x, int y, int rot);
-        std::vector<threepp::Color> colours;
     };
 
 }// namespace tetris
