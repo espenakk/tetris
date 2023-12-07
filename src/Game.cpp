@@ -12,8 +12,6 @@ namespace tetris {
         nextType = random.getType();
         currentBlock = tetrominos[currentType];
         nextBlock = tetrominos[nextType];
-        nextBlock.columnOffset = -4;
-        nextBlock.rowOffset = 1;
     }
     void Game::inputHandling(int movement) {
         movedRows = 0;
@@ -52,16 +50,16 @@ namespace tetris {
                 board.saveBlock(currentBlock.blockPositions(), currentBlock.type);
                 drop = false;
 
-                currentBlock.rowOffset = -1;
-                currentBlock.columnOffset = 4;
+                currentBlock.xOffset = 4;
+                currentBlock.yOffset = -1;
                 currentType = nextType;
                 nextType = random.getType();
                 currentBlock = tetrominos[currentType];
 
                 board.rowCleanUp();
                 nextBlock = tetrominos[nextType];
-                nextBlock.rowOffset = 1;
-                nextBlock.columnOffset = -4;
+                nextBlock.xOffset = -4;
+                nextBlock.yOffset = 1;
                 renderGame = true;
             }
         }

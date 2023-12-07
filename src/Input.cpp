@@ -4,7 +4,7 @@
 namespace tetris {
     Input::Input(float& t): t(t) {}
 
-    void Input::inputHandling(threepp::KeyEvent evt) {
+    void Input::inputProcessing(threepp::KeyEvent evt) {
         if (evt.key == threepp::Key::A || evt.key == threepp::Key::LEFT) {
             newMovement = LEFT;
         } else if (evt.key == threepp::Key::D || evt.key == threepp::Key::RIGHT) {
@@ -18,9 +18,9 @@ namespace tetris {
         }
     }
     void Input::onKeyPressed(threepp::KeyEvent evt) {
-        inputHandling(evt);
+        inputProcessing(evt);
     }
     void Input::onKeyRepeat(threepp::KeyEvent evt) {
-        inputHandling(evt);
+        inputProcessing(evt);
     }
 }// namespace tetris

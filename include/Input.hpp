@@ -19,7 +19,7 @@ namespace tetris {
 
         int newMovement = NONE;
         int previousMovement = NONE;
-        void inputHandling(threepp::KeyEvent evt);
+        void inputProcessing(threepp::KeyEvent evt);
         void onKeyPressed(threepp::KeyEvent evt) override;
         void onKeyRepeat(threepp::KeyEvent evt) override;
     };
