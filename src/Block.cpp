@@ -2,36 +2,42 @@
 #include "Block.hpp"
 
 namespace tetris {
+
     Block::Block() {
         rotationState = 0;
-        rowOffset = 0;
-        columnOffset = 0;
+        xOffset = 0;
+        yOffset = 0;
     }
 
-    void Block::move(int row, int column) {
-        rowOffset += row;
-        columnOffset += column;
+    void Block::move(float x, float y) {
+        xOffset += x;
+        yOffset += y;
     }
+
     void Block::rotate() {
         rotationState += 1;
         if (cells[rotationState].empty()) {
             rotationState = 0;
         }
     }
-    std::vector<Position> Block::blockPositions(int x, int y, int rot) {
-        std::vector<Position> tiles = cells[rot];
-        std::vector<Position> movedTiles;
-        for (Position item : tiles) {
-            Position newPosition = Position(item.row + x, item.column + y);
+
+    std::vector<threepp::Vector2> Block::blockPositions(float x, float y, int rot) {
+        std::vector<threepp::Vector2> tiles = cells[rot];
+        std::vector<threepp::Vector2> movedTiles;
+        for (threepp::Vector2 item : tiles) {
+            threepp::Vector2 newPosition = threepp::Vector2(item.x + x, item.y + y);
             movedTiles.push_back(newPosition);
         }
         return movedTiles;
-    };
-    std::vector<Position> Block::blockPositions() {
-        return blockPositions(rowOffset, columnOffset, rotationState);
     }
-    std::vector<Position> Block::peak(int row, int column, bool rotate) {
+
+    std::vector<threepp::Vector2> Block::blockPositions() {
+        return blockPositions(xOffset, yOffset, rotationState);
+    }
+
+    std::vector<threepp::Vector2> Block::peak(float x, float y, bool rotate) {
         int rotation = (rotationState + rotate) % 4;
-        return blockPositions(rowOffset + row, columnOffset + column, rotation);
+        return blockPositions(xOffset + x, yOffset + y, rotation);
     }
+
 }// namespace tetris

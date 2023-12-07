@@ -1,8 +1,8 @@
 
 #ifndef TETRIS_BLOCK_HPP
 #define TETRIS_BLOCK_HPP
-#include "Position.hpp"
 #include <map>
+#include <threepp/math/Vector2.hpp>
 #include <vector>
 
 namespace tetris {
@@ -11,18 +11,18 @@ namespace tetris {
     public:
         Block();
         int type;
-        std::map<int, std::vector<Position>> cells;
-        void move(int row, int column);
-        std::vector<Position> peak(int row, int column, bool rotate);
+        std::map<int, std::vector<threepp::Vector2>> cells;
+        void move(float x, float y);
         void rotate();
-        std::vector<Position> blockPositions();
+        std::vector<threepp::Vector2> peak(float x, float y, bool rotate);
+        std::vector<threepp::Vector2> blockPositions();
 
-        int rowOffset;
-        int columnOffset;
+        float xOffset;
+        float yOffset;
 
     private:
         int rotationState;
-        std::vector<Position> blockPositions(int x, int y, int rot);
+        std::vector<threepp::Vector2> blockPositions(float x, float y, int rot);
     };
 
 }// namespace tetris
