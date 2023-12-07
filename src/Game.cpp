@@ -1,18 +1,70 @@
-#include "Game.hpp"
-#include "Random.hpp"
-#include "Tetrominos.cpp"
 
-/*namespace tetris {
+#include "Game.hpp"
+#include "Input.hpp"
+
+namespace tetris {
     Game::Game() {
         board = Board();
         block = Block();
         random = Random();
-        blocks = {T_Tetromino(), S_Tetromino(), Z_Tetromino(), L_Tetromino(), J_Tetromino(), I_Tetromino(), O_Tetromino()};
-        currentBlock = blocks[random.getType()];
-        nextBlock = blocks[random.getType()];
+        tetrominos = {T_Tetromino(), S_Tetromino(), Z_Tetromino(), L_Tetromino(), J_Tetromino(), I_Tetromino(), O_Tetromino()};
+        currentType = random.getType();
+        nextType = random.getType();
+        currentBlock = tetrominos[currentType];
+        nextBlock = tetrominos[nextType];
+        nextBlock.columnOffset = -4;
+        nextBlock.rowOffset = 1;
     }
-    void Game::draw() {
-        std::shared_ptr<threepp::Group> grid = board.drawGrid();
-        std::shared_ptr<threepp::Group> blockGroup = currentBlock.draw();
+    void Game::inputHandling(int movement) {
+        movedRows = 0;
+        movedColumns = 0;
+        if (drop || tickDown) {
+            movedRows += 1;
+            tickDown = false;
+        } else {
+            switch (movement) {
+                case LEFT:
+                    movedColumns += 1;
+                    break;
+                case RIGHT:
+                    movedColumns -= 1;
+                    break;
+                case DOWN:
+                    movedRows += 1;
+                    break;
+                case ROTATE:
+                    rotate = true;
+                    break;
+                case DROP:
+                    drop = true;
+                    break;
+            }
+        }
     }
-}// namespace tetris */
+    void Game::update() {
+        if (!board.isSlotOccupied(currentBlock.peak(movedRows, movedColumns, rotate))) {
+            if (rotate) {
+                currentBlock.rotate();
+            }
+            currentBlock.move(movedRows, movedColumns);
+        } else {
+            if (movedRows != 0) {
+                board.saveBlock(currentBlock.blockPositions(), currentBlock.type);
+                drop = false;
+
+                currentBlock.rowOffset = -1;
+                currentBlock.columnOffset = 4;
+                currentType = nextType;
+                nextType = random.getType();
+                currentBlock = tetrominos[currentType];
+
+                board.rowCleanUp();
+                nextBlock = tetrominos[nextType];
+                nextBlock.rowOffset = 1;
+                nextBlock.columnOffset = -4;
+                renderGame = true;
+            }
+        }
+    }
+
+}// namespace tetris
