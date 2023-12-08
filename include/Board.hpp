@@ -17,8 +17,9 @@ namespace tetris {
         std::vector<std::pair<threepp::Vector2, int>> gridSlots;
         void initializeGrid();
 
-        void saveBlock(std::vector<threepp::Vector2> tiles, int type);
-        bool isSlotOccupied(std::vector<threepp::Vector2> tiles);
+        void saveBlock(std::vector<threepp::Vector2> blockPositions, int type);
+        bool isInsideGrid(std::vector<threepp::Vector2> blockPositions);
+        bool isOccupied(std::vector<threepp::Vector2> blockPositions);
         void rowCleanUp();
         int countRows();
 

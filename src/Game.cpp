@@ -13,13 +13,8 @@ namespace tetris {
         currentBlock = tetrominos[currentType];
         nextBlock = tetrominos[nextType];
     }
+
     void Game::inputHandling(int movement) {
-        movedRows = 0;
-        movedColumns = 0;
-        if (drop || tickDown) {
-            movedRows += 1;
-            tickDown = false;
-        } else {
             switch (movement) {
                 case LEFT:
                     movedColumns += 1;
@@ -38,10 +33,28 @@ namespace tetris {
                     break;
             }
         }
+
+    void Game::moveBlock() {
+            if (!gameOver && movementAllowed()) {
+                if (rotate) {
+                    currentBlock.rotate();
+                }
+                currentBlock.move(movedRows, movedColumns);
+                renderBlock = true;
+            }
     }
+
+    bool Game::movementAllowed() {
+            if (board.isInsideGrid(currentBlock.peak(movedRows, movedColumns, rotate)) && !board.isOccupied(currentBlock.peak(movedRows, movedColumns, rotate))) {
+                return true;
+            } else {
+                return false;
+            }
+    }
+
     void Game::update() {
-        if (!board.isSlotOccupied(currentBlock.peak(movedRows, movedColumns, rotate))) {
-            if (rotate) {
+            if (!board.isInsideGrid(currentBlock.peak(movedRows, movedColumns, rotate))) {
+                if (rotate) {
                 currentBlock.rotate();
             }
             currentBlock.move(movedRows, movedColumns);

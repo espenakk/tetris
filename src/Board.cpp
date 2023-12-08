@@ -18,29 +18,35 @@ namespace tetris {
         }
     }
 
-    void Board::saveBlock(std::vector<threepp::Vector2> tiles, int type) {
-        for (auto tile : tiles) {
+    void Board::saveBlock(std::vector<threepp::Vector2> blockPositions, int type) {
+        for (auto slot : blockPositions) {
             for (auto& gridItem : gridSlots) {
-                if (gridItem.first == tile && gridItem.second == 0) {
+                if (gridItem.first.x == slot.y && gridItem.first.y == slot.x && gridItem.second == 0) {
                     gridItem.second = type;
                 }
-                }
             }
+        }
         gridIsChanged = true;
     }
 
-    bool Board::isSlotOccupied(std::vector<threepp::Vector2> tiles) {
-        for (threepp::Vector2 item : tiles) {
-                if (item.x < 0 || item.x >= amountOfRows || item.y < 0 || item.y >= amountOfColumns) {
-                return true;// If the new position is outside of the predefined grid
-                }
-                for (auto& gridItem : gridSlots) {
-                if (gridItem.first == item && gridItem.second != 0 && gridItem.second != 8) {
-                    return true;// That position in the grid is occupied
-                }
-                }
+    bool Board::isInsideGrid(std::vector<threepp::Vector2> blockPositions) {
+        for (auto& position : blockPositions) {
+            if (position.x < 0 || position.x >= amountOfRows || position.y < 0 || position.y >= amountOfColumns) {
+                return false;
+            }
         }
-        return false;// Position is not occupied and within the grid
+        return true;
+    }
+
+    bool Board::isOccupied(std::vector<threepp::Vector2> blockPositions) {
+        for (auto& position : blockPositions) {
+            for (auto& gridItem : gridSlots) {
+                if (gridItem.first == position && gridItem.second != 0 && gridItem.second != 8) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     //Checks if row are filled with blocks

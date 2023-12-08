@@ -223,7 +223,7 @@ int main() {
 
         textRenderer.render();
 
-        if (!board.isSlotOccupied(currentBlock.peak(row, column, rotate))) {
+        if (board.isInsideGrid(currentBlock.peak(row, column, rotate)) && !board.isOccupied(currentBlock.peak(row, column, rotate))) {
             blockGroup->clear();
             if (rotate) {
                 currentBlock.rotate();
@@ -232,7 +232,6 @@ int main() {
             blockGroup = visuals.renderTetromino(currentBlock.blockPositions(), currentBlock.type);
             scene->add(blockGroup);
         } else {
-            if (row != 0) {
                 board.saveBlock(currentBlock.blockPositions(), currentBlock.type);
                 drop = false;
                 currentBlock.xOffset = -1;
@@ -254,9 +253,14 @@ int main() {
                 //SCORE
 
                 board.rowCleanUp();
+
+                // Check if the grid has been updated
+                if (board.gridIsChanged) {
                 gridGroup->clear();
                 gridGroup = visuals.renderBoard(board.gridSlots);
                 scene->add(gridGroup);
+                board.gridIsChanged = false;// Reset the flag
+                }
 
                 nextBlockGroup->clear();
                 nextBlock = blocks[nextType];
@@ -265,7 +269,6 @@ int main() {
                 nextBlockGroup = visuals.renderTetromino(blocks[nextType].blockPositions(), nextType);
                 scene->add(nextBlockGroup);
             }
-        }
     });
 
 
