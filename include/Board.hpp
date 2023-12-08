@@ -19,7 +19,7 @@ namespace tetris {
 
         void saveBlock(std::vector<threepp::Vector2> tiles, int type);
         bool isSlotOccupied(std::vector<threepp::Vector2> tiles);
-        int rowCleanUp();
+        void rowCleanUp();
         int countRows();
 
         int amountOfRows;

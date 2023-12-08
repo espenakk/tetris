@@ -145,7 +145,7 @@ int main() {
 //        //        }
 //    });
 
-
+    Visuals visuals = Visuals();
     Board board = Board();
     Random random = Random();
     std::vector<Block> blocks = {T_Tetromino(), S_Tetromino(), Z_Tetromino(), L_Tetromino(), J_Tetromino(), I_Tetromino(), O_Tetromino()};
@@ -153,13 +153,13 @@ int main() {
     int nextType = random.getType();
     Block currentBlock = blocks[currentType];
     Block nextBlock = blocks[nextType];
-    std::shared_ptr<threepp::Group> gridGroup = board.drawGrid();
+    std::shared_ptr<threepp::Group> gridGroup = visuals.renderBoard(board.gridSlots);
     scene->add(gridGroup);
-    std::shared_ptr<threepp::Group> blockGroup = currentBlock.draw();
+    std::shared_ptr<threepp::Group> blockGroup = visuals.renderTetromino(currentBlock.blockPositions(), currentBlock.type);
     scene->add(blockGroup);
-    nextBlock.columnOffset = -4;
-    nextBlock.rowOffset = 1;
-    std::shared_ptr<threepp::Group> nextBlockGroup = nextBlock.draw();
+    nextBlock.xOffset = -4;
+    nextBlock.yOffset = 1;
+    std::shared_ptr<threepp::Group> nextBlockGroup = visuals.renderTetromino(nextBlock.blockPositions(), nextBlock.type);
     scene->add(nextBlockGroup);
 
     //SCORE
@@ -189,8 +189,8 @@ int main() {
     float timeLastDown = clock.getElapsedTime();
 
     canvas.animate([&] {
-        glr.render(*scene, *camera);
-        glr.resetState();
+        renderingEngine.render(*scene, *camera);
+        renderingEngine.resetState();
 
         input.previousMovement = input.newMovement;
         input.newMovement = NONE;
@@ -223,26 +223,26 @@ int main() {
 
         textRenderer.render();
 
-        if (!board.checkBlockOutOfGrid(currentBlock.peak(row, column, rotate))) {
+        if (!board.isSlotOccupied(currentBlock.peak(row, column, rotate))) {
             blockGroup->clear();
             if (rotate) {
                 currentBlock.rotate();
             }
             currentBlock.move(row, column);
-            blockGroup = currentBlock.draw();
+            blockGroup = visuals.renderTetromino(currentBlock.blockPositions(), currentBlock.type);
             scene->add(blockGroup);
         } else {
             if (row != 0) {
                 board.saveBlock(currentBlock.blockPositions(), currentBlock.type);
                 drop = false;
-                currentBlock.rowOffset = -1;
-                currentBlock.columnOffset = 4;
+                currentBlock.xOffset = -1;
+                currentBlock.yOffset = 4;
 
                 blockGroup->clear();
                 currentType = nextType;
                 nextType = random.getType();
                 currentBlock = blocks[currentType];
-                blockGroup = currentBlock.draw();
+                blockGroup = visuals.renderTetromino(currentBlock.blockPositions(), currentBlock.type);
                 scene->add(blockGroup);
 
                 //SCORE
@@ -255,14 +255,14 @@ int main() {
 
                 board.rowCleanUp();
                 gridGroup->clear();
-                gridGroup = board.drawGrid();
+                gridGroup = visuals.renderBoard(board.gridSlots);
                 scene->add(gridGroup);
 
                 nextBlockGroup->clear();
                 nextBlock = blocks[nextType];
-                nextBlock.rowOffset = 1;
-                nextBlock.columnOffset = -4;
-                nextBlockGroup = nextBlock.draw();
+                nextBlock.xOffset = 1;
+                nextBlock.yOffset = -4;
+                nextBlockGroup = visuals.renderTetromino(blocks[nextType].blockPositions(), nextType);
                 scene->add(nextBlockGroup);
             }
         }
