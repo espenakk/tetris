@@ -2,8 +2,10 @@
 #include "Visuals.hpp"
 #include <threepp/geometries/BoxGeometry.hpp>
 #include <threepp/geometries/PlaneGeometry.hpp>
+#include <threepp/geometries/TextGeometry.hpp>
 #include <threepp/materials/MeshBasicMaterial.hpp>
 #include <threepp/math/Color.hpp>
+#include <threepp/renderers/TextRenderer.hpp>
 
 namespace tetris {
     Visuals::Visuals() {
@@ -26,24 +28,31 @@ namespace tetris {
         return mesh;
     }
 
-    std::shared_ptr<threepp::Group> Visuals::renderBoard(/*std::array<std::array<int, 11>, 21> grid*/) {
+    std::shared_ptr<threepp::Group> Visuals::renderBoard(tetris::Board gameBoard) {
         std::shared_ptr<threepp::Group> group;
         group = threepp::Group::create();
-        for (int i = 0; i < 20; i++) {
-            for (int j = 0; j < 10; j++) {
-                group->add(createBox({(float) j + 1, (float) i + 1, 0}, colours[0]));
+        for (int i = 0; i < gameBoard.boardHeight; i++) {
+            for (int j = 0; j < gameBoard.boardWidth; j++) {
+                auto value = gameBoard.getGridValue(j, i);
+                group->add(createBox({(float) j, (float) i, 0}, colours[value]));
             }
         }
         return group;
     }
 
-    std::shared_ptr<threepp::Group> Visuals::renderTetromino(const std::vector<threepp::Vector2>& blockPositions, int type) {
+    std::shared_ptr<threepp::Group> Visuals::renderTetromino(tetris::Block block) {
         std::shared_ptr<threepp::Group> group;
         group = threepp::Group::create();
-        for (const threepp::Vector2& block : blockPositions) {
-            group->add(createBox({block.y, block.x, 0}, colours[type]));
+        for (const threepp::Vector2& pos : block.blockPositions()) {
+            group->add(createBox({pos.x, pos.y, 0}, colours[block.type]));
         }
         return group;
     }
 
+    std::shared_ptr<threepp::Group> Visuals::renderNextTetromino(tetris::Block block) {
+        auto group = renderTetromino(block);
+        group->translateX(-10.0f);
+        group->translateY(3.0f);
+        return group;
+    }
 }// namespace tetris
