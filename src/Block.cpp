@@ -14,10 +14,12 @@ namespace tetris {
         yOffset += y;
     }
 
-    void Block::rotate() {
-        rotationState += 1;
-        if (cells[rotationState].empty()) {
-            rotationState = 0;
+    void Block::rotate(int rot) {
+        for (int timesRotated = 0; timesRotated < rot; timesRotated++) {
+            rotationState += 1;
+            if (cells[rotationState].empty()) {
+                rotationState = 0;
+            }
         }
     }
 
@@ -35,8 +37,8 @@ namespace tetris {
         return blockPositions(xOffset, yOffset, rotationState);
     }
 
-    std::vector<threepp::Vector2> Block::peak(float x, float y, bool rotate) {
-        int rotation = (rotationState + rotate) % 4;
+    std::vector<threepp::Vector2> Block::peak(float x, float y, int rot) {
+        int rotation = (rotationState + rot) % 4;
         return blockPositions(xOffset + x, yOffset + y, rotation);
     }
 

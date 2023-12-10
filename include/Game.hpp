@@ -25,11 +25,12 @@ namespace tetris {
         int nextType;
         int movedRows;
         int movedColumns;
+        int rotate;
 
         bool drop = false;
         bool tickDown = false;
         bool gameOver = false;
-        bool rotate;
+
         bool renderGame = true;
         bool renderBlock = false;
         bool renderBoard = false;

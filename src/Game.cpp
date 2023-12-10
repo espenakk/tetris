@@ -12,7 +12,7 @@ namespace tetris {
         nextType = random.getType();
         currentBlock = tetrominos[currentType];
         nextBlock = tetrominos[nextType];
-        rotate = false;
+        rotate = 0;
         movedRows = 0;
         movedColumns = 0;
     }
@@ -29,7 +29,7 @@ namespace tetris {
                     movedRows += 1;
                     break;
                 case ROTATE:
-                    rotate = true;
+                    rotate += 1;
                     break;
                 case DROP:
                     drop = true;

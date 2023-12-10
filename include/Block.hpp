@@ -13,8 +13,8 @@ namespace tetris {
 
         std::map<int, std::vector<threepp::Vector2>> cells;
         void move(float x, float y);
-        void rotate();
-        std::vector<threepp::Vector2> peak(float x, float y, bool rotate);
+        void rotate(int rot);
+        std::vector<threepp::Vector2> peak(float x, float y, int rot);
         std::vector<threepp::Vector2> blockPositions();
 
         float xOffset;

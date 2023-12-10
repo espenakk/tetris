@@ -69,8 +69,6 @@ int main() {
     value.scale = 2;
     //SCORE
 
-    bool drop = false;
-    bool down = false;
     bool gameOver = false;
 
     canvas.animate([&] {
@@ -81,44 +79,28 @@ int main() {
         input.previousMovement = input.newMovement;
         input.newMovement = NONE;
 
-        int row = 0;
-        int column = 0;
-        bool rotate = false;
-        if (drop || (clock.getElapsedTime() - timeLastDown) > 0.3) {
-            row = 1;
+        game.movedRows = 0;
+        game.movedColumns = 0;
+        game.rotate = 0;
+        if (game.drop || (clock.getElapsedTime() - timeLastDown) > 0.3) {
+            game.movedRows = 1;
             timeLastDown = clock.getElapsedTime();
         } else {
-            switch (input.previousMovement) {
-                case LEFT:
-                    column = 1;
-                    break;
-                case RIGHT:
-                    column = -1;
-                    break;
-                case DOWN:
-                    row = 1;
-                    break;
-                case ROTATE:
-                    rotate = true;
-                    break;
-                case DROP:
-                    drop = true;
-                    break;
-            }
+            game.inputHandling(input.previousMovement);
         }
-        if (!game.board.checkBlockOutOfGrid(game.currentBlock.peak(row, column, rotate)) & gameOver == false) {
+        if (!game.board.checkBlockOutOfGrid(game.currentBlock.peak(game.movedRows, game.movedColumns, game.rotate)) && gameOver == false) {
             blockGroup->clear();
-            if (rotate) {
-                game.currentBlock.rotate();
+            if (game.rotate) {
+                game.currentBlock.rotate(game.rotate);
             }
-            game.currentBlock.move(row, column);
+            game.currentBlock.move(game.movedRows, game.movedColumns);
             blockGroup = visuals.renderTetromino(game.currentBlock.blockPositions(), game.currentBlock.type);
             scene->add(blockGroup);
 
         } else {
-            if (row != 0 & gameOver == false) {
+            if (game.movedRows != 0 && gameOver == false) {
                 game.board.saveBlock(game.currentBlock.blockPositions(), game.currentBlock.type);
-                drop = false;
+                game.drop = false;
                 game.currentBlock.xOffset = 5;
                 game.currentBlock.yOffset = 4;
 
@@ -175,7 +157,7 @@ int main() {
             scene->add(gridGroup);
             game.board.gridIsChanged = false;
 
-            drop = false;
+            game.drop = false;
             game.currentBlock.xOffset = -1;
             game.currentBlock.yOffset = 4;
             blockGroup->clear();
