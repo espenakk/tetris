@@ -12,21 +12,24 @@ namespace tetris {
         nextType = random.getType();
         currentBlock = tetrominos[currentType];
         nextBlock = tetrominos[nextType];
+        nextBlock.yOffset = -4;
+        nextBlock.xOffset = 3;
+        gameOver = false;
         rotate = 0;
-        movedRows = 0;
-        movedColumns = 0;
+        movedTilesX = 0;
+        movedTilesY = 0;
     }
 
     void Game::inputHandling(int movement) {
             switch (movement) {
                 case LEFT:
-                    movedColumns += 1;
+                    movedTilesY += 1;
                     break;
                 case RIGHT:
-                    movedColumns -= 1;
+                    movedTilesY -= 1;
                     break;
                 case DOWN:
-                    movedRows += 1;
+                    movedTilesX += 1;
                     break;
                 case ROTATE:
                     rotate += 1;
@@ -37,52 +40,36 @@ namespace tetris {
             }
         }
 
-        //    void Game::moveBlock(int movedRows, int movedColumns, bool rotate) {
-        //            if (!gameOver && movementAllowed()) {
-        //                if (rotate) {
-        //                    currentBlock.rotate();
-        //                }
-        //                currentBlock.move(movedRows, movedColumns);
-        //                renderBlock = true;
-        //                rotate = false;
-        //            }
-        //    }
+    void Game::moveBlock() {
+        if (!gameOver && movementAllowed()) {
+            currentBlock.move(movedTilesX, movedTilesY);
+            currentBlock.rotate(rotate);
+        }
+    }
 
-        //    bool Game::movementAllowed() {
-        //            if (board.isInsideGrid(currentBlock.peak(movedRows, movedColumns, rotate)) && !board.isOccupied(currentBlock.peak(movedRows, movedColumns, rotate))) {
-        //                return true;
-        //            } else {
-        //                return false;
-        //            }
-        //    }
+    bool Game::movementAllowed() {
+        if (!board.checkBlockOutOfGrid(currentBlock.peak(movedTilesX, movedTilesY, rotate))) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 
-        //    void Game::update() {
-        //            if (!board.isInsideGrid(currentBlock.peak(movedRows, movedColumns, rotate))) {
-        //                if (rotate) {
-        //                currentBlock.rotate();
-        //            }
-        //            currentBlock.move(movedRows, movedColumns);
-        //        } else {
-        //            if (movedRows != 0) {
-        //                board.saveBlock(currentBlock.blockPositions(), currentBlock.type);
-        //                drop = false;
-        //
-        //                currentBlock.xOffset = 4;
-        //                currentBlock.yOffset = -1;
-        //                currentType = nextType;
-        //                nextType = random.getType();
-        //                currentBlock = tetrominos[currentType];
-        //
-        //                board.rowCleanUp();
-        //                nextBlock = tetrominos[nextType];
-        //                nextBlock.xOffset = -4;
-        //                nextBlock.yOffset = 1;
-        //                renderGame = true;
-        //            }
-        //        }
-        //    }
+    void Game::update() {
+        board.saveBlock(currentBlock.blockPositions(), currentBlock.type);
+        drop = false;
+        currentBlock.xOffset = 5;
+        currentBlock.yOffset = 4;
+        currentType = nextType;
+        nextType = random.getType();
+        currentBlock = tetrominos[currentType];
+        board.rowCleanUp();
+        nextBlock = tetrominos[nextType];
+        nextBlock.xOffset = 3;
+        nextBlock.yOffset = -4;
+    }
 
-        //Adds points to "score" according to amount of rows filled in "check"
+    //Adds points to "score" according to amount of rows filled in "check"
     int Game::updateScore(int score, int check) {
         if (check == 1) {
             score = score + 40;

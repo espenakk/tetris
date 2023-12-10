@@ -36,8 +36,6 @@ int main() {
     game.board.gridIsChanged = false;
     std::shared_ptr<threepp::Group> blockGroup = visuals.renderTetromino(game.currentBlock.blockPositions(), game.currentBlock.type);
     scene->add(blockGroup);
-    game.nextBlock.yOffset = -4;
-    game.nextBlock.xOffset = 3;
     std::shared_ptr<threepp::Group> nextBlockGroup = visuals.renderTetromino(game.nextBlock.blockPositions(), game.nextBlock.type);
     scene->add(nextBlockGroup);
 
@@ -69,8 +67,6 @@ int main() {
     value.scale = 2;
     //SCORE
 
-    bool gameOver = false;
-
     canvas.animate([&] {
         renderingEngine.render(*scene, *camera);
         renderingEngine.resetState();
@@ -78,38 +74,33 @@ int main() {
 
         input.previousMovement = input.newMovement;
         input.newMovement = NONE;
-
-        game.movedRows = 0;
-        game.movedColumns = 0;
+        game.movedTilesX = 0;
+        game.movedTilesY = 0;
         game.rotate = 0;
+
         if (game.drop || (clock.getElapsedTime() - timeLastDown) > 0.3) {
-            game.movedRows = 1;
+            game.movedTilesX += 1;
             timeLastDown = clock.getElapsedTime();
         } else {
             game.inputHandling(input.previousMovement);
         }
-        if (!game.board.checkBlockOutOfGrid(game.currentBlock.peak(game.movedRows, game.movedColumns, game.rotate)) && gameOver == false) {
+        if (game.movementAllowed()) {
             blockGroup->clear();
-            if (game.rotate) {
-                game.currentBlock.rotate(game.rotate);
-            }
-            game.currentBlock.move(game.movedRows, game.movedColumns);
+            game.moveBlock();
             blockGroup = visuals.renderTetromino(game.currentBlock.blockPositions(), game.currentBlock.type);
             scene->add(blockGroup);
-
         } else {
-            if (game.movedRows != 0 && gameOver == false) {
-                game.board.saveBlock(game.currentBlock.blockPositions(), game.currentBlock.type);
-                game.drop = false;
-                game.currentBlock.xOffset = 5;
-                game.currentBlock.yOffset = 4;
-
+            if (game.movedTilesX != 0) {
                 blockGroup->clear();
-                game.currentType = game.nextType;
-                game.nextType = game.random.getType();
-                game.currentBlock = game.tetrominos[game.currentType];
+                gridGroup->clear();
+                nextBlockGroup->clear();
+                game.update();
                 blockGroup = visuals.renderTetromino(game.currentBlock.blockPositions(), game.currentBlock.type);
                 scene->add(blockGroup);
+                gridGroup = visuals.renderBoard();
+                scene->add(gridGroup);
+                nextBlockGroup = visuals.renderTetromino(game.nextBlock.blockPositions(), game.nextBlock.type);
+                scene->add(nextBlockGroup);
 
                 //SCORE
                 tetrisScore = game.updateScore(tetrisScore, game.board.countRows());
@@ -119,19 +110,6 @@ int main() {
                 value.scale = 2;
                 //SCORE
 
-                game.board.rowCleanUp();
-                gridGroup->clear();
-                gridGroup = visuals.renderBoard();
-                scene->add(gridGroup);
-                game.board.gridIsChanged = false;
-
-                nextBlockGroup->clear();
-                game.nextBlock = game.tetrominos[game.nextType];
-                game.nextBlock.xOffset = 3;
-                game.nextBlock.yOffset = -4;
-                nextBlockGroup = visuals.renderTetromino(game.nextBlock.blockPositions(), game.nextBlock.type);
-                scene->add(nextBlockGroup);
-
                 if (game.board.whatIsGridValue(0, 5) != 0) {
                     end.setText(game.makeText("Game Over").str());
                     end.setPosition(70, 300);
@@ -139,43 +117,8 @@ int main() {
                     endRestart.setText(game.makeText("Press SPACE to play again").str());
                     endRestart.setPosition(87, 450);
                     endRestart.scale = 1.5;
-
-                    gameOver = true;
                 }
             }
-        }
-        if (gameOver && input.previousMovement == DROP) {
-            tetrisScore = 0;
-            //Game::restartGame();
-
-            end.setPosition(1000, 450);
-            endRestart.setPosition(1000, 450);
-
-            game.board.initGrid();
-            gridGroup->clear();
-            gridGroup = visuals.renderBoard();
-            scene->add(gridGroup);
-            game.board.gridIsChanged = false;
-
-            game.drop = false;
-            game.currentBlock.xOffset = -1;
-            game.currentBlock.yOffset = 4;
-            blockGroup->clear();
-            game.currentType = game.nextType;
-            game.nextType = game.random.getType();
-            game.currentBlock = game.tetrominos[game.currentType];
-            blockGroup = visuals.renderTetromino(game.currentBlock.blockPositions(), game.currentBlock.type);
-            scene->add(blockGroup);
-
-            nextBlockGroup->clear();
-            game.nextBlock = game.tetrominos[game.nextType];
-            game.nextBlock.xOffset = 3;
-            game.nextBlock.yOffset = -4;
-            nextBlockGroup = visuals.renderTetromino(game.nextBlock.blockPositions(), game.nextBlock.type);
-            scene->add(nextBlockGroup);
-
-            input.previousMovement = 0;
-            gameOver = false;
         }
     });
     return 0;

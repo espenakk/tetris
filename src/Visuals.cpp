@@ -29,7 +29,6 @@ namespace tetris {
     std::shared_ptr<threepp::Group> Visuals::renderBoard(/*std::array<std::array<int, 11>, 21> grid*/) {
         std::shared_ptr<threepp::Group> group;
         group = threepp::Group::create();
-        group->clear();
         for (int i = 0; i < 20; i++) {
             for (int j = 0; j < 10; j++) {
                 group->add(createBox({(float) j + 1, (float) i + 1, 0}, colours[0]));
@@ -41,7 +40,6 @@ namespace tetris {
     std::shared_ptr<threepp::Group> Visuals::renderTetromino(const std::vector<threepp::Vector2>& blockPositions, int type) {
         std::shared_ptr<threepp::Group> group;
         group = threepp::Group::create();
-        group->clear();
         for (const threepp::Vector2& block : blockPositions) {
             group->add(createBox({block.y, block.x, 0}, colours[type]));
         }

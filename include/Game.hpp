@@ -23,19 +23,19 @@ namespace tetris {
         void update();
         int currentType;
         int nextType;
-        int movedRows;
-        int movedColumns;
+        bool gameOver;
+        int movedTilesX;
+        int movedTilesY;
         int rotate;
 
         bool drop = false;
-        bool tickDown = false;
-        bool gameOver = false;
+
 
         bool renderGame = true;
         bool renderBlock = false;
         bool renderBoard = false;
 
-        void moveBlock(int movedRows, int movedColumns, bool rotate);
+        void moveBlock();
         bool movementAllowed();
         int updateScore(int score, int check);
 

@@ -15,7 +15,7 @@ namespace tetris {
     }
 
     void Block::rotate(int rot) {
-        for (int timesRotated = 0; timesRotated < rot; timesRotated++) {
+        for (int i = 0; i < rot; i++) {
             rotationState += 1;
             if (cells[rotationState].empty()) {
                 rotationState = 0;
@@ -28,7 +28,7 @@ namespace tetris {
         std::vector<threepp::Vector2> movedTiles;
         for (threepp::Vector2 item : tiles) {
             threepp::Vector2 newPosition = threepp::Vector2(item.x + x, item.y + y);
-            movedTiles.push_back(newPosition);
+            movedTiles.emplace_back(newPosition);
         }
         return movedTiles;
     }
