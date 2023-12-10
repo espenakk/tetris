@@ -23,26 +23,25 @@ namespace tetris {
         void update();
         int currentType;
         int nextType;
-        int movedRows = 0;
-        int movedColumns = 0;
+        int movedRows;
+        int movedColumns;
 
         bool drop = false;
         bool tickDown = false;
         bool gameOver = false;
-        bool rotate = false;
+        bool rotate;
         bool renderGame = true;
         bool renderBlock = false;
         bool renderBoard = false;
 
-
+        void moveBlock(int movedRows, int movedColumns, bool rotate);
+        bool movementAllowed();
         int updateScore(int score, int check);
 
         std::stringstream makeText(std::string text);
         std::shared_ptr<threepp::TextHandle> textConfig(std::stringstream text, threepp::TextHandle handle);
 
     private:
-        bool movementAllowed();
-        void moveBlock();
     };
 
 }// namespace tetris

@@ -3,9 +3,8 @@
 #define TETRIS_BOARD_HPP
 
 #include "Block.hpp"
+#include <array>
 #include <threepp/math/Vector2.hpp>
-#include <threepp/math/Vector3.hpp>
-#include <vector>
 
 namespace tetris {
 
@@ -13,20 +12,19 @@ namespace tetris {
 
     public:
         Board();
-        int type;
-        std::vector<std::pair<threepp::Vector2, int>> gridSlots;
-        void initializeGrid();
+        int grid[21][12];
+        void initGrid();
 
-        void saveBlock(std::vector<threepp::Vector2> blockPositions, int type);
-        bool isInsideGrid(std::vector<threepp::Vector2> blockPositions);
-        bool isOccupied(std::vector<threepp::Vector2> blockPositions);
+        void saveBlock(std::vector<threepp::Vector2> tiles, int type);
+        int whatIsGridValue(int x, int y);
+        int returnGridValue(int x, int y);
+        bool checkBlockOutOfGrid(std::vector<threepp::Vector2> tiles);
+
         void rowCleanUp();
         int countRows();
-
-        int amountOfRows;
-        int amountOfColumns;
+        int boardHeight;
+        int boardWidth;
         bool gridIsChanged;
-
     private:
         bool checkFullRow(int row);
         void deleteFullRow(int row);
@@ -35,3 +33,4 @@ namespace tetris {
 }// namespace tetris
 
 #endif//TETRIS_BOARD_HPP
+

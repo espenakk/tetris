@@ -6,6 +6,7 @@
 #include <threepp/canvas/Canvas.hpp>
 #include <threepp/core/Clock.hpp>
 #include <threepp/renderers/GLRenderer.hpp>
+#include <threepp/renderers/TextRenderer.hpp>
 #include <threepp/scenes/Scene.hpp>
 
 using namespace threepp;
@@ -20,177 +21,62 @@ int main() {
     renderingEngine.setClearColor(Color::black);
     auto scene = Scene::create();
     auto camera = OrthographicCamera::create();
-    camera->position.z = 1;//5
+    camera->position.z = 5;
     camera->position.x = 1.5;
-    camera->position.y = 15;//10
+    camera->position.y = 10;
     camera->rotateZ(3.1415);
-    camera->zoom = 0.06;//0.09
+    camera->zoom = 0.09;
     camera->updateProjectionMatrix();
 
-//    Game game = Game();
-//    Visuals visuals = Visuals();
-//    Clock clock = Clock();
-//    Input input{clock.elapsedTime};
-//    canvas.addKeyListener(&input);
-//
-//
-//    std::shared_ptr<Group> gridGroup = visuals.renderBoard(game.board.gridSlots);
-//    scene->add(gridGroup);
-//    std::shared_ptr<Group> blockGroup = visuals.renderTetromino(game.currentBlock.blockPositions(), game.currentBlock.type);
-//    scene->add(blockGroup);
-//    //    game.nextBlock.move(6, -5);
-//    //    std::shared_ptr<Group> nextBlockGroup = visuals.renderTetromino(game.tetrominos[game.nextType].blockPositions(), game.nextType);
-//    //    scene->add(nextBlockGroup);
-//
-//    bool drop = false;
-//
-//    float timeLastDown = clock.getElapsedTime();
-//
-//    canvas.animate([&] {
-//        renderingEngine.render(*scene, *camera);
-//        renderingEngine.resetState();
-//
-//        input.previousMovement = input.newMovement;
-//        input.newMovement = NONE;
-//        float vertical = 0;
-//        float horizontal = 0;
-//        bool rotate = false;
-//        switch (input.previousMovement) {
-//            case LEFT:
-//                horizontal = 1;
-//                break;
-//            case RIGHT:
-//                horizontal = -1;
-//                break;
-//            case DOWN:
-//                vertical = 1;
-//                break;
-//            case ROTATE:
-//                rotate = true;
-//                break;
-//            case DROP:
-//                drop = true;
-//                break;
-//        }
-//
-//        game.currentBlock.move(vertical, horizontal);
-//        if (rotate) {
-//            game.currentBlock.rotate();
-//        }
-//
-//        //        int row = 0;
-//        //        int column = 0;
-//        //        bool rotate = false;
-//        //        if (drop || (clock.getElapsedTime() - timeLastDown) > 0.3) {
-//        //            row = 1;
-//        //            game.inputHandling(input.previousMovement);
-//        //            if (clock.getElapsedTime() - timeLastDown > 0.3) {
-//        //                game.movedRows += 1;
-//        //                timeLastDown = clock.getElapsedTime();
-//        //            } else {
-//        //                switch (input.previousMovement) {
-//        //                    case LEFT:
-//        //                        column = 1;
-//        //                        break;
-//        //                    case RIGHT:
-//        //                        column = -1;
-//        //                        break;
-//        //                    case DOWN:
-//        //                        row = 1;
-//        //                        break;
-//        //                    case ROTATE:
-//        //                        rotate = true;
-//        //                        break;
-//        //                    case DROP:
-//        //                        drop = true;
-//        //                        break;
-//        //                }
-//        //            }
-//        //
-//        //            if (!game.board.isSlotOccupied(game.currentBlock.peak(row, column, rotate))) {
-//        //                blockGroup->clear();
-//        //                if (rotate) {
-//        //                    game.currentBlock.rotate();
-//        //                }
-//        //                game.currentBlock.move(row, column);
-//        //                blockGroup = visuals.renderTetromino(game.currentBlock.blockPositions(), game.currentBlock.type);
-//        //                scene->add(blockGroup);
-//        //            } else {
-//        //                if (row != 0) {
-//        //                    game.board.saveBlock(game.currentBlock.blockPositions(), game.currentBlock.type);
-//        //                    drop = false;
-//        //                    game.currentBlock.xOffset = -1;
-//        //                    game.currentBlock.yOffset = 4;
-//        //
-//        //                    blockGroup->clear();
-//        //                    game.currentType = game.nextType;
-//        //                    game.nextType = game.random.getType();
-//        //                    game.currentBlock = game.tetrominos[game.currentType];
-//        //                    blockGroup = visuals.renderTetromino(game.currentBlock.blockPositions(), game.currentBlock.type);
-//        //                    scene->add(blockGroup);
-//        //
-//        //                    game.board.rowCleanUp();
-//        //                    gridGroup->clear();
-//        //                    gridGroup = visuals.renderBoard(game.board.gridSlots);
-//        //                    scene->add(gridGroup);
-//        //
-//        //                    nextBlockGroup->clear();
-//        //                    game.nextBlock = game.tetrominos[game.nextType];
-//        //                    game.nextBlock.xOffset = 1;
-//        //                    game.nextBlock.yOffset = -4;
-//        //                    nextBlockGroup = visuals.renderTetromino(game.tetrominos[game.nextType].blockPositions(), game.nextType);
-//        //                    scene->add(nextBlockGroup);
-//        //                }
-//        //            }
-//        //        }
-//    });
 
+    Game game = Game();
     Visuals visuals = Visuals();
-    Board board = Board();
-    Random random = Random();
-    std::vector<Block> blocks = {T_Tetromino(), S_Tetromino(), Z_Tetromino(), L_Tetromino(), J_Tetromino(), I_Tetromino(), O_Tetromino()};
-    int currentType = random.getType();
-    int nextType = random.getType();
-    Block currentBlock = blocks[currentType];
-    Block nextBlock = blocks[nextType];
-    std::shared_ptr<threepp::Group> gridGroup = visuals.renderBoard(board.gridSlots);
+    std::shared_ptr<threepp::Group> gridGroup = visuals.renderBoard();
     scene->add(gridGroup);
-    std::shared_ptr<threepp::Group> blockGroup = visuals.renderTetromino(currentBlock.blockPositions(), currentBlock.type);
+    game.board.gridIsChanged = false;
+    std::shared_ptr<threepp::Group> blockGroup = visuals.renderTetromino(game.currentBlock.blockPositions(), game.currentBlock.type);
     scene->add(blockGroup);
-    nextBlock.xOffset = -4;
-    nextBlock.yOffset = 1;
-    std::shared_ptr<threepp::Group> nextBlockGroup = visuals.renderTetromino(nextBlock.blockPositions(), nextBlock.type);
+    game.nextBlock.yOffset = -4;
+    game.nextBlock.xOffset = 3;
+    std::shared_ptr<threepp::Group> nextBlockGroup = visuals.renderTetromino(game.nextBlock.blockPositions(), game.nextBlock.type);
     scene->add(nextBlockGroup);
-
-    //SCORE
-    int tetrisScore = 0;
-
-    TextRenderer textRenderer;
-    auto& handle = textRenderer.createHandle();
-    auto& test = textRenderer.createHandle();
-
-    Game testgame = Game();
-
-    handle.setText(testgame.makeText("Score").str());
-    handle.setPosition(500, 250);
-    handle.scale = 2;
-    test.setText(testgame.makeText(std::to_string(testgame.updateScore(tetrisScore, board.countRows()))).str());
-    test.setPosition(500, 290);
-    test.scale = 2;
-
-    //SCORE
 
     Clock clock;
     Input input{clock.elapsedTime};
     canvas.addKeyListener(&input);
+    float timeLastDown = clock.getElapsedTime();
+
+
+    //SCORE
+    int tetrisScore = 0;
+    TextRenderer textRenderer;
+    auto& nextb = textRenderer.createHandle();
+    auto& score = textRenderer.createHandle();
+    auto& value = textRenderer.createHandle();
+    auto& end = textRenderer.createHandle();
+    auto& endScore = textRenderer.createHandle();
+    auto& endRestart = textRenderer.createHandle();
+    auto& endtest = textRenderer.createHandle();
+
+    nextb.setText(game.makeText("Next block").str());
+    nextb.setPosition(500, 70);
+    nextb.scale = 2;
+    score.setText(game.makeText("Score").str());
+    score.setPosition(500, 350);
+    score.scale = 2;
+    value.setText(game.makeText(std::to_string(game.updateScore(tetrisScore, game.board.countRows()))).str());
+    value.setPosition(500, 390);
+    value.scale = 2;
+    //SCORE
 
     bool drop = false;
     bool down = false;
-    float timeLastDown = clock.getElapsedTime();
+    bool gameOver = false;
 
     canvas.animate([&] {
         renderingEngine.render(*scene, *camera);
         renderingEngine.resetState();
+        textRenderer.render();
 
         input.previousMovement = input.newMovement;
         input.newMovement = NONE;
@@ -220,57 +106,95 @@ int main() {
                     break;
             }
         }
-
-        textRenderer.render();
-
-        if (board.isInsideGrid(currentBlock.peak(row, column, rotate)) && !board.isOccupied(currentBlock.peak(row, column, rotate))) {
+        if (!game.board.checkBlockOutOfGrid(game.currentBlock.peak(row, column, rotate)) & gameOver == false) {
             blockGroup->clear();
             if (rotate) {
-                currentBlock.rotate();
+                game.currentBlock.rotate();
             }
-            currentBlock.move(row, column);
-            blockGroup = visuals.renderTetromino(currentBlock.blockPositions(), currentBlock.type);
+            game.currentBlock.move(row, column);
+            blockGroup = visuals.renderTetromino(game.currentBlock.blockPositions(), game.currentBlock.type);
             scene->add(blockGroup);
+
         } else {
-                board.saveBlock(currentBlock.blockPositions(), currentBlock.type);
+            if (row != 0 & gameOver == false) {
+                game.board.saveBlock(game.currentBlock.blockPositions(), game.currentBlock.type);
                 drop = false;
-                currentBlock.xOffset = -1;
-                currentBlock.yOffset = 4;
+                game.currentBlock.xOffset = 5;
+                game.currentBlock.yOffset = 4;
 
                 blockGroup->clear();
-                currentType = nextType;
-                nextType = random.getType();
-                currentBlock = blocks[currentType];
-                blockGroup = visuals.renderTetromino(currentBlock.blockPositions(), currentBlock.type);
+                game.currentType = game.nextType;
+                game.nextType = game.random.getType();
+                game.currentBlock = game.tetrominos[game.currentType];
+                blockGroup = visuals.renderTetromino(game.currentBlock.blockPositions(), game.currentBlock.type);
                 scene->add(blockGroup);
 
                 //SCORE
-                tetrisScore = testgame.updateScore(tetrisScore, board.countRows());
-                std::stringstream scoreText = testgame.makeText(std::to_string(tetrisScore));
-                test.setText(scoreText.str());
-                test.setPosition(500, 290);
-                test.scale = 2;
+                tetrisScore = game.updateScore(tetrisScore, game.board.countRows());
+                std::stringstream scoreText = game.makeText(std::to_string(tetrisScore));
+                value.setText(scoreText.str());
+                value.setPosition(500, 390);
+                value.scale = 2;
                 //SCORE
 
-                board.rowCleanUp();
-
-                // Check if the grid has been updated
-                if (board.gridIsChanged) {
+                game.board.rowCleanUp();
                 gridGroup->clear();
-                gridGroup = visuals.renderBoard(board.gridSlots);
+                gridGroup = visuals.renderBoard();
                 scene->add(gridGroup);
-                board.gridIsChanged = false;// Reset the flag
-                }
+                game.board.gridIsChanged = false;
 
                 nextBlockGroup->clear();
-                nextBlock = blocks[nextType];
-                nextBlock.xOffset = 1;
-                nextBlock.yOffset = -4;
-                nextBlockGroup = visuals.renderTetromino(blocks[nextType].blockPositions(), nextType);
+                game.nextBlock = game.tetrominos[game.nextType];
+                game.nextBlock.xOffset = 3;
+                game.nextBlock.yOffset = -4;
+                nextBlockGroup = visuals.renderTetromino(game.nextBlock.blockPositions(), game.nextBlock.type);
                 scene->add(nextBlockGroup);
+
+                if (game.board.whatIsGridValue(0, 5) != 0) {
+                    end.setText(game.makeText("Game Over").str());
+                    end.setPosition(70, 300);
+                    end.scale = 5;
+                    endRestart.setText(game.makeText("Press SPACE to play again").str());
+                    endRestart.setPosition(87, 450);
+                    endRestart.scale = 1.5;
+
+                    gameOver = true;
+                }
             }
+        }
+        if (gameOver && input.previousMovement == DROP) {
+            tetrisScore = 0;
+            //Game::restartGame();
+
+            end.setPosition(1000, 450);
+            endRestart.setPosition(1000, 450);
+
+            game.board.initGrid();
+            gridGroup->clear();
+            gridGroup = visuals.renderBoard();
+            scene->add(gridGroup);
+            game.board.gridIsChanged = false;
+
+            drop = false;
+            game.currentBlock.xOffset = -1;
+            game.currentBlock.yOffset = 4;
+            blockGroup->clear();
+            game.currentType = game.nextType;
+            game.nextType = game.random.getType();
+            game.currentBlock = game.tetrominos[game.currentType];
+            blockGroup = visuals.renderTetromino(game.currentBlock.blockPositions(), game.currentBlock.type);
+            scene->add(blockGroup);
+
+            nextBlockGroup->clear();
+            game.nextBlock = game.tetrominos[game.nextType];
+            game.nextBlock.xOffset = 3;
+            game.nextBlock.yOffset = -4;
+            nextBlockGroup = visuals.renderTetromino(game.nextBlock.blockPositions(), game.nextBlock.type);
+            scene->add(nextBlockGroup);
+
+            input.previousMovement = 0;
+            gameOver = false;
+        }
     });
-
-
     return 0;
 }

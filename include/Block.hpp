@@ -10,7 +10,7 @@ namespace tetris {
     class Block {
     public:
         Block();
-        int type;
+
         std::map<int, std::vector<threepp::Vector2>> cells;
         void move(float x, float y);
         void rotate();
@@ -19,6 +19,7 @@ namespace tetris {
 
         float xOffset;
         float yOffset;
+        int type;
 
     private:
         int rotationState;
