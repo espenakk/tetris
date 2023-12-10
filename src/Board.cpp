@@ -6,20 +6,13 @@ namespace tetris {
     Board::Board(int height, int width) {
         boardHeight = height;
         boardWidth = width;
+        spawnOffset = 4;
 
         for (int i = 0; i < boardHeight; i++) {
             std::vector<int>& vector_row = grid.emplace_back();
             for (int j = 0; j < boardWidth; j++) {
-                vector_row.push_back(0);
-            }
-        }
-        gridIsChanged = true;
-    }
-
-    void Board::initGrid() {
-        for (int i = 0; i < boardHeight; i++) {
-            for (int j = 0; j < boardWidth; j++) {
-                setGridValue(i, j, 0);
+                int tilevalue = i < spawnOffset ? 8 : 0;
+                vector_row.push_back(tilevalue);
             }
         }
     }
@@ -28,7 +21,6 @@ namespace tetris {
         for (auto tile : tiles) {
             setGridValue(tile.x, tile.y, type);
         }
-        gridIsChanged = true;
     }
 
     int Board::getGridValue(int x, int y) {
@@ -47,17 +39,22 @@ namespace tetris {
             if (item.y > boardHeight - 1) {
                 return true;
             }
-            if (getGridValue(item.x, item.y) != 0) {
+            if (hasBlock(item.x, item.y)) {
                 return true;
             }
         }
         return false;
     }
 
+    bool Board::hasBlock(int x, int y) {
+        auto tile = getGridValue(x, y);
+        return tile != 0 && tile != 8;
+    }
+
     //Checks if row are filled with blocks
     bool Board::checkFullRow(int y) {
         for (int i = 0; i < boardWidth; i++) {
-            if (getGridValue(i, y) == 0) {
+            if (!hasBlock(i, y)) {
                 return false;
             }
         }
@@ -79,7 +76,7 @@ namespace tetris {
     //Checks, moves and deletes rows when they are full.
     void Board::rowCleanUp() {
         int amountOfFullRows = 0;
-        for (int i = boardHeight - 1; i > 0; i--) {
+        for (int i = boardHeight - 1; i > spawnOffset - 1; i--) {
             if (checkFullRow(i)) {
                 amountOfFullRows++;
                 deleteFullRow(i);
@@ -91,7 +88,7 @@ namespace tetris {
     //Checks how many rows are full and returns amount
     int Board::countRows() {
         int amount = 0;
-        for (int i = boardHeight - 1; i > 0; i--) {
+        for (int i = boardHeight - 1; i > spawnOffset - 1; i--) {
             if (checkFullRow(i)) {
                 amount++;
             }

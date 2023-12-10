@@ -73,8 +73,8 @@ namespace tetris {
 
     std::shared_ptr<threepp::Group> Visuals::renderNextTetromino(tetris::Block block) {
         auto group = renderTetromino(block);
-        group->translateX(-10.0f);
-        group->translateY(3.0f);
+        group->translateX(-8.0f);
+        group->translateY(8.0f);
         return group;
     }
 }// namespace tetris
