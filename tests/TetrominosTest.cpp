@@ -20,3 +20,6 @@ TEST_CASE("test tetromino types") {
     CHECK(i.type == 6);
     CHECK(o.type == 7);
 }
+
+TEST_CASE("test peak rotations") {
+}

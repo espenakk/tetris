@@ -4,6 +4,7 @@
 #include <threepp/input/KeyListener.hpp>
 
 namespace tetris {
+
     enum moveInDirection {
         LEFT,
         RIGHT,
@@ -12,6 +13,7 @@ namespace tetris {
         DROP,
         NONE
     };
+
     class Input: public threepp::KeyListener {
     public:
         float& t;

@@ -38,7 +38,7 @@ namespace tetris {
     }
 
     std::vector<threepp::Vector2> Block::peak(float x, float y, int rot) {
-        int rotation = (rotationState + rot) % 4;
+        int rotation = (rotationState + rot) % cells.size();
         return blockPositions(xOffset + x, yOffset + y, rotation);
     }
 

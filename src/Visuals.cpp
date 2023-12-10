@@ -9,7 +9,6 @@
 
 namespace tetris {
     Visuals::Visuals() {
-        colours = {threepp::Color::gray, threepp::Color::blueviolet, threepp::Color::limegreen, threepp::Color::red, threepp::Color::darkorange, threepp::Color::deepskyblue, threepp::Color::cyan, threepp::Color::yellow, threepp::Color::hotpink};
     }
     std::shared_ptr<threepp::Mesh> Visuals::createPlane(const threepp::Vector3& pos, const threepp::Color& color) {//Adjusted the function from threepp example
         auto geometry = threepp::PlaneGeometry::create(width_, height_);
@@ -28,13 +27,36 @@ namespace tetris {
         return mesh;
     }
 
+    threepp::Color::ColorName getTileColour(TileType type) {
+        switch (type) {
+            case TileType::EmptyTile:
+                return threepp::Color::gray;
+            case TileType::SpawnZone:
+                return threepp::Color::hotpink;
+            case TileType::T:
+                return threepp::Color::blueviolet;
+            case TileType::S:
+                return threepp::Color::limegreen;
+            case TileType::Z:
+                return threepp::Color::red;
+            case TileType::L:
+                return threepp::Color::darkorange;
+            case TileType::J:
+                return threepp::Color::deepskyblue;
+            case TileType::I:
+                return threepp::Color::cyan;
+            case TileType::O:
+                return threepp::Color::yellow;
+        }
+    };
+
     std::shared_ptr<threepp::Group> Visuals::renderBoard(tetris::Board gameBoard) {
         std::shared_ptr<threepp::Group> group;
         group = threepp::Group::create();
         for (int i = 0; i < gameBoard.boardHeight; i++) {
             for (int j = 0; j < gameBoard.boardWidth; j++) {
                 auto value = gameBoard.getGridValue(j, i);
-                group->add(createBox({(float) j, (float) i, 0}, colours[value]));
+                group->add(createBox({(float) j, (float) i, 0}, getTileColour(static_cast<TileType>(value))));
             }
         }
         return group;
@@ -44,7 +66,7 @@ namespace tetris {
         std::shared_ptr<threepp::Group> group;
         group = threepp::Group::create();
         for (const threepp::Vector2& pos : block.blockPositions()) {
-            group->add(createBox({pos.x, pos.y, 0}, colours[block.type]));
+            group->add(createBox({pos.x, pos.y, 0}, getTileColour(block.type)));
         }
         return group;
     }

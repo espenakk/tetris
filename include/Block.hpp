@@ -7,6 +7,18 @@
 
 namespace tetris {
 
+    enum TileType {
+        EmptyTile,
+        SpawnZone,
+        T,
+        S,
+        Z,
+        L,
+        J,
+        I,
+        O
+    };
+
     class Block {
     public:
         Block();
@@ -20,7 +32,7 @@ namespace tetris {
         float xOffset;
         float yOffset;
         int rotationState;
-        int type;
+        TileType type;
 
     private:
         std::vector<threepp::Vector2> blockPositions(float x, float y, int rot);

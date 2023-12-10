@@ -25,10 +25,12 @@ namespace tetris {
         int boardHeight;
         int boardWidth;
         bool gridIsChanged;
-    private:
+
         bool checkFullRow(int row);
         void deleteFullRow(int row);
         void moveRowDown(int row, int movement);
+
+    private:
     };
 }// namespace tetris
 
