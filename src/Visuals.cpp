@@ -9,7 +9,7 @@
 
 namespace tetris {
     Visuals::Visuals() {
-        colours = {threepp::Color::gray, threepp::Color::blueviolet, threepp::Color::limegreen, threepp::Color::red, threepp::Color::darkorange, threepp::Color::deepskyblue, threepp::Color::cyan, threepp::Color::yellow, threepp::Color::hotpink};
+        colours = {threepp::Color::gray, threepp::Color::blueviolet, threepp::Color::limegreen, threepp::Color::red, threepp::Color::darkorange, threepp::Color::deepskyblue, threepp::Color::cyan, threepp::Color::yellow, threepp::Color::black};
     }
     std::shared_ptr<threepp::Mesh> Visuals::createPlane(const threepp::Vector3& pos, const threepp::Color& color) {//Adjusted the function from threepp example
         auto geometry = threepp::PlaneGeometry::create(width_, height_);
@@ -51,8 +51,8 @@ namespace tetris {
 
     std::shared_ptr<threepp::Group> Visuals::renderNextTetromino(tetris::Block block) {
         auto group = renderTetromino(block);
-        group->translateX(-10.0f);
-        group->translateY(3.0f);
+        group->translateX(-8.0f);
+        group->translateY(8.0f);
         return group;
     }
 }// namespace tetris

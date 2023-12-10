@@ -15,6 +15,7 @@ namespace tetris {
         rotate = 0;
         movedTilesX = 0;
         movedTilesY = 0;
+        tetrisScore = 0;
     }
 
     void Game::inputHandling(int movement) {
@@ -54,9 +55,8 @@ namespace tetris {
 
     void Game::update() {
         board.saveBlock(currentBlock.blockPositions(), currentBlock.type);
+        tetrisScore = updateScore(tetrisScore, board.countRows());
         drop = false;
-        //        currentBlock.xOffset = 5;
-        //        currentBlock.yOffset = 4;
         currentType = nextType;
         nextType = random.getType();
         currentBlock = tetrominos[currentType];

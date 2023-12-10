@@ -30,6 +30,8 @@ namespace tetris {
 
         bool drop = false;
 
+        int tetrisScore;
+
 
         bool renderGame = true;
         bool renderBlock = false;
