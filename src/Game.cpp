@@ -3,8 +3,7 @@
 #include "Input.hpp"
 
 namespace tetris {
-    Game::Game() {
-        board = Board();
+    Game::Game(): board(24, 10) {
         block = Block();
         random = Random();
         tetrominos = {T_Tetromino(), S_Tetromino(), Z_Tetromino(), L_Tetromino(), J_Tetromino(), I_Tetromino(), O_Tetromino()};
@@ -12,8 +11,6 @@ namespace tetris {
         nextType = random.getType();
         currentBlock = tetrominos[currentType];
         nextBlock = tetrominos[nextType];
-        nextBlock.yOffset = -4;
-        nextBlock.xOffset = 3;
         gameOver = false;
         rotate = 0;
         movedTilesX = 0;
@@ -23,13 +20,13 @@ namespace tetris {
     void Game::inputHandling(int movement) {
             switch (movement) {
                 case LEFT:
-                    movedTilesY += 1;
+                    movedTilesX += 1;
                     break;
                 case RIGHT:
-                    movedTilesY -= 1;
+                    movedTilesX -= 1;
                     break;
                 case DOWN:
-                    movedTilesX += 1;
+                    movedTilesY += 1;
                     break;
                 case ROTATE:
                     rotate += 1;
@@ -58,15 +55,13 @@ namespace tetris {
     void Game::update() {
         board.saveBlock(currentBlock.blockPositions(), currentBlock.type);
         drop = false;
-        currentBlock.xOffset = 5;
-        currentBlock.yOffset = 4;
+        //        currentBlock.xOffset = 5;
+        //        currentBlock.yOffset = 4;
         currentType = nextType;
         nextType = random.getType();
         currentBlock = tetrominos[currentType];
         board.rowCleanUp();
         nextBlock = tetrominos[nextType];
-        nextBlock.xOffset = 3;
-        nextBlock.yOffset = -4;
     }
 
     //Adds points to "score" according to amount of rows filled in "check"
