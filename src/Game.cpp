@@ -77,11 +77,4 @@ namespace tetris {
         }
         return score;
     }
-    //Converts a string into stringstream
-    std::stringstream Game::makeText(std::string text) {
-        std::stringstream stream;
-        stream << text;
-        return stream;
-    }
-
 }// namespace tetris

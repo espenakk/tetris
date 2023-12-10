@@ -15,7 +15,7 @@ using namespace tetris;
 
 int main() {
     Canvas canvas("Tetris");
-    WindowSize canvasSize{650, 800};
+    WindowSize canvasSize{600, 850};
     WindowSize renderingSize{800, 800};
     canvas.setSize(canvasSize);
     GLRenderer renderingEngine(renderingSize);
@@ -23,8 +23,8 @@ int main() {
     auto scene = Scene::create();
     auto camera = OrthographicCamera::create();
     camera->position.z = 1;
-    camera->position.x = -3;
-    camera->position.y = 10;
+    camera->position.x = -2;
+    camera->position.y = 12;
     camera->rotateZ(3.1415);
     camera->zoom = 0.08;
     camera->updateProjectionMatrix();
@@ -34,7 +34,6 @@ int main() {
     Visuals visuals = Visuals();
     std::shared_ptr<threepp::Group> gridGroup = visuals.renderBoard(game.board);
     scene->add(gridGroup);
-    game.board.gridIsChanged = false;
     std::shared_ptr<threepp::Group> blockGroup = visuals.renderTetromino(game.currentBlock);
     scene->add(blockGroup);
     std::shared_ptr<threepp::Group> nextBlockGroup = visuals.renderNextTetromino(game.nextBlock);
@@ -57,20 +56,14 @@ int main() {
     auto& endRestart = textRenderer.createHandle();
     auto& endtest = textRenderer.createHandle();
 
-    nextb.setText(game.makeText("Next block").str());
+    nextb.setText("Next block");
     nextb.setPosition(650 - 125, 170);
-
-    Vector3 pos(10.0f, 3.0f, 0);
-    pos.unproject(*camera);
-
-    std::cout << pos.x << " " << pos.y << " " << pos.z << std::endl;
-
     nextb.scale = 1.5;
-    score.setText(game.makeText("Score").str());
+    score.setText("Score");
     score.setPosition(500, 350);
     score.scale = 1.5;
-    value.setText(game.makeText(std::to_string(game.updateScore(tetrisScore, game.board.countRows()))).str());
-    value.setPosition(500, 390);
+    value.setText(std::to_string(game.updateScore(tetrisScore, game.board.countRows())));
+    value.setPosition(400, 390);
     value.scale = 2;
     //SCORE
 
@@ -98,6 +91,15 @@ int main() {
             scene->add(blockGroup);
         } else {
             if (game.movedTilesY != 0) {
+
+                //SCORE
+                tetrisScore = game.updateScore(tetrisScore, game.board.countRows());
+                std::string scoreText = std::to_string(tetrisScore);
+                value.setText(scoreText);
+                value.setPosition(400, 390);
+                value.scale = 2;
+                //SCORE
+
                 blockGroup->clear();
                 gridGroup->clear();
                 nextBlockGroup->clear();
@@ -109,20 +111,11 @@ int main() {
                 nextBlockGroup = visuals.renderNextTetromino(game.nextBlock);
                 scene->add(nextBlockGroup);
 
-
-                //SCORE
-                tetrisScore = game.updateScore(tetrisScore, game.board.countRows());
-                std::stringstream scoreText = game.makeText(std::to_string(tetrisScore));
-                value.setText(scoreText.str());
-                value.setPosition(500, 390);
-                value.scale = 2;
-                //SCORE
-
                 if (game.board.getGridValue(0, 5) != 0) {
-                    end.setText(game.makeText("Game Over").str());
-                    end.setPosition(70, 300);
+                    end.setText("Game Over");
+                    end.setPosition(200, 300);
                     end.scale = 5;
-                    endRestart.setText(game.makeText("Press SPACE to play again").str());
+                    endRestart.setText("Press SPACE to play again");
                     endRestart.setPosition(87, 450);
                     endRestart.scale = 1.5;
                 }
