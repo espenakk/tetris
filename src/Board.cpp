@@ -11,7 +11,7 @@ namespace tetris {
         for (int i = 0; i < boardHeight; i++) {
             std::vector<int>& vector_row = grid.emplace_back();
             for (int j = 0; j < boardWidth; j++) {
-                int tilevalue = i < spawnOffset ? 8 : 0;
+                int tilevalue = i < spawnOffset ? SpawnZone : EmptyTile;
                 vector_row.push_back(tilevalue);
             }
         }
@@ -33,7 +33,7 @@ namespace tetris {
 
     bool Board::checkBlockOutOfGrid(std::vector<threepp::Vector2> tiles) {
         for (auto item : tiles) {
-            if (item.x > boardWidth - 1 || item.x < 0) {
+            if (item.x > boardWidth - 1 || item.x < EmptyTile) {
                 return true;
             }
             if (item.y > boardHeight - 1) {
@@ -48,7 +48,7 @@ namespace tetris {
 
     bool Board::hasBlock(int x, int y) {
         auto tile = getGridValue(x, y);
-        return tile != 0 && tile != 8;
+        return tile != EmptyTile && tile != SpawnZone;
     }
 
     //Checks if row are filled with blocks
@@ -63,14 +63,14 @@ namespace tetris {
     //Deletes row
     void Board::deleteFullRow(int y) {
         for (int i = 0; i < boardWidth; i++) {
-            setGridValue(i, y, 0);
+            setGridValue(i, y, EmptyTile);
         }
     }
     //Copies all values from a row to row+movement down the grid. Sets original row to 0
     void Board::moveRowDown(int y, int movement) {
         for (int i = 0; i < boardWidth; i++) {
             setGridValue(i, y + movement, getGridValue(i, y));
-            setGridValue(i, y, 0);
+            setGridValue(i, y, EmptyTile);
         }
     }
     //Checks, moves and deletes rows when they are full.
