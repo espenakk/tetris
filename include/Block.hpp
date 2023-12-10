@@ -19,10 +19,10 @@ namespace tetris {
 
         float xOffset;
         float yOffset;
+        int rotationState;
         int type;
 
     private:
-        int rotationState;
         std::vector<threepp::Vector2> blockPositions(float x, float y, int rot);
     };
 
