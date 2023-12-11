@@ -108,8 +108,6 @@ namespace tetris {
     void Visuals::render(Game& game) {
         renderingEngine.render(*scene, *camera);
         renderingEngine.resetState();
-        game.movedTilesY = 0;
-        game.movedTilesX = 0;
-        game.rotate = 0;
+        game.updateMovement();
     }
 }// namespace tetris

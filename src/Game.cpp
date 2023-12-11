@@ -1,9 +1,8 @@
 
 #include "Game.hpp"
-#include "Input.hpp"
 
 namespace tetris {
-    Game::Game(): board(24, 10), clock() {
+    Game::Game(): board(24, 10), clock(), input(elapsedTime) {
         block = Block();
         random = Random();
         tetrominos = {T_Tetromino(), S_Tetromino(), Z_Tetromino(), L_Tetromino(), J_Tetromino(), I_Tetromino(), O_Tetromino()};
@@ -19,9 +18,9 @@ namespace tetris {
         gameOver = false;
     }
 
-    void Game::inputHandling(int movement) {
-            switch (movement) {
-                case LEFT:
+    void Game::inputHandling() {
+        switch (currentMovement) {
+            case LEFT:
                     movedTilesX += 1;
                     break;
                 case RIGHT:
@@ -54,7 +53,7 @@ namespace tetris {
             return false;
         }
     }
-    void Game::tickDown(int movement) {
+    void Game::tickDown() {
         if (drop) {
             movedTilesY += 1;
         } else {
@@ -62,7 +61,7 @@ namespace tetris {
                 movedTilesY += 1;
                 lastTick = clock.getElapsedTime();
             } else {
-                inputHandling(movement);
+                inputHandling();
             }
         }
     }

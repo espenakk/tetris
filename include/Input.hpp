@@ -5,7 +5,7 @@
 
 namespace tetris {
 
-    enum moveInDirection {
+    enum Movement {
         LEFT,
         RIGHT,
         ROTATE,
@@ -16,11 +16,11 @@ namespace tetris {
 
     class Input: public threepp::KeyListener {
     public:
-        float& t;
-        explicit Input(float& t);
+        float& time;
+        explicit Input(float& time);
+        Movement movement = NONE;
 
-        int newMovement = NONE;
-        int previousMovement = NONE;
+    private:
         void inputProcessing(threepp::KeyEvent evt);
         void onKeyPressed(threepp::KeyEvent evt) override;
         void onKeyRepeat(threepp::KeyEvent evt) override;

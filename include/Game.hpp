@@ -2,6 +2,7 @@
 #ifndef TETRIS_GAME_HPP
 #define TETRIS_GAME_HPP
 #include "Board.hpp"
+#include "Input.hpp"
 #include "Random.hpp"
 #include "Tetrominos.hpp"
 
@@ -18,11 +19,12 @@ namespace tetris {
         Board board;
         Block block;
         Random random;
+        Input input;
         threepp::Clock clock;
         std::vector<Block> tetrominos;
         Block currentBlock;
         Block nextBlock;
-        void inputHandling(int movement);
+        void inputHandling();
         void update();
         int currentType;
         int nextType;
@@ -43,11 +45,22 @@ namespace tetris {
         int updateScore(int score, int check);
         bool isGameOver();
         bool gameOver;
-        void tickDown(int movement);
+        void tickDown();
 
+        void updateMovement() {
+            movedTilesY = 0;
+            movedTilesX = 0;
+            rotate = 0;
+            currentMovement = input.movement;
+            input.movement = NONE;
+        };
 
     private:
-        float lastTick = clock.getElapsedTime();
+        Movement currentMovement = nextMovement;
+        Movement nextMovement = input.movement;
+
+        float elapsedTime = clock.getElapsedTime();
+        float lastTick = elapsedTime;
     };
 
 }// namespace tetris

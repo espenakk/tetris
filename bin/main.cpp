@@ -1,6 +1,5 @@
 
 #include "Game.hpp"
-#include "Input.hpp"
 #include "Visuals.hpp"
 #include <iostream>
 #include <threepp/canvas/Canvas.hpp>
@@ -14,12 +13,8 @@ int main() {
     Game game = Game();
     Visuals visuals = Visuals();
     canvas.setSize(visuals.getCanvasSize());
+    canvas.addKeyListener(&game.input);
     visuals.setupScene(game);
-
-
-    Input input{game.clock.elapsedTime};
-    canvas.addKeyListener(&input);
-
 
     //SCORE
     TextRenderer textRenderer;
@@ -47,10 +42,7 @@ int main() {
         visuals.render(game);
         textRenderer.render();
 
-        input.previousMovement = input.newMovement;
-        input.newMovement = NONE;
-
-        game.tickDown(input.previousMovement);
+        game.tickDown();
         game.moveBlock();
         visuals.renderTetromino(game);
         game.update();
