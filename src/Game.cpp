@@ -35,19 +35,21 @@ namespace tetris {
                 case DROP:
                     drop = true;
                     break;
-            }
+                case NONE:
+                    break;
+        }
         }
 
     void Game::moveBlock() {
             if (movementAllowed()) {
-                currentBlock.move(movedTilesX, movedTilesY);
-                currentBlock.rotate(rotate);
+            currentBlock.move((float) movedTilesX, (float) movedTilesY);
+            currentBlock.rotate(rotate);
                 renderTetromino = true;
             }
     }
 
     bool Game::movementAllowed() {
-        if (!gameOver && !board.blockHasInvalidPosition(currentBlock.peak(movedTilesX, movedTilesY, rotate))) {
+        if (!gameOver && !board.blockHasInvalidPosition(currentBlock.peak((float) movedTilesX, (float) movedTilesY, rotate))) {
             return true;
         } else {
             return false;
@@ -59,6 +61,7 @@ namespace tetris {
             movedTilesY += 1;
         } else {
             if (clock.getElapsedTime() - lastTick > 0.3) {
+                inputHandling();
                 movedTilesY += 1;
                 lastTick = clock.getElapsedTime();
             } else {
@@ -68,7 +71,7 @@ namespace tetris {
     }
 
     bool Game::isGameOver() {
-        if (renderGame && board.checkGameOver(currentBlock.peak(movedTilesX, movedTilesY, rotate))) {
+        if (renderGame && board.checkGameOver(currentBlock.peak((float) movedTilesX, (float) movedTilesY, rotate))) {
             return true;
         }
         return false;

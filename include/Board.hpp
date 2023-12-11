@@ -13,8 +13,8 @@ namespace tetris {
 
         int boardHeight;
         int boardWidth;
-        void saveBlock(const std::vector<threepp::Vector2>& tiles, int type);
-        int getGridValue(int x, int y);
+        void saveBlock(const std::vector<threepp::Vector2>& tiles, TileType tileType);
+        int getGridTileType(int x, int y);
         bool blockHasInvalidPosition(const std::vector<threepp::Vector2>& tiles);
         void rowCleanUp();
         int countCompleteLines();
@@ -22,12 +22,12 @@ namespace tetris {
 
     private:
         int spawnOffset;
-        std::vector<std::vector<int>> grid{};
-        void setGridValue(int x, int y, int value);
+        std::vector<std::vector<TileType>> grid{};
+        void setGridTileType(int x, int y, TileType tileType);
         bool hasBlock(int x, int y);
-        bool completedLine(int row);
-        void clearCompletedLine(int row);
-        void moveLineDown(int row, int lines);
+        bool completedLine(int line);
+        void clearCompletedLine(int line);
+        void moveLineDown(int line, int lines);
     };
 }// namespace tetris
 

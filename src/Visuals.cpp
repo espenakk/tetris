@@ -54,7 +54,7 @@ namespace tetris {
         group = threepp::Group::create();
         for (int i = 0; i < gameBoard.boardHeight; i++) {
             for (int j = 0; j < gameBoard.boardWidth; j++) {
-                auto value = gameBoard.getGridValue(j, i);
+                auto value = gameBoard.getGridTileType(j, i);
                 group->add(createBox({(float) j, (float) i, 0}, getTileColour(static_cast<TileType>(value))));
             }
         }

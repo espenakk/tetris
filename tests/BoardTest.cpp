@@ -33,15 +33,15 @@ TEST_CASE("saveBlock operation", "[Board]") {
     Board board(24, 10);
 
     SECTION("Constructor") {
-        REQUIRE(board.getGridValue(0, 0) == SpawnZone);
-        REQUIRE(board.getGridValue(0, 23) == EmptyTile);
+        REQUIRE(board.getGridTileType(0, 0) == SpawnZone);
+        REQUIRE(board.getGridTileType(0, 23) == EmptyTile);
     }
 
-    SECTION("saveBlock and getGridValue operation") {
+    SECTION("saveBlock and getGridTileType operation") {
         std::vector<threepp::Vector2> tiles = {{0, 0}, {1, 0}, {0, 1}, {1, 1}};
-        board.saveBlock(tiles, 1);
+        board.saveBlock(tiles, T);
         for (auto tile : tiles) {
-            REQUIRE(board.getGridValue(tile.x, tile.y) == 1);
+            REQUIRE(board.getGridTileType(tile.x, tile.y) == T);
         }
     }
 }

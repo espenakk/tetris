@@ -9,26 +9,26 @@ namespace tetris {
         spawnOffset = 4;
 
         for (int i = 0; i < boardHeight; i++) {
-            std::vector<int>& vector_row = grid.emplace_back();
+            std::vector<TileType>& vector_line = grid.emplace_back();
             for (int j = 0; j < boardWidth; j++) {
                 TileType tileType = i < spawnOffset ? SpawnZone : EmptyTile;
-                vector_row.push_back(tileType);
+                vector_line.push_back(tileType);
             }
         }
     }
 
-    void Board::saveBlock(const std::vector<threepp::Vector2>& tiles, int type) {
+    void Board::saveBlock(const std::vector<threepp::Vector2>& tiles, TileType tileType) {
         for (auto tile : tiles) {
-            setGridValue((int) tile.x, (int) tile.y, type);
+            setGridTileType((int) tile.x, (int) tile.y, tileType);
         }
     }
 
-    int Board::getGridValue(int x, int y) {
+    int Board::getGridTileType(int x, int y) {
         return grid.at(y).at(x);
     }
 
-    void Board::setGridValue(int x, int y, int value) {
-        grid.at(y).at(x) = value;
+    void Board::setGridTileType(int x, int y, TileType tileType) {
+        grid.at(y).at(x) = tileType;
     }
 
     bool Board::blockHasInvalidPosition(const std::vector<threepp::Vector2>& tiles) {
@@ -47,30 +47,30 @@ namespace tetris {
     }
 
     bool Board::hasBlock(int x, int y) {
-        auto tile = getGridValue(x, y);
+        auto tile = getGridTileType(x, y);
         return tile != EmptyTile && tile != SpawnZone;
     }
 
 
-    bool Board::completedLine(int y) {
+    bool Board::completedLine(int line) {
         for (int i = 0; i < boardWidth; i++) {
-            if (!hasBlock(i, y)) {
+            if (!hasBlock(i, line)) {
                 return false;
             }
         }
         return true;
     }
 
-    void Board::clearCompletedLine(int y) {
+    void Board::clearCompletedLine(int line) {
         for (int i = 0; i < boardWidth; i++) {
-            setGridValue(i, y, EmptyTile);
+            setGridTileType(i, line, EmptyTile);
         }
     }
 
-    void Board::moveLineDown(int y, int lines) {
+    void Board::moveLineDown(int line, int lines) {
         for (int i = 0; i < boardWidth; i++) {
-            setGridValue(i, y + lines, getGridValue(i, y));
-            setGridValue(i, y, EmptyTile);
+            setGridTileType(i, line + lines, (TileType) getGridTileType(i, line));
+            setGridTileType(i, line, EmptyTile);
         }
     }
 
