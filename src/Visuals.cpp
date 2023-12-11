@@ -6,6 +6,19 @@
 #include <threepp/math/Color.hpp>
 
 namespace tetris {
+
+    Visuals::Visuals(): renderingEngine(renderingSize), scene(threepp::Scene::create()), camera(threepp::OrthographicCamera::create()), textScore(renderText("", 400, 500, 2)), textGameOver(renderText("", 39, 350, 4)), textContinue(renderText("", 39, 420, 1.5)) {
+        renderingEngine.setClearColor(threepp::Color::black);
+        camera->position.z = 1;
+        camera->position.x = -2;
+        camera->position.y = 11.5;
+        camera->rotateZ(3.1415);
+        camera->zoom = 0.08;
+        camera->updateProjectionMatrix();
+        renderText("Next Block", 370, 220, 2);
+        renderText("Score", 400, 450, 2);
+    }
+
     std::shared_ptr<threepp::Mesh> Visuals::createPlane(const threepp::Vector3& pos, const threepp::Color& color) {//Adjusted the function from threepp example
         auto geometry = threepp::PlaneGeometry::create(width_, height_);
         auto material = threepp::MeshBasicMaterial::create();
@@ -121,5 +134,13 @@ namespace tetris {
         renderingEngine.resetState();
         renderTetromino(game);
         renderGame(game);
+    }
+
+    threepp::TextHandle& Visuals::renderText(const std::string& text, int x, int y, float size) {
+        threepp::TextHandle& handle = tr.createHandle();
+        handle.setText(text);
+        handle.setPosition(x, y);
+        handle.scale = size;
+        return handle;
     }
 }// namespace tetris
