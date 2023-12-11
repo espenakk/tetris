@@ -33,7 +33,7 @@ namespace tetris {
 
     bool Board::checkBlockOutOfGrid(std::vector<threepp::Vector2> tiles) {
         for (auto item : tiles) {
-            if (item.x > boardWidth - 1 || item.x < 0) {
+            if (item.x > boardWidth - 1 || item.x < EmptyTile) {
                 return true;
             }
             if (item.y > boardHeight - 1) {
