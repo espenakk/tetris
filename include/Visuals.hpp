@@ -8,6 +8,7 @@
 #include <threepp/math/Vector2.hpp>
 #include <threepp/objects/Group.hpp>
 #include <threepp/objects/mesh.hpp>
+#include <threepp/renderers/TextRenderer.hpp>
 #include <vector>
 
 namespace tetris {
@@ -20,6 +21,8 @@ namespace tetris {
         std::shared_ptr<threepp::Group> renderBoard(tetris::Board gameBoard);
         std::shared_ptr<threepp::Group> renderTetromino(tetris::Block block);
         std::shared_ptr<threepp::Group> renderNextTetromino(tetris::Block block);
+
+        //threepp::TextHandle renderText(std::string text, int x, int y, int pos);
 
     private:
         float width_ = 0.9;
