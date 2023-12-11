@@ -25,17 +25,16 @@ namespace tetris {
         Block();
 
         std::map<int, std::vector<threepp::Vector2>> tiles;
+        TileType type;
         void move(float x, float y);
         void rotate(int rot);
-        std::vector<threepp::Vector2> peak(float x, float y, int rot);
         std::vector<threepp::Vector2> tilePositions();
+        std::vector<threepp::Vector2> peak(float x, float y, int rot);
 
+    private:
         float xOffset;
         float yOffset;
         int rotationState;
-        TileType type;
-
-    private:
         std::vector<threepp::Vector2> tilePositions(float x, float y, int rot);
     };
 
