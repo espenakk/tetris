@@ -1,20 +1,12 @@
 
 #include "Visuals.hpp"
 #include <threepp/geometries/BoxGeometry.hpp>
-#include <threepp/geometries/PlaneGeometry.hpp>
 #include <threepp/materials/MeshBasicMaterial.hpp>
 #include <threepp/math/Color.hpp>
 
 namespace tetris {
-    std::shared_ptr<threepp::Mesh> Visuals::createPlane(const threepp::Vector3& pos, const threepp::Color& color) {//Adjusted the function from threepp example
-        auto geometry = threepp::PlaneGeometry::create(width_, height_);
-        auto material = threepp::MeshBasicMaterial::create();
-        material->color.copy(color);
-        auto mesh = threepp::Mesh::create(geometry, material);
-        mesh->position.copy(pos);
-        return mesh;
-    }
-    std::shared_ptr<threepp::Mesh> Visuals::createBox(const threepp::Vector3& pos, const threepp::Color& color) {//Adjusted the function from threepp example
+
+    std::shared_ptr<threepp::Mesh> Visuals::createBox(const threepp::Vector3& pos, const threepp::Color& color) const {//Adjusted the function from threepp example
         auto geometry = threepp::BoxGeometry::create(width_, height_);
         auto material = threepp::MeshBasicMaterial::create();
         material->color.copy(color);
@@ -55,9 +47,9 @@ namespace tetris {
                 break;
         }
         return colour;
-    };
+    }
 
-    std::shared_ptr<threepp::Group> Visuals::createBoardGroup(tetris::Board gameBoard) {
+    std::shared_ptr<threepp::Group> Visuals::createBoardGroup(Board& gameBoard) {
         std::shared_ptr<threepp::Group> group;
         group = threepp::Group::create();
         for (int i = 0; i < gameBoard.boardHeight; i++) {
@@ -69,7 +61,7 @@ namespace tetris {
         return group;
     }
 
-    std::shared_ptr<threepp::Group> Visuals::createBlockGroup(tetris::Block block) {
+    std::shared_ptr<threepp::Group> Visuals::createBlockGroup(Block& block) {
         std::shared_ptr<threepp::Group> group;
         group = threepp::Group::create();
         for (const threepp::Vector2& pos : block.tilePositions()) {
@@ -78,7 +70,7 @@ namespace tetris {
         return group;
     }
 
-    std::shared_ptr<threepp::Group> Visuals::createNextBlockGroup(tetris::Block block) {
+    std::shared_ptr<threepp::Group> Visuals::createNextBlockGroup(Block& block) {
         auto group = createBlockGroup(block);
         group->translateX(-8.0f);
         group->translateY(8.0f);

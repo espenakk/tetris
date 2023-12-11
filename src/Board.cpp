@@ -11,15 +11,15 @@ namespace tetris {
         for (int i = 0; i < boardHeight; i++) {
             std::vector<int>& vector_row = grid.emplace_back();
             for (int j = 0; j < boardWidth; j++) {
-                int tilevalue = i < spawnOffset ? SpawnZone : EmptyTile;
-                vector_row.push_back(tilevalue);
+                TileType tileType = i < spawnOffset ? SpawnZone : EmptyTile;
+                vector_row.push_back(tileType);
             }
         }
     }
 
-    void Board::saveBlock(std::vector<threepp::Vector2> tiles, int type) {
+    void Board::saveBlock(const std::vector<threepp::Vector2>& tiles, int type) {
         for (auto tile : tiles) {
-            setGridValue(tile.x, tile.y, type);
+            setGridValue((int) tile.x, (int) tile.y, type);
         }
     }
 
@@ -31,15 +31,15 @@ namespace tetris {
         grid.at(y).at(x) = value;
     }
 
-    bool Board::blockHasInvalidPosition(std::vector<threepp::Vector2> tiles) {
+    bool Board::blockHasInvalidPosition(const std::vector<threepp::Vector2>& tiles) {
         for (auto item : tiles) {
-            if (item.x > boardWidth - 1 || item.x < EmptyTile) {
+            if (item.x > (float) boardWidth - 1 || item.x < EmptyTile) {
                 return true;
             }
-            if (item.y > boardHeight - 1) {
+            if (item.y > (float) boardHeight - 1) {
                 return true;
             }
-            if (hasBlock(item.x, item.y)) {
+            if (hasBlock((int) item.x, (int) item.y)) {
                 return true;
             }
         }
@@ -96,9 +96,9 @@ namespace tetris {
         return amount;
     }
 
-    bool Board::checkGameOver(std::vector<threepp::Vector2> tiles) {
+    bool Board::checkGameOver(const std::vector<threepp::Vector2>& tiles) {
         for (auto item : tiles) {
-            if (item.x < boardWidth - 1 && item.x > 0 && item.y < spawnOffset + 1 && (hasBlock(item.x, item.y))) {
+            if (item.x < (float) boardWidth - 1 && item.x > 0 && item.y < (float) spawnOffset + 1 && (hasBlock((int) item.x, (int) item.y))) {
                 return true;
             }
         }
