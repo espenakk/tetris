@@ -40,13 +40,9 @@ int main() {
 
     canvas.animate([&] {
         visuals.render(game);
+        game.runTetris();
         textRenderer.render();
 
-        game.tickDown();
-        game.moveBlock();
-        visuals.renderTetromino(game);
-        game.update();
-        visuals.renderGame(game);
 
         //SCORE
         std::string scoreText = std::to_string(game.tetrisScore);

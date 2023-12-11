@@ -53,6 +53,7 @@ namespace tetris {
             return false;
         }
     }
+
     void Game::tickDown() {
         if (drop) {
             movedTilesY += 1;
@@ -70,6 +71,7 @@ namespace tetris {
         if (renderGame && board.checkGameOver(currentBlock.peak(movedTilesX, movedTilesY, rotate))) {
             return true;
         }
+        return false;
     }
 
     void Game::update() {
@@ -85,6 +87,15 @@ namespace tetris {
             renderGame = true;
         }
     }
+
+    void Game::runTetris() {
+        if (!gameOver) {
+            updateMovement();
+            tickDown();
+            moveBlock();
+            update();
+        }
+    }
     //Adds points to "score" according to amount of rows filled in "check"
     int Game::updateScore(int score, int check) {
         if (check == 1) {
@@ -97,5 +108,12 @@ namespace tetris {
             score = score + 1200;
         }
         return score;
+    }
+    void Game::updateMovement() {
+        movedTilesY = 0;
+        movedTilesX = 0;
+        rotate = 0;
+        currentMovement = input.movement;
+        input.movement = NONE;
     }
 }// namespace tetris

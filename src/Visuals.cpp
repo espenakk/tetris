@@ -24,26 +24,37 @@ namespace tetris {
     }
 
     threepp::Color::ColorName getTileColour(TileType type) {
+        threepp::Color::ColorName colour;
         switch (type) {
-            case TileType::EmptyTile:
-                return threepp::Color::gray;
-            case TileType::SpawnZone:
-                return threepp::Color::hotpink;
-            case TileType::T:
-                return threepp::Color::blueviolet;
-            case TileType::S:
-                return threepp::Color::limegreen;
-            case TileType::Z:
-                return threepp::Color::red;
-            case TileType::L:
-                return threepp::Color::darkorange;
-            case TileType::J:
-                return threepp::Color::deepskyblue;
-            case TileType::I:
-                return threepp::Color::cyan;
-            case TileType::O:
-                return threepp::Color::yellow;
+            case EmptyTile:
+                colour = threepp::Color::gray;
+                break;
+            case SpawnZone:
+                colour = threepp::Color::hotpink;
+                break;
+            case T:
+                colour = threepp::Color::blueviolet;
+                break;
+            case S:
+                colour = threepp::Color::limegreen;
+                break;
+            case Z:
+                colour = threepp::Color::red;
+                break;
+            case L:
+                colour = threepp::Color::darkorange;
+                break;
+            case J:
+                colour = threepp::Color::deepskyblue;
+                break;
+            case I:
+                colour = threepp::Color::cyan;
+                break;
+            case O:
+                colour = threepp::Color::yellow;
+                break;
         }
+        return colour;
     };
 
     std::shared_ptr<threepp::Group> Visuals::createBoardGroup(tetris::Board gameBoard) {
@@ -108,6 +119,7 @@ namespace tetris {
     void Visuals::render(Game& game) {
         renderingEngine.render(*scene, *camera);
         renderingEngine.resetState();
-        game.updateMovement();
+        renderTetromino(game);
+        renderGame(game);
     }
 }// namespace tetris

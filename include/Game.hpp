@@ -24,41 +24,36 @@ namespace tetris {
         std::vector<Block> tetrominos;
         Block currentBlock;
         Block nextBlock;
-        void inputHandling();
-        void update();
+
+        void runTetris();
+
+        int tetrisScore;
+        bool renderGame;
+        bool renderTetromino;
+
+        int updateScore(int score, int check);
+        bool isGameOver();
+
+    private:
+        Movement currentMovement;
+        float elapsedTime = clock.getElapsedTime();
+        float lastTick = elapsedTime;
+
+        void moveBlock();
+        bool movementAllowed();
+        void updateMovement();
+
         int currentType;
         int nextType;
         int movedTilesX;
         int movedTilesY;
         int rotate;
 
-        bool drop = false;
-
-        int tetrisScore;
-
-
-        bool renderGame;
-        bool renderTetromino;
-
-        void moveBlock();
-        bool movementAllowed();
-        int updateScore(int score, int check);
-        bool isGameOver();
         bool gameOver;
+        bool drop = false;
         void tickDown();
-
-        void updateMovement() {
-            movedTilesY = 0;
-            movedTilesX = 0;
-            rotate = 0;
-            currentMovement = input.movement;
-            input.movement = NONE;
-        };
-
-    private:
-        Movement currentMovement;
-        float elapsedTime = clock.getElapsedTime();
-        float lastTick = elapsedTime;
+        void inputHandling();
+        void update();
     };
 
 }// namespace tetris
