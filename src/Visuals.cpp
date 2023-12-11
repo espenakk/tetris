@@ -61,7 +61,7 @@ namespace tetris {
     std::shared_ptr<threepp::Group> Visuals::createBlockGroup(tetris::Block block) {
         std::shared_ptr<threepp::Group> group;
         group = threepp::Group::create();
-        for (const threepp::Vector2& pos : block.blockPositions()) {
+        for (const threepp::Vector2& pos : block.tilePositions()) {
             group->add(createBox({pos.x, pos.y, 0}, getTileColour(block.type)));
         }
         return group;

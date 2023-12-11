@@ -23,7 +23,7 @@ namespace tetris {
         }
     }
 
-    std::vector<threepp::Vector2> Block::blockPositions(float x, float y, int rot) {
+    std::vector<threepp::Vector2> Block::tilePositions(float x, float y, int rot) {
         std::vector<threepp::Vector2> currentTiles = tiles[rot];
         std::vector<threepp::Vector2> movedTiles;
         for (auto item : currentTiles) {
@@ -33,13 +33,13 @@ namespace tetris {
         return movedTiles;
     }
 
-    std::vector<threepp::Vector2> Block::blockPositions() {
-        return blockPositions(xOffset, yOffset, rotationState);
+    std::vector<threepp::Vector2> Block::tilePositions() {
+        return tilePositions(xOffset, yOffset, rotationState);
     }
 
     std::vector<threepp::Vector2> Block::peak(float x, float y, int rot) {
         int rotation = (rotationState + rot) % tiles.size();
-        return blockPositions(xOffset + x, yOffset + y, rotation);
+        return tilePositions(xOffset + x, yOffset + y, rotation);
     }
 
 }// namespace tetris

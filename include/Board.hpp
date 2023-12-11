@@ -3,7 +3,6 @@
 #define TETRIS_BOARD_HPP
 
 #include "Block.hpp"
-#include <threepp/math/Vector2.hpp>
 
 namespace tetris {
 
@@ -11,10 +10,9 @@ namespace tetris {
 
     public:
         Board(int height, int width);
-        std::vector<std::vector<int>> grid{};
+
         int boardHeight;
         int boardWidth;
-
         void saveBlock(std::vector<threepp::Vector2> tiles, int type);
         int getGridValue(int x, int y);
         bool blockHasInvalidPosition(std::vector<threepp::Vector2> tiles);
@@ -23,12 +21,13 @@ namespace tetris {
         bool checkGameOver(std::vector<threepp::Vector2> tiles);
 
     private:
+        int spawnOffset;
+        std::vector<std::vector<int>> grid{};
+        void setGridValue(int x, int y, int value);
+        bool hasBlock(int x, int y);
         bool completedLine(int row);
         void clearCompletedLine(int row);
         void moveLineDown(int row, int lines);
-        int spawnOffset;
-        void setGridValue(int x, int y, int value);
-        bool hasBlock(int x, int y);
     };
 }// namespace tetris
 

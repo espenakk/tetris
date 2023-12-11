@@ -14,17 +14,17 @@ using namespace tetris;
         SECTION("S rotation near left boundary") {
             s.rotate(1);
             s.move(4, 0);
-            REQUIRE(board.blockHasInvalidPosition(s.blockPositions()) == false);
+            REQUIRE(board.blockHasInvalidPosition(s.tilePositions()) == false);
             s.rotate(1);
-            REQUIRE(board.blockHasInvalidPosition(s.blockPositions()) == true);
+            REQUIRE(board.blockHasInvalidPosition(s.tilePositions()) == true);
         }
 
         SECTION("Z rotation near right boundary") {
             z.rotate(1);
             z.move(-4, 0);
-            REQUIRE(board.blockHasInvalidPosition(z.blockPositions()) == false);
+            REQUIRE(board.blockHasInvalidPosition(z.tilePositions()) == false);
             z.rotate(1);
-            REQUIRE(board.blockHasInvalidPosition(z.blockPositions()) == true);
+            REQUIRE(board.blockHasInvalidPosition(z.tilePositions()) == true);
         }
     }
 

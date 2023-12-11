@@ -51,7 +51,7 @@ namespace tetris {
         return tile != EmptyTile && tile != SpawnZone;
     }
 
-    //Checks if row are filled with blocks
+
     bool Board::completedLine(int y) {
         for (int i = 0; i < boardWidth; i++) {
             if (!hasBlock(i, y)) {
@@ -60,20 +60,20 @@ namespace tetris {
         }
         return true;
     }
-    //Deletes row
+
     void Board::clearCompletedLine(int y) {
         for (int i = 0; i < boardWidth; i++) {
             setGridValue(i, y, EmptyTile);
         }
     }
-    //Copies all values from a row to row+lines down the grid. Sets original row to 0
+
     void Board::moveLineDown(int y, int lines) {
         for (int i = 0; i < boardWidth; i++) {
             setGridValue(i, y + lines, getGridValue(i, y));
             setGridValue(i, y, EmptyTile);
         }
     }
-    //Checks, moves and deletes rows when they are full.
+
     void Board::rowCleanUp() {
         int completedLines = 0;
         for (int i = boardHeight - 1; i > spawnOffset - 1; i--) {
@@ -85,7 +85,7 @@ namespace tetris {
             }
         }
     }
-    //Checks how many rows are full and returns amount
+
     int Board::countCompleteLines() {
         int amount = 0;
         for (int i = boardHeight - 1; i > spawnOffset - 1; i--) {

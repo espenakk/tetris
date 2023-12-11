@@ -74,7 +74,7 @@ namespace tetris {
 
     void Game::update() {
         if (!gameOver && !movementAllowed() && movedTilesY != 0) {
-            board.saveBlock(currentBlock.blockPositions(), currentBlock.type);
+            board.saveBlock(currentBlock.tilePositions(), currentBlock.type);
             tetrisScore = updateScore(tetrisScore, board.countCompleteLines());
             drop = false;
             currentType = nextType;
