@@ -2,11 +2,7 @@
 #include "Random.hpp"
 #include <catch2/catch_test_macros.hpp>
 
-#include "Random.hpp"
-#include <catch2/catch_test_macros.hpp>
-
-
-TEST_CASE("Test getType method") {
+TEST_CASE("Testing the BAG randomizer") {
     tetris::Random randomizer;
     int lastNumber = -1;
     int consecutiveCount = 0;

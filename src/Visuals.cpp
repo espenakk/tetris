@@ -6,8 +6,6 @@
 #include <threepp/math/Color.hpp>
 
 namespace tetris {
-    Visuals::Visuals() {
-    }
     std::shared_ptr<threepp::Mesh> Visuals::createPlane(const threepp::Vector3& pos, const threepp::Color& color) {//Adjusted the function from threepp example
         auto geometry = threepp::PlaneGeometry::create(width_, height_);
         auto material = threepp::MeshBasicMaterial::create();
@@ -48,7 +46,7 @@ namespace tetris {
         }
     };
 
-    std::shared_ptr<threepp::Group> Visuals::renderBoard(tetris::Board gameBoard) {
+    std::shared_ptr<threepp::Group> Visuals::createBoardGroup(tetris::Board gameBoard) {
         std::shared_ptr<threepp::Group> group;
         group = threepp::Group::create();
         for (int i = 0; i < gameBoard.boardHeight; i++) {
@@ -60,7 +58,7 @@ namespace tetris {
         return group;
     }
 
-    std::shared_ptr<threepp::Group> Visuals::renderTetromino(tetris::Block block) {
+    std::shared_ptr<threepp::Group> Visuals::createBlockGroup(tetris::Block block) {
         std::shared_ptr<threepp::Group> group;
         group = threepp::Group::create();
         for (const threepp::Vector2& pos : block.blockPositions()) {
@@ -69,10 +67,49 @@ namespace tetris {
         return group;
     }
 
-    std::shared_ptr<threepp::Group> Visuals::renderNextTetromino(tetris::Block block) {
-        auto group = renderTetromino(block);
+    std::shared_ptr<threepp::Group> Visuals::createNextBlockGroup(tetris::Block block) {
+        auto group = createBlockGroup(block);
         group->translateX(-8.0f);
         group->translateY(8.0f);
         return group;
+    }
+
+    void Visuals::setupScene(Game& game) {
+        boardGroup = createBoardGroup(game.board);
+        scene->add(boardGroup);
+        blockGroup = createBlockGroup(game.currentBlock);
+        scene->add(blockGroup);
+        nextBlockGroup = createNextBlockGroup(game.nextBlock);
+        scene->add(nextBlockGroup);
+    }
+
+    void Visuals::renderGame(Game& game) {
+        if (game.renderGame) {
+            blockGroup->clear();
+            boardGroup->clear();
+            nextBlockGroup->clear();
+            blockGroup = createBlockGroup(game.currentBlock);
+            scene->add(blockGroup);
+            boardGroup = createBoardGroup(game.board);
+            scene->add(boardGroup);
+            nextBlockGroup = createNextBlockGroup(game.nextBlock);
+            scene->add(nextBlockGroup);
+            game.renderGame = false;
+        }
+    }
+    void Visuals::renderTetromino(Game& game) {
+        if (game.renderTetromino) {
+            blockGroup->clear();
+            blockGroup = createBlockGroup(game.currentBlock);
+            scene->add(blockGroup);
+            game.renderTetromino = false;
+        }
+    }
+    void Visuals::render(Game& game) {
+        renderingEngine.render(*scene, *camera);
+        renderingEngine.resetState();
+        game.movedTilesY = 0;
+        game.movedTilesX = 0;
+        game.rotate = 0;
     }
 }// namespace tetris

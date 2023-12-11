@@ -3,46 +3,22 @@
 #include "Input.hpp"
 #include "Visuals.hpp"
 #include <iostream>
-#include <threepp/cameras/OrthographicCamera.hpp>
 #include <threepp/canvas/Canvas.hpp>
-#include <threepp/core/Clock.hpp>
-#include <threepp/renderers/GLRenderer.hpp>
 #include <threepp/renderers/TextRenderer.hpp>
-#include <threepp/scenes/Scene.hpp>
 
 using namespace threepp;
 using namespace tetris;
 
 int main() {
     Canvas canvas("Tetris");
-    WindowSize canvasSize{550, 780};
-    WindowSize renderingSize{800, 800};
-    canvas.setSize(canvasSize);
-    GLRenderer renderingEngine(renderingSize);
-    renderingEngine.setClearColor(Color::black);
-    auto scene = Scene::create();
-    auto camera = OrthographicCamera::create();
-    camera->position.z = 1;
-    camera->position.x = -2;
-    camera->position.y = 11.5;
-    camera->rotateZ(3.1415);
-    camera->zoom = 0.08;
-    camera->updateProjectionMatrix();
-
-
     Game game = Game();
     Visuals visuals = Visuals();
-    std::shared_ptr<threepp::Group> gridGroup = visuals.renderBoard(game.board);
-    scene->add(gridGroup);
-    std::shared_ptr<threepp::Group> blockGroup = visuals.renderTetromino(game.currentBlock);
-    scene->add(blockGroup);
-    std::shared_ptr<threepp::Group> nextBlockGroup = visuals.renderNextTetromino(game.nextBlock);
-    scene->add(nextBlockGroup);
+    canvas.setSize(visuals.getCanvasSize());
+    visuals.setupScene(game);
 
-    Clock clock;
-    Input input{clock.elapsedTime};
+
+    Input input{game.clock.elapsedTime};
     canvas.addKeyListener(&input);
-    float timeLastDown = clock.getElapsedTime();
 
 
     //SCORE
@@ -68,57 +44,31 @@ int main() {
     //SCORE
 
     canvas.animate([&] {
-        renderingEngine.render(*scene, *camera);
-        renderingEngine.resetState();
+        visuals.render(game);
         textRenderer.render();
 
         input.previousMovement = input.newMovement;
         input.newMovement = NONE;
-        game.movedTilesX = 0;
-        game.movedTilesY = 0;
-        game.rotate = 0;
 
-        if (game.drop || (clock.getElapsedTime() - timeLastDown) > 0.3) {
-            game.movedTilesY += 1;
-            timeLastDown = clock.getElapsedTime();
-        } else {
-            game.inputHandling(input.previousMovement);
-        }
+        game.tickDown(input.previousMovement);
+        game.moveBlock();
+        visuals.renderTetromino(game);
+        game.update();
+        visuals.renderGame(game);
 
-        if (game.movementAllowed()) {
-            blockGroup->clear();
-            game.moveBlock();
-            blockGroup = visuals.renderTetromino(game.currentBlock);
-            scene->add(blockGroup);
-        } else {
-            if (game.movedTilesY != 0) {
+        //SCORE
+        std::string scoreText = std::to_string(game.tetrisScore);
+        value.setText(scoreText);
+        //SCORE
 
-                blockGroup->clear();
-                gridGroup->clear();
-                nextBlockGroup->clear();
-                game.update();
-                blockGroup = visuals.renderTetromino(game.currentBlock);
-                scene->add(blockGroup);
-                gridGroup = visuals.renderBoard(game.board);
-                scene->add(gridGroup);
-                nextBlockGroup = visuals.renderNextTetromino(game.nextBlock);
-                scene->add(nextBlockGroup);
-
-                //SCORE
-                std::string scoreText = std::to_string(game.tetrisScore);
-                value.setText(scoreText);
-                //SCORE
-
-                if (game.isGameOver()) {
-                    end.setText("Game Over");
-                    end.setPosition(39, 350);
-                    end.scale = 4;
-                    endRestart.setText("Press SPACE to play again");
-                    endRestart.setPosition(39, 420);
-                    endRestart.scale = 1.5;
-                }
-            }
-        }
+        //                if (game.isGameOver()) {
+        //                    end.setText("Game Over");
+        //                    end.setPosition(39, 350);
+        //                    end.scale = 4;
+        //                    endRestart.setText("Press SPACE to play again");
+        //                    endRestart.setPosition(39, 420);
+        //                    endRestart.scale = 1.5;
+        //                }
     });
     return 0;
 }

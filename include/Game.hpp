@@ -5,6 +5,8 @@
 #include "Random.hpp"
 #include "Tetrominos.hpp"
 
+#include <threepp/core/Clock.hpp>
+
 #include "threepp/renderers/TextRenderer.hpp"
 #include <sstream>
 
@@ -16,6 +18,7 @@ namespace tetris {
         Board board;
         Block block;
         Random random;
+        threepp::Clock clock;
         std::vector<Block> tetrominos;
         Block currentBlock;
         Block nextBlock;
@@ -32,17 +35,19 @@ namespace tetris {
         int tetrisScore;
 
 
-        bool renderGame = true;
-        bool renderBlock = false;
-        bool renderBoard = false;
+        bool renderGame;
+        bool renderTetromino;
 
         void moveBlock();
         bool movementAllowed();
         int updateScore(int score, int check);
         bool isGameOver();
         bool gameOver;
+        void tickDown(int movement);
+
 
     private:
+        float lastTick = clock.getElapsedTime();
     };
 
 }// namespace tetris
