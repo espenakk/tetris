@@ -6,8 +6,6 @@
 
 namespace tetris {
 
-    std::shared_ptr<threepp::Mesh> Visuals::createBox(const threepp::Vector3& pos, const threepp::Color& color) const {//Adjusted the function from threepp example
-
     Visuals::Visuals(): renderingEngine(renderingSize), scene(threepp::Scene::create()), camera(threepp::OrthographicCamera::create()), textScore(renderText("", 400, 500, 2)), textGameOver(renderText("", 39, 350, 4)), textContinue(renderText("", 39, 420, 1.5)) {
         renderingEngine.setClearColor(threepp::Color::black);
         camera->position.z = 1;
@@ -20,7 +18,7 @@ namespace tetris {
         renderText("Score", 400, 450, 2);
     }
 
-    std::shared_ptr<threepp::Mesh> Visuals::createBox(const threepp::Vector3& pos, const threepp::Color& color) {//Adjusted the function from threepp example
+    std::shared_ptr<threepp::Mesh> Visuals::createBox(const threepp::Vector3& pos, const threepp::Color& color) const {//Adjusted the function from threepp example
         auto geometry = threepp::BoxGeometry::create(width_, height_);
         auto material = threepp::MeshBasicMaterial::create();
         material->color.copy(color);
