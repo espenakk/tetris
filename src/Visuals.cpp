@@ -2,10 +2,8 @@
 #include "Visuals.hpp"
 #include <threepp/geometries/BoxGeometry.hpp>
 #include <threepp/geometries/PlaneGeometry.hpp>
-#include <threepp/geometries/TextGeometry.hpp>
 #include <threepp/materials/MeshBasicMaterial.hpp>
 #include <threepp/math/Color.hpp>
-#include <threepp/renderers/TextRenderer.hpp>
 
 namespace tetris {
     Visuals::Visuals() {

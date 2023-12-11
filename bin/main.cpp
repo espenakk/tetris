@@ -53,7 +53,7 @@ int main() {
     auto& end = textRenderer.createHandle();
     auto& endScore = textRenderer.createHandle();
     auto& endRestart = textRenderer.createHandle();
-    auto& endtest = textRenderer.createHandle();
+    auto& test = textRenderer.createHandle();
 
     nextb.setText("Next block");
     nextb.setPosition(370, 220);
@@ -84,6 +84,7 @@ int main() {
         } else {
             game.inputHandling(input.previousMovement);
         }
+
         if (game.movementAllowed()) {
             blockGroup->clear();
             game.moveBlock();
@@ -108,12 +109,12 @@ int main() {
                 value.setText(scoreText);
                 //SCORE
 
-                if (game.board.getGridValue(0, 5) != 0) {
+                if (game.isGameOver()) {
                     end.setText("Game Over");
-                    end.setPosition(200, 300);
-                    end.scale = 5;
+                    end.setPosition(39, 350);
+                    end.scale = 4;
                     endRestart.setText("Press SPACE to play again");
-                    endRestart.setPosition(87, 450);
+                    endRestart.setPosition(39, 420);
                     endRestart.scale = 1.5;
                 }
             }

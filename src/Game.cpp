@@ -11,11 +11,11 @@ namespace tetris {
         nextType = random.getType();
         currentBlock = tetrominos[currentType];
         nextBlock = tetrominos[nextType];
-        gameOver = false;
         rotate = 0;
         movedTilesX = 0;
         movedTilesY = 0;
         tetrisScore = 0;
+        gameOver = false;
     }
 
     void Game::inputHandling(int movement) {
@@ -39,8 +39,8 @@ namespace tetris {
         }
 
     void Game::moveBlock() {
-        if (!gameOver && movementAllowed()) {
-            currentBlock.move(movedTilesX, movedTilesY);
+            if (movementAllowed()) {
+                currentBlock.move(movedTilesX, movedTilesY);
             currentBlock.rotate(rotate);
         }
     }
@@ -50,6 +50,11 @@ namespace tetris {
             return true;
         } else {
             return false;
+        }
+    }
+    bool Game::isGameOver() {
+        if (board.checkGameOver(currentBlock.peak(movedTilesX, movedTilesY, rotate))) {
+            return true;
         }
     }
 

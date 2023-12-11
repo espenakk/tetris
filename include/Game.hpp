@@ -23,7 +23,6 @@ namespace tetris {
         void update();
         int currentType;
         int nextType;
-        bool gameOver;
         int movedTilesX;
         int movedTilesY;
         int rotate;
@@ -40,9 +39,8 @@ namespace tetris {
         void moveBlock();
         bool movementAllowed();
         int updateScore(int score, int check);
-
-        std::stringstream makeText(std::string text);
-        std::shared_ptr<threepp::TextHandle> textConfig(std::stringstream text, threepp::TextHandle handle);
+        bool isGameOver();
+        bool gameOver;
 
     private:
     };

@@ -95,4 +95,13 @@ namespace tetris {
         }
         return amount;
     }
+
+    bool Board::checkGameOver(std::vector<threepp::Vector2> tiles) {
+        for (auto item : tiles) {
+            if (item.x < boardWidth - 1 && item.x > 0 && item.y < spawnOffset + 1 && (hasBlock(item.x, item.y))) {
+                return true;
+            }
+        }
+        return false;
+    }
 }// namespace tetris
