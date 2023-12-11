@@ -15,15 +15,7 @@ namespace tetris {
 
     class Visuals {
     public:
-        Visuals(): renderingEngine(renderingSize), scene(threepp::Scene::create()), camera(threepp::OrthographicCamera::create()) {
-            renderingEngine.setClearColor(threepp::Color::black);
-            camera->position.z = 1;
-            camera->position.x = -2;
-            camera->position.y = 11.5;
-            camera->rotateZ(3.1415);
-            camera->zoom = 0.08;
-            camera->updateProjectionMatrix();
-        }
+        Visuals();
 
         void setupScene(Game& game);
         void renderGame(Game& game);
@@ -40,7 +32,9 @@ namespace tetris {
             return canvasSize;
         }
 
-        //threepp::TextHandle renderText(std::string text, int x, int y, int pos);
+        threepp::TextRenderer tr;
+
+        threepp::TextHandle& renderText(const std::string& text, int x, int y, float size);
 
     private:
         const float width_ = 0.9;
@@ -54,6 +48,9 @@ namespace tetris {
         std::shared_ptr<threepp::Group> boardGroup;
         std::shared_ptr<threepp::Group> blockGroup;
         std::shared_ptr<threepp::Group> nextBlockGroup;
+        threepp::TextHandle& textScore;
+        threepp::TextHandle& textGameOver;
+        threepp::TextHandle& textContinue;
 
         std::shared_ptr<threepp::Mesh> createBox(const threepp::Vector3& pos, const threepp::Color& color) const;//Adjusted the function from threepp example
         std::shared_ptr<threepp::Group> createBoardGroup(tetris::Board& gameBoard);
