@@ -17,6 +17,15 @@ namespace tetris {
         }
     }
 
+    void Board::reset() {
+        for (int i = 0; i < boardHeight; i++) {
+            for (int j = 0; j < boardWidth; j++) {
+                TileType tileType = i < spawnOffset ? SpawnZone : EmptyTile;
+                setGridTileType(j, i, tileType);
+            }
+        }
+    }
+
     void Board::saveBlock(const std::vector<threepp::Vector2>& tiles, TileType tileType) {
         for (auto tile : tiles) {
             setGridTileType((int) tile.x, (int) tile.y, tileType);

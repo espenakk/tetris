@@ -11,45 +11,50 @@ namespace tetris {
         currentBlock = tetrominos[currentType];
         nextBlock = tetrominos[nextType];
 
-        movedTilesX = 0;
-        movedTilesY = 0;
-        rotate = 0;
+        moveRequestX = 0;
+        moveRequestY = 0;
+        rotateRequest = 0;
         tetrisScore = 0;
         gameOver = false;
     }
 
     void Game::inputHandling() {
+        moveRequestY = 0;
+        moveRequestX = 0;
+        rotateRequest = 0;
+        currentMovement = input.movement;
         switch (currentMovement) {
             case LEFT:
-                    movedTilesX += 1;
-                    break;
-                case RIGHT:
-                    movedTilesX -= 1;
-                    break;
-                case DOWN:
-                    movedTilesY += 1;
-                    break;
-                case ROTATE:
-                    rotate += 1;
-                    break;
-                case DROP:
-                    drop = true;
-                    break;
-                case NONE:
-                    break;
+                moveRequestX = 1;
+                break;
+            case RIGHT:
+                moveRequestX = -1;
+                break;
+            case DOWN:
+                moveRequestY = 1;
+                break;
+            case ROTATE:
+                rotateRequest = 1;
+                break;
+            case DROP:
+                drop = true;
+                break;
+            case NONE:
+                break;
         }
-        }
+        input.movement = NONE;
+    }
 
-    void Game::moveBlock() {
-            if (movementAllowed()) {
-            currentBlock.move((float) movedTilesX, (float) movedTilesY);
-            currentBlock.rotate(rotate);
-                renderTetromino = true;
-            }
+    void Game::spawnBlock() {
+        currentType = nextType;
+        currentBlock = tetrominos[currentType];
+
+        nextType = random.getType();
+        nextBlock = tetrominos[nextType];
     }
 
     bool Game::movementAllowed() {
-        if (!gameOver && !board.blockHasInvalidPosition(currentBlock.peak((float) movedTilesX, (float) movedTilesY, rotate))) {
+        if (!gameOver && !board.blockHasInvalidPosition(currentBlock.peak((float) moveRequestX, (float) moveRequestY, rotateRequest))) {
             return true;
         } else {
             return false;
@@ -58,11 +63,11 @@ namespace tetris {
 
     void Game::tickDown() {
         if (drop) {
-            movedTilesY += 1;
+            moveRequestY += 1;
         } else {
             if (clock.getElapsedTime() - lastTick > 0.3) {
                 inputHandling();
-                movedTilesY += 1;
+                moveRequestY += 1;
                 lastTick = clock.getElapsedTime();
             } else {
                 inputHandling();
@@ -71,16 +76,22 @@ namespace tetris {
     }
 
     bool Game::isGameOver() {
-        if (renderGame && board.checkGameOver(currentBlock.peak((float) movedTilesX, (float) movedTilesY, rotate))) {
+        if (renderGame && board.checkGameOver(currentBlock.peak((float) moveRequestX, (float) moveRequestY, rotateRequest))) {
+            if (gameOverCallback)
+                gameOverCallback();
+
             return true;
         }
         return false;
     }
 
     void Game::update() {
-        if (!gameOver && !movementAllowed() && movedTilesY != 0) {
+        bool goingDown = moveRequestY != 0;
+        bool killPiece = !gameOver && !movementAllowed() && goingDown;
+
+        if (killPiece) {
             board.saveBlock(currentBlock.tilePositions(), currentBlock.type);
-            tetrisScore = updateScore(tetrisScore, board.countCompleteLines());
+            updateScore(board.countCompleteLines());
             drop = false;
             currentType = nextType;
             nextType = random.getType();
@@ -92,30 +103,104 @@ namespace tetris {
     }
 
     void Game::runTetris() {
+        inputHandling();
+
         if (!gameOver) {
-            updateMovement();
-            tickDown();
-            moveBlock();
-            update();
+
+            if (movementAllowed()) {
+                currentBlock.move((float) moveRequestX, (float) 0.0f);
+                currentBlock.rotate(rotateRequest);
+                renderTetromino = true;
+            }
+
+            moveRequestX = 0;
+            rotateRequest = 0;
+
+            if (drop) {
+                moveRequestY = 1;
+            } else {
+                if (clock.getElapsedTime() - lastTick > 0.3) {
+                    moveRequestY = 1;
+                    lastTick = clock.getElapsedTime();
+                }
+            }
+
+            bool goingDown = moveRequestY == 1;
+            bool killPiece = !gameOver && !movementAllowed() && goingDown;
+
+            if (goingDown && movementAllowed()) {
+                currentBlock.move((float) 0.0f, (float) moveRequestY);
+                renderTetromino = true;
+            }
+
+            if (killPiece) {
+                board.saveBlock(currentBlock.tilePositions(), currentBlock.type);
+                updateScore(board.countCompleteLines());
+                board.rowCleanUp();
+
+                gameOver = isGameOver();
+
+                if (!gameOver) {
+                    spawnBlock();
+                }
+
+                if (boardChangedCallback)
+                    boardChangedCallback();
+
+                renderGame = true;
+                drop = false;
+            }
+        }
+
+        if (gameOver && drop) {
+            if (gameContinueCallback)
+                gameContinueCallback();
+
+            board.reset();
+            spawnBlock();
+
+            renderGame = true;
+            if (boardChangedCallback)
+                boardChangedCallback();
+
+            tetrisScore = 0;
+
+            if (scoreUpdateCallback)
+                scoreUpdateCallback(tetrisScore);
+
+            drop = false;
+            gameOver = false;
         }
     }
     //Adds points to "score" according to amount of rows filled in "check"
-    int Game::updateScore(int score, int check) {
-        if (check == 1) {
-            score = score + 40;
-        } else if (check == 2) {
-            score = score + 100;
-        } else if (check == 3) {
-            score = score + 300;
-        } else if (check == 4) {
-            score = score + 1200;
+    void Game::updateScore(int rowsCleared) {
+        if (rowsCleared == 0)
+            return;
+
+        int scoreIncrement = 0;
+        switch (rowsCleared) {
+            case 1:
+                scoreIncrement = 40;
+                break;
+            case 2:
+                scoreIncrement = 100;
+                break;
+            case 3:
+                scoreIncrement = 300;
+                break;
+            case 4:
+                scoreIncrement = 1200;
+                break;
         }
-        return score;
+        tetrisScore += scoreIncrement;
+
+        if (scoreUpdateCallback)
+            scoreUpdateCallback(tetrisScore);
     }
     void Game::updateMovement() {
-        movedTilesY = 0;
-        movedTilesX = 0;
-        rotate = 0;
+        moveRequestY = 0;
+        moveRequestX = 0;
+        rotateRequest = 0;
         currentMovement = input.movement;
         input.movement = NONE;
     }

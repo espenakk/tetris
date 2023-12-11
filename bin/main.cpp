@@ -17,36 +17,39 @@ int main() {
     visuals.setupScene(game);
 
     //SCORE
-    TextRenderer textRenderer;
-    auto& nextb = textRenderer.createHandle();
-    auto& score = textRenderer.createHandle();
-    auto& value = textRenderer.createHandle();
-    auto& end = textRenderer.createHandle();
-    auto& endScore = textRenderer.createHandle();
-    auto& endRestart = textRenderer.createHandle();
-    auto& test = textRenderer.createHandle();
-
-    nextb.setText("Next block");
-    nextb.setPosition(370, 220);
-    nextb.scale = 2;
-    score.setText("Score");
-    score.setPosition(400, 450);
-    score.scale = 2;
-    std::string scoreText = std::to_string(game.tetrisScore);
-    value.setText(scoreText);
-    value.setPosition(400, 500);
-    value.scale = 2;
+    //    TextRenderer textRenderer;
+    //
+    //    auto& score = textRenderer.createHandle();
+    //    auto& value = textRenderer.createHandle();
+    //    auto& end = textRenderer.createHandle();
+    //    auto& endScore = textRenderer.createHandle();
+    //    auto& endRestart = textRenderer.createHandle();
+    //    auto& test = textRenderer.createHandle();
+    //
+    //    auto& nextb = textRenderer.createHandle();
+    //    nextb.setText("Next block");
+    //    nextb.setPosition(370, 220);
+    //    nextb.scale = 2;
+    //
+    //
+    //    score.setText("Score");
+    //    score.setPosition(400, 450);
+    //    score.scale = 2;
+    //    std::string scoreText = std::to_string(game.tetrisScore);
+    //    value.setText(scoreText);
+    //    value.setPosition(400, 500);
+    //    value.scale = 2;
     //SCORE
 
     canvas.animate([&] {
-        visuals.render(game);
         game.runTetris();
-        textRenderer.render();
+        visuals.render(game);
+        //        textRenderer.render();
 
 
         //SCORE
-        std::string scoreText = std::to_string(game.tetrisScore);
-        value.setText(scoreText);
+        //        std::string scoreText = std::to_string(game.tetrisScore);
+        //        value.setText(scoreText);
         //SCORE
 
         //                if (game.isGameOver()) {

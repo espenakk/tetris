@@ -19,6 +19,7 @@ namespace tetris {
         void rowCleanUp();
         int countCompleteLines();
         bool checkGameOver(const std::vector<threepp::Vector2>& tiles);
+        void reset();
 
     private:
         int spawnOffset;

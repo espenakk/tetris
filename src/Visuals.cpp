@@ -6,9 +6,7 @@
 
 namespace tetris {
 
-    std::shared_ptr<threepp::Mesh> Visuals::createBox(const threepp::Vector3& pos, const threepp::Color& color) const {//Adjusted the function from threepp example
-
-    Visuals::Visuals(): renderingEngine(renderingSize), scene(threepp::Scene::create()), camera(threepp::OrthographicCamera::create()), textScore(renderText("", 400, 500, 2)), textGameOver(renderText("", 39, 350, 4)), textContinue(renderText("", 39, 420, 1.5)) {
+    Visuals::Visuals(): renderingEngine(renderingSize), scene(threepp::Scene::create()), camera(threepp::OrthographicCamera::create()), textScore(renderText("0", 400, 500, 2)), textGameOver(renderText("", 39, 350, 4)), textContinue(renderText("", 39, 420, 1.5)) {
         renderingEngine.setClearColor(threepp::Color::black);
         camera->position.z = 1;
         camera->position.x = -2;
@@ -20,7 +18,7 @@ namespace tetris {
         renderText("Score", 400, 450, 2);
     }
 
-    std::shared_ptr<threepp::Mesh> Visuals::createBox(const threepp::Vector3& pos, const threepp::Color& color) {//Adjusted the function from threepp example
+    std::shared_ptr<threepp::Mesh> Visuals::createBox(const threepp::Vector3& pos, const threepp::Color& color) const {//Adjusted the function from threepp example
         auto geometry = threepp::BoxGeometry::create(width_, height_);
         auto material = threepp::MeshBasicMaterial::create();
         material->color.copy(color);
@@ -36,7 +34,7 @@ namespace tetris {
                 colour = threepp::Color::gray;
                 break;
             case SpawnZone:
-                colour = threepp::Color::hotpink;
+                colour = threepp::Color::black;
                 break;
             case T:
                 colour = threepp::Color::blueviolet;
@@ -92,6 +90,24 @@ namespace tetris {
     }
 
     void Visuals::setupScene(Game& game) {
+        game.onScoreUpdate([&](int new_score) {
+            textScore.setText(std::to_string(new_score));
+        });
+
+        game.onGameOver([&]() {
+            textGameOver.setText("Game Over");
+            textContinue.setText("Press Space to continue");
+        });
+
+        game.onContinue([&]() {
+            textGameOver.setText("");
+            textContinue.setText("");
+        });
+
+        game.onBordChanged([&]() {
+            renderGame(game);
+        });
+
         boardGroup = createBoardGroup(game.board);
         scene->add(boardGroup);
         blockGroup = createBlockGroup(game.currentBlock);
@@ -101,8 +117,8 @@ namespace tetris {
     }
 
     void Visuals::renderGame(Game& game) {
-        if (game.renderGame) {
-            blockGroup->clear();
+        //        if (game.renderGame) {
+        blockGroup->clear();
             boardGroup->clear();
             nextBlockGroup->clear();
             blockGroup = createBlockGroup(game.currentBlock);
@@ -111,8 +127,8 @@ namespace tetris {
             scene->add(boardGroup);
             nextBlockGroup = createNextBlockGroup(game.nextBlock);
             scene->add(nextBlockGroup);
-            game.renderGame = false;
-        }
+            //            game.renderGame = false;
+            //        }
     }
     void Visuals::renderTetromino(Game& game) {
         if (game.renderTetromino) {
@@ -123,10 +139,11 @@ namespace tetris {
         }
     }
     void Visuals::render(Game& game) {
+        renderTetromino(game);
+        //        renderGame(game);
         renderingEngine.render(*scene, *camera);
         renderingEngine.resetState();
-        renderTetromino(game);
-        renderGame(game);
+        tr.render();
     }
 
     threepp::TextHandle& Visuals::renderText(const std::string& text, int x, int y, float size) {

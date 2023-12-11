@@ -10,6 +10,7 @@
 
 #include "threepp/renderers/TextRenderer.hpp"
 #include <sstream>
+#include <utility>
 
 namespace tetris {
 
@@ -31,23 +32,44 @@ namespace tetris {
         bool renderGame;
         bool renderTetromino;
 
-        int updateScore(int score, int check);
+        void updateScore(int check);
         bool isGameOver();
+
+        void onScoreUpdate(std::function<void(int)> callback) {
+            scoreUpdateCallback = std::move(callback);
+        }
+
+        void onBordChanged(std::function<void()> callback) {
+            boardChangedCallback = std::move(callback);
+        }
+
+        void onGameOver(std::function<void()> callback) {
+            gameOverCallback = std::move(callback);
+        }
+
+        void onContinue(std::function<void()> callback) {
+            gameContinueCallback = std::move(callback);
+        }
 
     private:
         Movement currentMovement;
         float elapsedTime = clock.getElapsedTime();
         float lastTick = elapsedTime;
 
-        void moveBlock();
+        std::function<void(int)> scoreUpdateCallback;
+        std::function<void()> boardChangedCallback;
+        std::function<void()> gameOverCallback;
+        std::function<void()> gameContinueCallback;
+
+        void spawnBlock();
         bool movementAllowed();
         void updateMovement();
 
         int currentType;
         int nextType;
-        int movedTilesX;
-        int movedTilesY;
-        int rotate;
+        int moveRequestX;
+        int moveRequestY;
+        int rotateRequest;
 
         bool gameOver;
         bool drop = false;
