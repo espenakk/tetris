@@ -17,16 +17,16 @@ namespace tetris {
     void Block::rotate(int rot) {
         for (int i = 0; i < rot; i++) {
             rotationState += 1;
-            if (cells[rotationState].empty()) {
+            if (tiles[rotationState].empty()) {
                 rotationState = 0;
             }
         }
     }
 
     std::vector<threepp::Vector2> Block::blockPositions(float x, float y, int rot) {
-        std::vector<threepp::Vector2> tiles = cells[rot];
+        std::vector<threepp::Vector2> currentTiles = tiles[rot];
         std::vector<threepp::Vector2> movedTiles;
-        for (threepp::Vector2 item : tiles) {
+        for (auto item : currentTiles) {
             threepp::Vector2 newPosition = threepp::Vector2(item.x + x, item.y + y);
             movedTiles.emplace_back(newPosition);
         }
@@ -38,7 +38,7 @@ namespace tetris {
     }
 
     std::vector<threepp::Vector2> Block::peak(float x, float y, int rot) {
-        int rotation = (rotationState + rot) % cells.size();
+        int rotation = (rotationState + rot) % tiles.size();
         return blockPositions(xOffset + x, yOffset + y, rotation);
     }
 
