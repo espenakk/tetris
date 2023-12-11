@@ -12,13 +12,13 @@ TEST_CASE("test tetromino types") {
     J_Tetromino j;
     I_Tetromino i;
     O_Tetromino o;
-    CHECK(t.type == 1);
-    CHECK(s.type == 2);
-    CHECK(z.type == 3);
-    CHECK(l.type == 4);
-    CHECK(j.type == 5);
-    CHECK(i.type == 6);
-    CHECK(o.type == 7);
+    CHECK(t.type == T);
+    CHECK(s.type == S);
+    CHECK(z.type == Z);
+    CHECK(l.type == L);
+    CHECK(j.type == J);
+    CHECK(i.type == I);
+    CHECK(o.type == O);
 }
 
 TEST_CASE("test peak rotations") {
