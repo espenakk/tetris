@@ -3,7 +3,7 @@
 
 namespace tetris {
 
-    Board::Board(int height, int width) {
+    Board::Board(int height, int width) {//Board gets initialized in the constructor
         boardHeight = height;
         boardWidth = width;
         spawnOffset = 4;
@@ -60,7 +60,6 @@ namespace tetris {
         return tile != EmptyTile && tile != SpawnZone;
     }
 
-
     bool Board::completedLine(int line) {
         for (int i = 0; i < boardWidth; i++) {
             if (!hasBlock(i, line)) {
@@ -113,4 +112,5 @@ namespace tetris {
         }
         return false;
     }
+
 }// namespace tetris

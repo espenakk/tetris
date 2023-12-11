@@ -7,7 +7,6 @@
 namespace tetris {
 
     class Board {
-
     public:
         Board(int height, int width);
 
@@ -30,6 +29,7 @@ namespace tetris {
         void clearCompletedLine(int line);
         void moveLineDown(int line, int lines);
     };
+
 }// namespace tetris
 
 #endif//TETRIS_BOARD_HPP
