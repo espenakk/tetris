@@ -56,9 +56,7 @@ namespace tetris {
         };
 
     private:
-        Movement currentMovement = nextMovement;
-        Movement nextMovement = input.movement;
-
+        Movement currentMovement;
         float elapsedTime = clock.getElapsedTime();
         float lastTick = elapsedTime;
     };

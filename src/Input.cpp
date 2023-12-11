@@ -17,9 +17,11 @@ namespace tetris {
             movement = DROP;
         }
     }
+
     void Input::onKeyPressed(threepp::KeyEvent evt) {
         inputProcessing(evt);
     }
+
     void Input::onKeyRepeat(threepp::KeyEvent evt) {
         inputProcessing(evt);
     }

@@ -17,15 +17,15 @@ namespace tetris {
 
         void saveBlock(std::vector<threepp::Vector2> tiles, int type);
         int getGridValue(int x, int y);
-        bool checkBlockOutOfGrid(std::vector<threepp::Vector2> tiles);
+        bool blockHasInvalidPosition(std::vector<threepp::Vector2> tiles);
         void rowCleanUp();
-        int countRows();
+        int countCompleteLines();
         bool checkGameOver(std::vector<threepp::Vector2> tiles);
 
     private:
-        bool checkFullRow(int row);
-        void deleteFullRow(int row);
-        void moveRowDown(int row, int movement);
+        bool completedLine(int row);
+        void clearCompletedLine(int row);
+        void moveLineDown(int row, int lines);
         int spawnOffset;
         void setGridValue(int x, int y, int value);
         bool hasBlock(int x, int y);

@@ -31,7 +31,7 @@ namespace tetris {
         grid.at(y).at(x) = value;
     }
 
-    bool Board::checkBlockOutOfGrid(std::vector<threepp::Vector2> tiles) {
+    bool Board::blockHasInvalidPosition(std::vector<threepp::Vector2> tiles) {
         for (auto item : tiles) {
             if (item.x > boardWidth - 1 || item.x < EmptyTile) {
                 return true;
@@ -52,7 +52,7 @@ namespace tetris {
     }
 
     //Checks if row are filled with blocks
-    bool Board::checkFullRow(int y) {
+    bool Board::completedLine(int y) {
         for (int i = 0; i < boardWidth; i++) {
             if (!hasBlock(i, y)) {
                 return false;
@@ -61,35 +61,35 @@ namespace tetris {
         return true;
     }
     //Deletes row
-    void Board::deleteFullRow(int y) {
+    void Board::clearCompletedLine(int y) {
         for (int i = 0; i < boardWidth; i++) {
             setGridValue(i, y, EmptyTile);
         }
     }
-    //Copies all values from a row to row+movement down the grid. Sets original row to 0
-    void Board::moveRowDown(int y, int movement) {
+    //Copies all values from a row to row+lines down the grid. Sets original row to 0
+    void Board::moveLineDown(int y, int lines) {
         for (int i = 0; i < boardWidth; i++) {
-            setGridValue(i, y + movement, getGridValue(i, y));
+            setGridValue(i, y + lines, getGridValue(i, y));
             setGridValue(i, y, EmptyTile);
         }
     }
     //Checks, moves and deletes rows when they are full.
     void Board::rowCleanUp() {
-        int amountOfFullRows = 0;
+        int completedLines = 0;
         for (int i = boardHeight - 1; i > spawnOffset - 1; i--) {
-            if (checkFullRow(i)) {
-                amountOfFullRows++;
-                deleteFullRow(i);
-            } else if (amountOfFullRows > 0) {
-                moveRowDown(i, amountOfFullRows);
+            if (completedLine(i)) {
+                completedLines++;
+                clearCompletedLine(i);
+            } else if (completedLines > 0) {
+                moveLineDown(i, completedLines);
             }
         }
     }
     //Checks how many rows are full and returns amount
-    int Board::countRows() {
+    int Board::countCompleteLines() {
         int amount = 0;
         for (int i = boardHeight - 1; i > spawnOffset - 1; i--) {
-            if (checkFullRow(i)) {
+            if (completedLine(i)) {
                 amount++;
             }
         }

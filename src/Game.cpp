@@ -47,7 +47,7 @@ namespace tetris {
     }
 
     bool Game::movementAllowed() {
-        if (!gameOver && !board.checkBlockOutOfGrid(currentBlock.peak(movedTilesX, movedTilesY, rotate))) {
+        if (!gameOver && !board.blockHasInvalidPosition(currentBlock.peak(movedTilesX, movedTilesY, rotate))) {
             return true;
         } else {
             return false;
@@ -75,7 +75,7 @@ namespace tetris {
     void Game::update() {
         if (!gameOver && !movementAllowed() && movedTilesY != 0) {
             board.saveBlock(currentBlock.blockPositions(), currentBlock.type);
-            tetrisScore = updateScore(tetrisScore, board.countRows());
+            tetrisScore = updateScore(tetrisScore, board.countCompleteLines());
             drop = false;
             currentType = nextType;
             nextType = random.getType();
