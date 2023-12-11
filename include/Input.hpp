@@ -1,6 +1,7 @@
 
 #ifndef TETRIS_INPUT_HPP
 #define TETRIS_INPUT_HPP
+
 #include <threepp/input/KeyListener.hpp>
 
 namespace tetris {
@@ -14,7 +15,7 @@ namespace tetris {
         NONE
     };
 
-    class Input: public threepp::KeyListener {
+    class Input: public threepp::KeyListener {// Adjusted to our needs from threepp example
     public:
         float& time;
         explicit Input(float& time);

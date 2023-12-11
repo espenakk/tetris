@@ -15,7 +15,7 @@ int main() {
     visuals.setupScene(game);
 
     canvas.animate([&] {
-        game.runTetris();
+        game.update();
         visuals.render(game);
     });
     return 0;

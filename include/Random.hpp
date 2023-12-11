@@ -1,10 +1,12 @@
 
 #ifndef TETRIS_RANDOM_HPP
 #define TETRIS_RANDOM_HPP
+
 #include <vector>
 
 namespace tetris {
-    class Random {
+
+    class Random {// This class was made with assistance from AI
     public:
         Random();
         int getType();
@@ -14,6 +16,7 @@ namespace tetris {
         int consecutive_count[7];
         void resetConsecutiveCount();
     };
+
 }// namespace tetris
 
 #endif//TETRIS_RANDOM_HPP

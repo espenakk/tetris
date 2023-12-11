@@ -1,15 +1,15 @@
 
 #ifndef TETRIS_GAME_HPP
 #define TETRIS_GAME_HPP
+
 #include "Board.hpp"
 #include "Input.hpp"
 #include "Random.hpp"
 #include "Tetrominos.hpp"
 
-#include <threepp/core/Clock.hpp>
-
-#include "threepp/renderers/TextRenderer.hpp"
 #include <sstream>
+#include <threepp/core/Clock.hpp>
+#include <threepp/renderers/TextRenderer.hpp>
 #include <utility>
 
 namespace tetris {
@@ -26,13 +26,11 @@ namespace tetris {
         Block currentBlock;
         Block nextBlock;
 
-        void runTetris();
-
+        void update();
         int tetrisScore;
         bool renderGame;
         bool renderTetromino;
-
-        void updateScore(int check);
+        void updateScore(int linesCleared);
         bool isGameOver();
 
         void onScoreUpdate(std::function<void(int)> callback) {
@@ -55,27 +53,20 @@ namespace tetris {
         Movement currentMovement;
         float elapsedTime = clock.getElapsedTime();
         float lastTick = elapsedTime;
-
-        std::function<void(int)> scoreUpdateCallback;
-        std::function<void()> boardChangedCallback;
-        std::function<void()> gameOverCallback;
-        std::function<void()> gameContinueCallback;
-
-        void spawnBlock();
-        bool movementAllowed();
-        void updateMovement();
-
         int currentType;
         int nextType;
         int moveRequestX;
         int moveRequestY;
         int rotateRequest;
-
         bool gameOver;
         bool drop = false;
-        void tickDown();
         void inputHandling();
-        void update();
+        void spawnBlock();
+        bool movementAllowed();
+        std::function<void(int)> scoreUpdateCallback;
+        std::function<void()> boardChangedCallback;
+        std::function<void()> gameOverCallback;
+        std::function<void()> gameContinueCallback;
     };
 
 }// namespace tetris

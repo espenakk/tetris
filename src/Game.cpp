@@ -11,9 +11,6 @@ namespace tetris {
         currentBlock = tetrominos[currentType];
         nextBlock = tetrominos[nextType];
 
-        moveRequestX = 0;
-        moveRequestY = 0;
-        rotateRequest = 0;
         tetrisScore = 0;
         gameOver = false;
     }
@@ -61,20 +58,6 @@ namespace tetris {
         }
     }
 
-    void Game::tickDown() {
-        if (drop) {
-            moveRequestY += 1;
-        } else {
-            if (clock.getElapsedTime() - lastTick > 0.3) {
-                inputHandling();
-                moveRequestY += 1;
-                lastTick = clock.getElapsedTime();
-            } else {
-                inputHandling();
-            }
-        }
-    }
-
     bool Game::isGameOver() {
         if (renderGame && board.checkGameOver(currentBlock.peak((float) moveRequestX, (float) moveRequestY, rotateRequest))) {
             if (gameOverCallback)
@@ -86,23 +69,6 @@ namespace tetris {
     }
 
     void Game::update() {
-        bool goingDown = moveRequestY != 0;
-        bool killPiece = !gameOver && !movementAllowed() && goingDown;
-
-        if (killPiece) {
-            board.saveBlock(currentBlock.tilePositions(), currentBlock.type);
-            updateScore(board.countCompleteLines());
-            drop = false;
-            currentType = nextType;
-            nextType = random.getType();
-            currentBlock = tetrominos[currentType];
-            board.rowCleanUp();
-            nextBlock = tetrominos[nextType];
-            renderGame = true;
-        }
-    }
-
-    void Game::runTetris() {
         inputHandling();
 
         if (!gameOver) {
@@ -172,13 +138,13 @@ namespace tetris {
             gameOver = false;
         }
     }
-    //Adds points to "score" according to amount of rows filled in "check"
-    void Game::updateScore(int rowsCleared) {
-        if (rowsCleared == 0)
+
+    void Game::updateScore(int linesCleared) {
+        if (linesCleared == 0)
             return;
 
         int scoreIncrement = 0;
-        switch (rowsCleared) {
+        switch (linesCleared) {
             case 1:
                 scoreIncrement = 40;
                 break;
@@ -197,11 +163,5 @@ namespace tetris {
         if (scoreUpdateCallback)
             scoreUpdateCallback(tetrisScore);
     }
-    void Game::updateMovement() {
-        moveRequestY = 0;
-        moveRequestX = 0;
-        rotateRequest = 0;
-        currentMovement = input.movement;
-        input.movement = NONE;
-    }
+
 }// namespace tetris
