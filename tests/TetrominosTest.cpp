@@ -1,10 +1,9 @@
-
 #include "Tetrominos.hpp"
 #include <catch2/catch_test_macros.hpp>
 
 using namespace tetris;
 
-TEST_CASE("test tetromino types") {
+TEST_CASE("Tetromino types are correct") {
     T_Tetromino t;
     S_Tetromino s;
     Z_Tetromino z;
@@ -19,7 +18,4 @@ TEST_CASE("test tetromino types") {
     CHECK(j.type == J);
     CHECK(i.type == I);
     CHECK(o.type == O);
-}
-
-TEST_CASE("test peak rotations") {
 }

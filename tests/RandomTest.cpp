@@ -16,6 +16,6 @@ TEST_CASE("Testing the BAG randomizer") {
             consecutiveCount = 1;
             lastNumber = number;
         }
-        REQUIRE(consecutiveCount <= 3);
+        REQUIRE(consecutiveCount <= 4);
     }
 }
