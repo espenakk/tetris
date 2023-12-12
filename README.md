@@ -1,45 +1,58 @@
-# Tetris
+# Tetris in C++
 
-This is a project that uses `threepp` as a dependency.
+This repository contains a C++ implementation of Tetris inspired by the Tetris game from NES.
+The project is currently in the late stages of development,
+with most of the basic features implemented.
 
-**The game is in early stages of development**
+## Table of Contents
 
-### ~Current status of the game:
+- [Getting Started](#getting-started)
+- [Current Status](#current-status)
+- [Roadmap](#roadmap)
+- [Contributing](#contributing)
+- [Kandidatnumre](#Kandidatnumre)
 
-- We have a functioning grid.
-- We have stored every variation of the game blocks in a sorted list.
-- We have a way of handling input.
+## Getting Started
 
-### ~TODO
+If you want to test out the game you can find the latest release [here](#here).
+If you want to build and contribute to the project you can find instructions under [Contributing](#contributing).
 
-- Implement input.
-- Saving blocks
-- Checking for collision
-- Create a game loop and implement game logic.
-- Make the program more object oriented.
-- Finishing touches.
+## Current Status
 
- *README will be expanded later* :wink:
+These are the current features.
 
-## Vurderingskriterier
+- The game is playable and all important game mechanics have been implemented.
+- Input and Rendering have been implemented using `threepp`.
+- Basic GUI.
+- Bag style randomization has been implemented.
+- A few good Unit tests have been made.
+- Continuous integration has been set up using GitHub Actions.
 
-#### Besvarelser vil bli vurdert basert på følgende kriterier:
+## Roadmap
 
-- Om kravspesifikasjonen har blitt fulgt.
-- Om god forståelse for grunnleggende prinsipper i programmering som variabler, datatyper,
-  metoder, betingelser, løkker osv. kan demonstreres.
-- Fornuftig design og bruk av klasser og funksjoner.
-- Fornuftig bruk av datastrukturer.
-- Om prinsippene for god design (abstraction, encapsulation, coupling, cohesion, responsibility
-  driven design osv.) har blitt fulgt.
-- Om det er brukt gode, selvforklarende navn på klasser, metoder og
-  variabler/felt/parametere.
-- Riktig og ellers fornuftig bruk av referanser, pekere og «value types».
-- Bruk av konsekvent og rydding kode design (formatering, konvensjoner etc.)
-- Om koden er selvforklarende og ellers godt dokumentert.
-- Om gode og dekkende enhetstester er implementert.
-- Tilstrekkelig feilhåndtering («defensive programming», håndtering av ugyldig input fra
-  bruker, verifisering av parametere osv.).
-- Evne til å reflektere over løsningen.
-- Jevn progresjon fra prosjektstart.
-- Kreativitet og selvstendighet.
+Here are the proposed features and improvements:
+
+- A main menu.
+- Settings.
+- Multiple game modes.
+- A highscore system.
+- A multiplayer mode.
+- OST and game audio.
+
+## Contributing
+
+The build the project you will need:
+
+- Clion, Visual Studio or another IDE that supports CMake.
+- CMake (3.15 or later)
+- vcpkg
+
+For a step by step guide on how to build the project, see [BUILD.md](BUILD.md).
+
+Any contributions you make are greatly appreciated.
+
+## Kandidatnumre
+
+Kanditatnummer: 10011
+
+Kandidatnummer: 10066

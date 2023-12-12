@@ -1,30 +1,41 @@
 
 #ifndef TETRIS_BLOCK_HPP
 #define TETRIS_BLOCK_HPP
-#include "Position.hpp"
+
 #include <map>
-#include <threepp/threepp.hpp>
+#include <threepp/math/Vector2.hpp>
 #include <vector>
+
 namespace tetris {
+
+    enum TileType {
+        EmptyTile,
+        SpawnZone,
+        T,
+        S,
+        Z,
+        L,
+        J,
+        I,
+        O
+    };
 
     class Block {
     public:
         Block();
-        int type;
-        std::map<int, std::vector<Position>> cells;
-        std::shared_ptr<threepp::Group> draw();
-        void move(int row, int column);
-        std::vector<Position> peak(int row, int column, bool rotate);
-        void rotate();
-        std::vector<Position> blockPositions();
 
-        int rowOffset;
-        int columnOffset;
+        std::map<int, std::vector<threepp::Vector2>> tiles;
+        TileType type;
+        void move(float x, float y);
+        void rotate(int rot);
+        std::vector<threepp::Vector2> tilePositions();
+        std::vector<threepp::Vector2> peak(float x, float y, int rot);
 
     private:
+        float xOffset;
+        float yOffset;
         int rotationState;
-        std::vector<Position> blockPositions(int x, int y, int rot);
-        std::vector<threepp::Color> colours;
+        std::vector<threepp::Vector2> tilePositions(float x, float y, int rot);
     };
 
 }// namespace tetris

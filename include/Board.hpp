@@ -1,41 +1,36 @@
 
 #ifndef TETRIS_BOARD_HPP
 #define TETRIS_BOARD_HPP
-#include "threepp/threepp.hpp"
-#include <iostream>
-
-#include <threepp/threepp.hpp>
-#include <iostream>
 
 #include "Block.hpp"
 
 namespace tetris {
 
     class Board {
-
     public:
-        Board();
-        int grid[21][12]{};
-        void initGrid();
-        void printGrid();
+        Board(int height, int width);
 
-        void saveBlock(std::vector<Position> tiles, int type);
-        int whatIsGridValue(int x, int y);
-        bool checkBlockOutOfGrid(std::vector<Position> tiles);
-        std::shared_ptr<threepp::Group> drawGrid();
-
+        int boardHeight;
+        int boardWidth;
+        void saveBlock(const std::vector<threepp::Vector2>& tiles, TileType tileType);
+        int getGridTileType(int x, int y);
+        bool blockHasInvalidPosition(const std::vector<threepp::Vector2>& tiles);
         void rowCleanUp();
-        int countRows();
+        int countCompleteLines();
+        bool checkGameOver(const std::vector<threepp::Vector2>& tiles);
+        void reset();
 
     private:
-        int amountOfRows;
-        int amountOfColumns;
-        bool gridIsChanged;
-
-        bool checkFullRow(int row);
-        void deleteFullRow(int row);
-        void moveRowDown(int row, int movement);
+        int spawnOffset;
+        std::vector<std::vector<TileType>> grid{};
+        void setGridTileType(int x, int y, TileType tileType);
+        bool hasBlock(int x, int y);
+        bool completedLine(int line);
+        void clearCompletedLine(int line);
+        void moveLineDown(int line, int lines);
     };
+
 }// namespace tetris
 
 #endif//TETRIS_BOARD_HPP
+

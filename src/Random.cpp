@@ -5,7 +5,7 @@
 #include <ctime>
 
 namespace tetris {
-    Random::Random() {
+    Random::Random() {// This class was made with assistance from AI
         std::srand(static_cast<unsigned>(std::time(nullptr)));
         lastTenTypes.reserve(10);
         resetConsecutiveCount();
