@@ -59,7 +59,7 @@ namespace tetris {
     }
 
     bool Game::isGameOver() {
-        if (renderGame && board.checkGameOver(currentBlock.peak((float) moveRequestX, (float) moveRequestY, rotateRequest))) {
+        if (board.checkGameOver(currentBlock.peak((float) moveRequestX, (float) moveRequestY, rotateRequest))) {
             if (gameOverCallback)
                 gameOverCallback();
 
@@ -76,7 +76,9 @@ namespace tetris {
             if (movementAllowed()) {
                 currentBlock.move((float) moveRequestX, (float) 0.0f);
                 currentBlock.rotate(rotateRequest);
-                renderTetromino = true;
+
+                if (blockMovedCallback)
+                    blockMovedCallback();
             }
 
             moveRequestX = 0;
@@ -96,7 +98,9 @@ namespace tetris {
 
             if (goingDown && movementAllowed()) {
                 currentBlock.move((float) 0.0f, (float) moveRequestY);
-                renderTetromino = true;
+
+                if (blockMovedCallback)
+                    blockMovedCallback();
             }
 
             if (killPiece) {
@@ -113,7 +117,6 @@ namespace tetris {
                 if (boardChangedCallback)
                     boardChangedCallback();
 
-                renderGame = true;
                 drop = false;
             }
         }
@@ -125,7 +128,6 @@ namespace tetris {
             board.reset();
             spawnBlock();
 
-            renderGame = true;
             if (boardChangedCallback)
                 boardChangedCallback();
 

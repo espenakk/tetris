@@ -6,7 +6,12 @@
 
 namespace tetris {
 
-    Visuals::Visuals(): renderingEngine(renderingSize), scene(threepp::Scene::create()), camera(threepp::OrthographicCamera::create()), textScore(renderText("0", 400, 500, 2)), textGameOver(renderText("", 39, 350, 4)), textContinue(renderText("", 39, 420, 1.5)) {
+    Visuals::Visuals(): renderingEngine(renderingSize),
+                        scene(threepp::Scene::create()),
+                        camera(threepp::OrthographicCamera::create()),
+                        textScore(renderText("0", 400, 500, 2)),
+                        textGameOver(renderText("", 39, 350, 4)),
+                        textContinue(renderText("", 39, 420, 1.5)) {
         renderingEngine.setClearColor(threepp::Color::black);
         camera->position.z = 1;
         camera->position.x = -2;
@@ -25,6 +30,10 @@ namespace tetris {
         auto mesh = threepp::Mesh::create(geometry, material);
         mesh->position.copy(pos);
         return mesh;
+    }
+
+    threepp::WindowSize Visuals::getCanvasSize() {
+        return canvasSize;
     }
 
     threepp::Color::ColorName getTileColour(TileType type) {
@@ -117,40 +126,38 @@ namespace tetris {
     }
 
     void Visuals::renderGame(Game& game) {
-        //        if (game.renderGame) {
         blockGroup->clear();
-            boardGroup->clear();
-            nextBlockGroup->clear();
-            blockGroup = createBlockGroup(game.currentBlock);
-            scene->add(blockGroup);
-            boardGroup = createBoardGroup(game.board);
-            scene->add(boardGroup);
-            nextBlockGroup = createNextBlockGroup(game.nextBlock);
-            scene->add(nextBlockGroup);
-            //            game.renderGame = false;
-            //        }
+        boardGroup->clear();
+        nextBlockGroup->clear();
+        blockGroup = createBlockGroup(game.currentBlock);
+        scene->add(blockGroup);
+        boardGroup = createBoardGroup(game.board);
+        scene->add(boardGroup);
+        nextBlockGroup = createNextBlockGroup(game.nextBlock);
+        scene->add(nextBlockGroup);
     }
+
     void Visuals::renderTetromino(Game& game) {
-        if (game.renderTetromino) {
+        game.onBlockmoved([&]() {
             blockGroup->clear();
             blockGroup = createBlockGroup(game.currentBlock);
             scene->add(blockGroup);
-            game.renderTetromino = false;
-        }
+        });
     }
+
     void Visuals::render(Game& game) {
         renderTetromino(game);
-        //        renderGame(game);
         renderingEngine.render(*scene, *camera);
         renderingEngine.resetState();
-        tr.render();
+        textRenderer.render();
     }
 
     threepp::TextHandle& Visuals::renderText(const std::string& text, int x, int y, float size) {
-        threepp::TextHandle& handle = tr.createHandle();
+        threepp::TextHandle& handle = textRenderer.createHandle();
         handle.setText(text);
         handle.setPosition(x, y);
         handle.scale = size;
         return handle;
     }
+
 }// namespace tetris

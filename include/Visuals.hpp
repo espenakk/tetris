@@ -3,13 +3,13 @@
 #define TETRIS_VISUALS_HPP
 
 #include "Game.hpp"
+
 #include <threepp/cameras/OrthographicCamera.hpp>
 #include <threepp/objects/Group.hpp>
 #include <threepp/objects/mesh.hpp>
 #include <threepp/renderers/GLRenderer.hpp>
 #include <threepp/renderers/TextRenderer.hpp>
 #include <threepp/scenes/Scene.hpp>
-#include <vector>
 
 namespace tetris {
 
@@ -20,26 +20,15 @@ namespace tetris {
         void setupScene(Game& game);
         void renderGame(Game& game);
         void renderTetromino(Game& game);
-
-        //        void renderScore(int score) {
-        //            std::string scoreText = std::to_string(score);
-        //            value.setText(scoreText);
-        //        }
-
         void render(Game& game);
 
-        threepp::WindowSize getCanvasSize() {
-            return canvasSize;
-        }
-
-        threepp::TextRenderer tr;
-
+        threepp::WindowSize getCanvasSize();
+        threepp::TextRenderer textRenderer;
         threepp::TextHandle& renderText(const std::string& text, int x, int y, float size);
 
     private:
         const float width_ = 0.9;
         const float height_ = 0.9;
-
         const threepp::WindowSize renderingSize{800, 800};
         const threepp::WindowSize canvasSize{550, 780};
         threepp::GLRenderer renderingEngine;
@@ -56,8 +45,6 @@ namespace tetris {
         std::shared_ptr<threepp::Group> createBoardGroup(tetris::Board& gameBoard);
         std::shared_ptr<threepp::Group> createBlockGroup(tetris::Block& block);
         std::shared_ptr<threepp::Group> createNextBlockGroup(tetris::Block& block);
-        //        threepp::TextRenderer textRenderer;
-        //        threepp::TextRenderer::Handle value;
     };
 
 }// namespace tetris

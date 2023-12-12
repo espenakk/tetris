@@ -28,13 +28,15 @@ namespace tetris {
 
         void update();
         int tetrisScore;
-        bool renderGame;
-        bool renderTetromino;
         void updateScore(int linesCleared);
         bool isGameOver();
 
         void onScoreUpdate(std::function<void(int)> callback) {
             scoreUpdateCallback = std::move(callback);
+        }
+
+        void onBlockmoved(std::function<void()> callback) {
+            blockMovedCallback = std::move(callback);
         }
 
         void onBordChanged(std::function<void()> callback) {
@@ -65,6 +67,7 @@ namespace tetris {
         bool movementAllowed();
         std::function<void(int)> scoreUpdateCallback;
         std::function<void()> boardChangedCallback;
+        std::function<void()> blockMovedCallback;
         std::function<void()> gameOverCallback;
         std::function<void()> gameContinueCallback;
     };

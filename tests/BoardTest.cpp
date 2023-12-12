@@ -5,7 +5,7 @@
 
 using namespace tetris;
 
-    TEST_CASE("Block rotation near board boundaries", "[Block][Board]") {
+    TEST_CASE("Block rotation near board boundaries", "[Block][Board]") {  //This unit test was actually quite useful, as it helped me find a bug in the use of the Block::rotate function in the game loop.
 
         Z_Tetromino z;
         S_Tetromino s;
