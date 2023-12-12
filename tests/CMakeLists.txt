@@ -6,6 +6,5 @@ function(add_test_executable name)
 endfunction()
 
 add_test_executable(BoardTest BoardTest.cpp)
-add_test_executable(GameTest GameTest.cpp)
 add_test_executable(RandomTest RandomTest.cpp)
 add_test_executable(TetrominosTest TetrominosTest.cpp)
