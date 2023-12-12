@@ -1,0 +1,53 @@
+name: Build and test on Windows, Linux and macOS
+
+on:
+  push:
+    branches: [ "*dev" ]
+  pull_request:
+    branches: [ "master", "dev" ]
+
+jobs:
+  build:
+    name: ${{ matrix.name }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - name: 'Windows'
+            os: windows-latest
+            generator: 'Visual Studio 17.8 2022'
+            arch: '-A x64'
+          - name: 'Linux'
+            os: ubuntu-latest
+            env:
+              CC: gcc-11
+              CXX: g++-11
+          - name: 'MacOS'
+            os: macos-latest
+
+    steps:
+      - uses: actions/checkout@v3
+      - name: Install prerequisites
+        shell: bash
+        run: |
+          if [[ "${{ matrix.os }}" == "ubuntu-latest" ]]; then
+            sudo apt-get update && sudo apt-get install -y libxinerama-dev libxcursor-dev xorg-dev libglu1-mesa-dev pkg-config
+          elif [[ "${{ matrix.os }}" == "macos-latest" ]]; then
+            brew install pkg-config
+          fi
+      - name: Build vcpkg
+        uses: lukka/run-vcpkg@v11
+        with:
+          vcpkgDirectory: '${{ github.workspace }}/vcpkg'
+          vcpkgGitCommitId: 'a42af01b72c28a8e1d7b48107b33e4f286a55ef6'
+
+      - name: Build project
+        run: |
+          cmake . -B build -DCMAKE_TOOLCHAIN_FILE="${{ github.workspace }}\vcpkg\scripts\buildsystems\vcpkg.cmake" -DTETRIS_BUILD_TESTS=ON -DCMAKE_BUILD_TYPE="Release"
+          cmake --build build --config Release
+
+      - name: Run tests
+        run: |
+          cd build/tests
+          ctest -C Release --output-on-failure
