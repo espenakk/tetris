@@ -14,7 +14,7 @@ with most of the basic features implemented.
 
 ## Getting Started
 
-If you want to test out the game you can find the latest release [here](/releases/latest/download/Tetris.v.1.0.0.zip.).
+If you want to test out the game you can find the latest release [here](releases/download/v1.0.0/Tetris.v.1.0.0.zip).
 If you want to build and contribute to the project you can find instructions under [Contributing](#contributing).
 
 ## Current Status
