@@ -4,19 +4,6 @@ This repository contains a C++ implementation of Tetris inspired by the Tetris g
 The project is currently in the late stages of development,
 with most of the basic features implemented.
 
-## Table of Contents
-
-- [Getting Started](#getting-started)
-- [Current Status](#current-status)
-- [Roadmap](#roadmap)
-- [Contributing](#contributing)
-- [Kandidatnumre](#Kandidatnumre)
-
-## Getting Started
-
-If you want to test out the game you can find the latest release [here](releases).
-If you want to build and contribute to the project you can find instructions under [Contributing](#contributing).
-
 ## Current Status
 
 These are the current features.
@@ -38,21 +25,3 @@ Here are the proposed features and improvements:
 - A highscore system.
 - A multiplayer mode.
 - OST and game audio.
-
-## Contributing
-
-The build the project you will need:
-
-- Clion, Visual Studio or another IDE that supports CMake.
-- CMake (3.15 or later)
-- vcpkg
-
-For a step by step guide on how to build the project, see [BUILD.md](BUILD.md).
-
-Any contributions you make are greatly appreciated.
-
-## Kandidatnumre
-
-Kanditatnummer: 10011
-
-Kandidatnummer: 10066
