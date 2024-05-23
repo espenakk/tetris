@@ -1,6 +1,6 @@
 # Tetris in C++
 
-This repository contains a C++ implementation of Tetris inspired by the Tetris game from NES.
+This repository contains a C++ clone of Tetris inspired by the original game from NES.
 The project is currently in the late stages of development,
 with most of the basic features implemented.
 
@@ -9,13 +9,11 @@ with most of the basic features implemented.
 - [Getting Started](#getting-started)
 - [Current Status](#current-status)
 - [Roadmap](#roadmap)
-- [Contributing](#contributing)
-- [Kandidatnumre](#Kandidatnumre)
+- [Build](#build)
 
 ## Getting Started
 
-If you want to test out the game you can find the latest release [here](#here).
-If you want to build and contribute to the project you can find instructions under [Contributing](#contributing).
+If you want to test out the game you can find the latest release [here](https://github.com/pandolini/tetris/releases).
 
 ## Current Status
 
@@ -39,20 +37,9 @@ Here are the proposed features and improvements:
 - A multiplayer mode.
 - OST and game audio.
 
-## Contributing
+## Build
 
 The build the project you will need:
 
-- Clion, Visual Studio or another IDE that supports CMake.
 - CMake (3.15 or later)
 - vcpkg
-
-For a step by step guide on how to build the project, see [BUILD.md](BUILD.md).
-
-Any contributions you make are greatly appreciated.
-
-## Kandidatnumre
-
-Kanditatnummer: 10011
-
-Kandidatnummer: 10066

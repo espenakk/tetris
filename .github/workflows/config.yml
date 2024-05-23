@@ -2,7 +2,7 @@ name: Build and test on Windows, Linux and macOS
 
 on:
   push:
-    branches: [ "*dev" ]
+    branches: [ "master", "*dev" ]
   pull_request:
     branches: [ "master", "dev" ]
 
@@ -24,7 +24,7 @@ jobs:
               CC: gcc-11
               CXX: g++-11
           - name: 'MacOS'
-            os: macos-latest
+            os: macos-13
 
     steps:
       - uses: actions/checkout@v3

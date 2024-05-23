@@ -6,7 +6,7 @@
 
 #include <threepp/cameras/OrthographicCamera.hpp>
 #include <threepp/objects/Group.hpp>
-#include <threepp/objects/mesh.hpp>
+#include <threepp/objects/Mesh.hpp>
 #include <threepp/renderers/GLRenderer.hpp>
 #include <threepp/renderers/TextRenderer.hpp>
 #include <threepp/scenes/Scene.hpp>
